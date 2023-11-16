@@ -14,3 +14,4 @@ scans:
      - 'src/plutonkit/*'
      - 'src/plutonkit/*/*'
      - 'src/plutonkit/*/*/*'
+     - 'src/plutonkit/*/*/*/*'     

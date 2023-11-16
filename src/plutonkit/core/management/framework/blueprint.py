@@ -1,7 +1,6 @@
 from plutonkit.core.management.filesystem import generate_requirement
 from plutonkit.core.management.command import pip_install_requirement,pip_run_command
 
-
 from plutonkit.config.framework import SUPPORT_LIBRARY_DJANGO,\
 SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK
 
@@ -18,7 +17,7 @@ class FrameworkBluePrint:
 
         pip_run_command(self.reference_value,['rm','-rf',self.reference_value['details']['project_name']])
         pip_run_command(self.reference_value,['django-admin','startproject',self.reference_value['details']['project_name']])#
-        generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO) 
+        generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO)
 
     def package_django_rest(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK)
@@ -27,7 +26,7 @@ class FrameworkBluePrint:
         pip_run_command(self.reference_value,['rm','-rf',self.reference_value['details']['project_name']])
         pip_run_command(self.reference_value,['django-admin','startproject',self.reference_value['details']['project_name']])#
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK)
-     
+
     def package_bottle(self):
         print("package_bottle")
     def package_fastapi(self):
@@ -45,6 +44,6 @@ class FrameworkBluePrint:
     def package_django_graphbox(self):
         print("package_django_graphbox")
     def default_grpc(self):
-        print("default_grpc")   
+        print("default_grpc")
     def default_websocket(self):
-        print("default_websocket")                                                                                          
+        print("default_websocket")

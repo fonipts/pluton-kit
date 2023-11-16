@@ -8,4 +8,5 @@ def setup(set_prefix=True):
     """
     import plutonkit.config
     import plutonkit.command
+    import plutonkit.core
 

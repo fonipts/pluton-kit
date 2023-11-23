@@ -8,9 +8,14 @@ def pip_install_requirement(reference_value):
     path = os.path.join(DIRECTORY, reference_value['details']['project_name'],REQUIREMENT)
     subprocess.call(['pip','install','-r',path])
 
-def pip_run_command(reference_value,command):
+def change_dir_command(reference_value):
     DIRECTORY = os.getcwd()
     path = os.path.join(DIRECTORY, reference_value['details']['project_name'])
+    os.chdir(path)
+
+def pip_run_command(command):
+   # DIRECTORY = os.getcwd()
+   # path = os.path.join(DIRECTORY, reference_value['details']['project_name'])
    # os.chdir(path)
 
     subprocess.call(command)

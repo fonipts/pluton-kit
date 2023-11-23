@@ -1,4 +1,4 @@
-from plutonkit.core.helper.format import format_argument
+from plutonkit.helper.format import format_argument
 from plutonkit.config.framework import DEFAULT_GRPC,FRAMEWORK_WEB,DEFAULT_WEB_SOCKET,FRAMEWORK_GRAPHQL
 
 SERVICE_TYPE = [

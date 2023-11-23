@@ -23,7 +23,7 @@ setup(
     url='https://codehyouka.xyz/',
     author='Codehyouka',
     author_email='plants.coordinators@gmail.com',
-    description=('Start kit for python, for web, websocket, grpc and graphql framework'),
+    description=('Start kit for python, for building application'),
     license='MIT',
     packages=find_packages( "src"),
     package_dir={"": "src"},

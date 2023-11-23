@@ -1,2 +1,2 @@
-INTRODUCTION = "Welcome to pluton-kit, this is your package builder for python woorld"
+INTRODUCTION = "Welcome to pluton-kit, this is your application builder in python woorld"
 REQUIREMENT = 'requirements.txt'

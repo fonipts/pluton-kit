@@ -1,5 +1,5 @@
-from plutonkit.core.management.filesystem import generate_requirement,generate_filesystem
-from plutonkit.core.management.command import pip_install_requirement,pip_run_command
+from plutonkit.helper.filesystem import generate_requirement,generate_filesystem
+from plutonkit.helper.command import pip_install_requirement,pip_run_command,change_dir_command
 
 from plutonkit.config.framework import SUPPORT_LIBRARY_DJANGO,\
 SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK,\
@@ -24,18 +24,19 @@ class FrameworkBluePrint:
     def package_django(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO)
         pip_install_requirement(self.reference_value)
-
-        #pip_run_command(self.reference_value,['rm','-rf',self.reference_value['details']['project_name']])
-        pip_run_command(self.reference_value,['django-admin','startproject',self.reference_value['details']['project_name']])#
+        #change_dir_command(self.reference_value)
+        pip_run_command(['rm','-rf',self.reference_value['details']['project_name']])
+        pip_run_command(['django-admin','startproject',self.reference_value['details']['project_name']])
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO)
-        generate_filesystem(self.reference_value)
+        generate_filesystem(self.reference_value,self.reference_value['details']['project_name'])
+        #change_dir_command(self.reference_value)
+        #pip_run_command(['django-admin','startapp','testapp'])
 
     def package_django_rest(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK)
         pip_install_requirement(self.reference_value)
 
-        #pip_run_command(self.reference_value,['rm','-rf',self.reference_value['details']['project_name']])
-        pip_run_command(self.reference_value,['django-admin','startproject',self.reference_value['details']['project_name']])#
+        pip_run_command(['django-admin','startproject',self.reference_value['details']['project_name']])
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK)
         generate_filesystem(self.reference_value)
 
@@ -70,11 +71,11 @@ class FrameworkBluePrint:
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO_GRAPHBOX)
         pip_install_requirement(self.reference_value)
         generate_filesystem(self.reference_value)
-    def default_grpc(self):
+    def package_default_grpc(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_GRPC)
         pip_install_requirement(self.reference_value)
         generate_filesystem(self.reference_value)
-    def default_websocket(self):
+    def package_default_websocket(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_WEB_SOCKET)
         pip_install_requirement(self.reference_value)
         generate_filesystem(self.reference_value)

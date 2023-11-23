@@ -1,7 +1,7 @@
 import sys
 import os
-from plutonkit.core.management.filesystem import generate_project_folder_cwd
-from plutonkit.core.management.framework.blueprint import FrameworkBluePrint
+from plutonkit.helper.filesystem import generate_project_folder_cwd
+from plutonkit.management.framework.blueprint import FrameworkBluePrint
 
 def callback_execute(reference_value,name,step):
 

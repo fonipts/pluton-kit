@@ -1,5 +1,5 @@
 import os
-import glob
+import glob 
 
 from plutonkit.config import REQUIREMENT
 from plutonkit.config.framework import STANDARD_LIBRARY
@@ -14,13 +14,15 @@ def generate_default_file(reference_value,name,content):
     f.write(content)
     f.close()
 
-def generate_filesystem(reference_value):
+def generate_filesystem(reference_value,sub_folder=None):
     DIRECTORY = os.getcwd()
     framework_value = [val['name'] for key,val in enumerate(reference_value['command']) if val['type'] =='framework' ][0]
     framework_value_clean = framework_value.replace("package_", "")
-    dir_path = os.path.dirname(os.path.realpath(__file__)).replace("core/management", "template/"+framework_value_clean)
-    callback_template_filesystem(dir_path, os.path.join(DIRECTORY, reference_value['details']['project_name']))
-
+    dir_path = os.path.dirname(os.path.realpath(__file__)).replace("management", "template/"+framework_value_clean)
+    if sub_folder is None:
+        callback_template_filesystem(dir_path, os.path.join(DIRECTORY, reference_value['details']['project_name']))
+    else:
+        callback_template_filesystem(dir_path, os.path.join(DIRECTORY, reference_value['details']['project_name'],sub_folder))
 def callback_template_filesystem(from_content, to_content):
     if os.path.exists(from_content):
         for name in glob.glob(os.path.join(from_content,"*")):
@@ -34,15 +36,15 @@ def callback_template_filesystem(from_content, to_content):
                     if base_name[1] ==".tpl":
                         ref_filename = os.path.join(to_content,base_name[0]+".py")
                     else:
-                        ref_filename = os.path.join(to_content,os.path.basename(name))
-
+                        ref_filename = os.path.join(to_content,os.path.basename(name))    
+     
                 with open(name, 'r') as fi:
                     f_write = open(ref_filename, 'w')
                     f_write.write(fi.read())
                     f_write.close()
 
             if is_dir:
-                print(name,":dir")
+                print(name,":dir") 
 
 def generate_requirement(reference_value,library):
     DIRECTORY = os.getcwd()

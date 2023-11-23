@@ -1,7 +1,7 @@
 
 from plutonkit.config import INTRODUCTION
 from plutonkit.config.system import SERVICE_TYPE
-from plutonkit.core.helper.command import callback_execute
+from plutonkit.management.command import callback_execute
 
 def autoload():
 

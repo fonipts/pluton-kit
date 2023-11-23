@@ -4,6 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "plutonkit"
+version = "1.0.0a0"
 description = "Start kit for python, for building application"
 readme = "README.md"
 requires-python = ">=3.8"
@@ -45,6 +46,9 @@ dynamic = ["version"]
 Homepage = "https://plutonkit.codehyouka.xyz/"
 Documentation = "https://plutonkit.codehyouka.xyz/"
 Repository = "https://github.com/fonipts/pluton-kit"
+
+[project.scripts]
+plutonkit = "plutonkit.command:autoload"
 
 [project.optional-dependencies]
 all = [

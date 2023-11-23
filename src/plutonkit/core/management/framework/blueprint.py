@@ -1,8 +1,18 @@
-from plutonkit.core.management.filesystem import generate_requirement
+from plutonkit.core.management.filesystem import generate_requirement,generate_filesystem
 from plutonkit.core.management.command import pip_install_requirement,pip_run_command
 
 from plutonkit.config.framework import SUPPORT_LIBRARY_DJANGO,\
-SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK
+SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK,\
+SUPPORT_LIBRARY_BOTTLE,\
+SUPPORT_LIBRARY_FAST_API,\
+SUPPORT_LIBRARY_FLASK,\
+SUPPORT_LIBRARY_GRAPHENE,\
+SUPPORT_LIBRARY_STRAWBERRY,\
+SUPPORT_LIBRARY_ARIADNE,\
+SUPPORT_LIBRARY_TARTIFLETTE,\
+SUPPORT_LIBRARY_DJANGO_GRAPHBOX,\
+SUPPORT_LIBRARY_GRPC,\
+SUPPORT_LIBRARY_WEB_SOCKET
 
 import os
 
@@ -15,35 +25,56 @@ class FrameworkBluePrint:
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO)
         pip_install_requirement(self.reference_value)
 
-        pip_run_command(self.reference_value,['rm','-rf',self.reference_value['details']['project_name']])
+        #pip_run_command(self.reference_value,['rm','-rf',self.reference_value['details']['project_name']])
         pip_run_command(self.reference_value,['django-admin','startproject',self.reference_value['details']['project_name']])#
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO)
+        generate_filesystem(self.reference_value)
 
     def package_django_rest(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK)
         pip_install_requirement(self.reference_value)
 
-        pip_run_command(self.reference_value,['rm','-rf',self.reference_value['details']['project_name']])
+        #pip_run_command(self.reference_value,['rm','-rf',self.reference_value['details']['project_name']])
         pip_run_command(self.reference_value,['django-admin','startproject',self.reference_value['details']['project_name']])#
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK)
+        generate_filesystem(self.reference_value)
 
     def package_bottle(self):
-        print("package_bottle")
+        generate_requirement(self.reference_value,SUPPORT_LIBRARY_BOTTLE)
+        pip_install_requirement(self.reference_value)
     def package_fastapi(self):
-        print("package_fastapi")
+        generate_requirement(self.reference_value,SUPPORT_LIBRARY_FAST_API)
+        pip_install_requirement(self.reference_value)
+        generate_filesystem(self.reference_value)
     def package_flask(self):
-        print("package_flask")
+        generate_requirement(self.reference_value,SUPPORT_LIBRARY_FLASK)
+        pip_install_requirement(self.reference_value)
+        generate_filesystem(self.reference_value)
     def package_graphene(self):
-        print("package_graphene")
+        generate_requirement(self.reference_value,SUPPORT_LIBRARY_GRAPHENE)
+        pip_install_requirement(self.reference_value)
+        generate_filesystem(self.reference_value)
     def package_strawberry(self):
-        print("package_strawberry")
+        generate_requirement(self.reference_value,SUPPORT_LIBRARY_STRAWBERRY)
+        pip_install_requirement(self.reference_value)
+        generate_filesystem(self.reference_value)
     def package_ariadne(self):
-        print("package_ariadne")
+        generate_requirement(self.reference_value,SUPPORT_LIBRARY_ARIADNE)
+        pip_install_requirement(self.reference_value)
+        generate_filesystem(self.reference_value)
     def package_tartiflette(self):
-        print("package_tartiflette")
+        generate_requirement(self.reference_value,SUPPORT_LIBRARY_TARTIFLETTE)
+        pip_install_requirement(self.reference_value)
+        generate_filesystem(self.reference_value)
     def package_django_graphbox(self):
-        print("package_django_graphbox")
+        generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO_GRAPHBOX)
+        pip_install_requirement(self.reference_value)
+        generate_filesystem(self.reference_value)
     def default_grpc(self):
-        print("default_grpc")
+        generate_requirement(self.reference_value,SUPPORT_LIBRARY_GRPC)
+        pip_install_requirement(self.reference_value)
+        generate_filesystem(self.reference_value)
     def default_websocket(self):
-        print("default_websocket")
+        generate_requirement(self.reference_value,SUPPORT_LIBRARY_WEB_SOCKET)
+        pip_install_requirement(self.reference_value)
+        generate_filesystem(self.reference_value)

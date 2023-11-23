@@ -6,7 +6,8 @@ from plutonkit.core.management.framework.blueprint import FrameworkBluePrint
 def callback_execute(reference_value,name,step):
 
     enum_action = ['(%s) %s'%(key+1,val['option_name']) for key,val in enumerate(step)]
-    answer = input("\n\n%s\n%s > "%("\n".join(enum_action),name))
+    print("\n\n%s\n%s "%(name,"\n".join(enum_action)))
+    answer = input('choose only at [%s]'%(len(step) == 1 and '1' or '1-'+str(len(step)) ))
 
     try:
         int_answer = int(answer)

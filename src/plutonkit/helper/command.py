@@ -14,9 +14,6 @@ def change_dir_command(reference_value):
     os.chdir(path)
 
 def pip_run_command(command):
-   # DIRECTORY = os.getcwd()
-   # path = os.path.join(DIRECTORY, reference_value['details']['project_name'])
-   # os.chdir(path)
 
     subprocess.call(command)
 

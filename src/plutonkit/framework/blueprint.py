@@ -20,29 +20,37 @@ class FrameworkBluePrint:
     def __init__(self,path,reference_value) -> None:
         self.path = path
         self.reference_value = reference_value
+        self.parameter_constant = []
+
+    def get_execute_script(self):
+        pass   
+    def get_docker_script(self):
+        pass    
 
     def package_django(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO)
         pip_install_requirement(self.reference_value)
-        #change_dir_command(self.reference_value)
+       
         pip_run_command(['rm','-rf',self.reference_value['details']['project_name']])
         pip_run_command(['django-admin','startproject',self.reference_value['details']['project_name']])
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO)
         generate_filesystem(self.reference_value,self.reference_value['details']['project_name'])
-        #change_dir_command(self.reference_value)
-        #pip_run_command(['django-admin','startapp','testapp'])
+       
 
     def package_django_rest(self):
+
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK)
         pip_install_requirement(self.reference_value)
-
+         
+        pip_run_command(['rm','-rf',self.reference_value['details']['project_name']])
         pip_run_command(['django-admin','startproject',self.reference_value['details']['project_name']])
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK)
-        generate_filesystem(self.reference_value)
+        generate_filesystem(self.reference_value,self.reference_value['details']['project_name'])        
 
     def package_bottle(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_BOTTLE)
         pip_install_requirement(self.reference_value)
+        generate_filesystem(self.reference_value)
     def package_fastapi(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_FAST_API)
         pip_install_requirement(self.reference_value)

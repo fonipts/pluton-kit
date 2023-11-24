@@ -1,16 +1,18 @@
 
 from plutonkit.config import INTRODUCTION
-from plutonkit.config.system import SERVICE_TYPE
-from plutonkit.management.command import callback_execute
+from plutonkit.config.command import ACTIONS
+from plutonkit.command.action.help import Help
+
+import sys 
 
 def autoload():
 
-    DETAILS_COMMAND = {
-        "details":{},
-        "command":[]
-    }
+    TEMPLATE = "%s\n" % (INTRODUCTION)
+    print(TEMPLATE) 
+    try:
+        ACTIONS['help'] = Help()
+        ACTIONS[str(sys.argv[1])].execute() 
+    except Exception as e:
+        print("Invalid argument, please type `help` to see available command ") 
+        
 
-    TEMPLATE = "%s" % (INTRODUCTION)
-    print(TEMPLATE)
-
-    callback_execute(DETAILS_COMMAND,"What is your service type?",SERVICE_TYPE)

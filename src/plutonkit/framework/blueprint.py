@@ -108,7 +108,9 @@ class FrameworkBluePrint:
         pip_run_command(['django-admin','startproject',default_project_name(self.reference_value['details']['project_name'])])
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO_GRAPHBOX)
         generate_filesystem(self.reference_value,None,{
-            "urls":f"{default_project_name(self.reference_value['details']['project_name'])}/"
+            "modified_position":{
+                "urls":f"{default_project_name(self.reference_value['details']['project_name'])}/"
+            }
         })
 
         self.__construct_yml_exeecute("migrate","python manage.py makemigrations")

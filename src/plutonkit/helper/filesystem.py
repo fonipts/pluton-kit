@@ -42,8 +42,9 @@ def callback_template_filesystem(from_content, to_content,variable,action_file):
                 if len(base_name) >1 :
                     if base_name[1] ==".tpl":
                         raw_filename = base_name[0]
-                        if raw_filename in action_file:
-                            ref_filename = os.path.join(to_content,f"{action_file[raw_filename]}{raw_filename}.py")
+                        if 'modified_position' in action_file:
+                            if raw_filename in action_file['modified_position']:
+                                ref_filename = os.path.join(to_content,f"{action_file['modified_position'][raw_filename]}{raw_filename}.py")
                         else:
                             ref_filename = os.path.join(to_content,f"{raw_filename}.py")
                     else:
@@ -51,8 +52,15 @@ def callback_template_filesystem(from_content, to_content,variable,action_file):
 
                 with open(name, 'r', encoding="utf-8") as fi:
                     with open(ref_filename, 'w') as f_write:
-                        f_write.write(fi.read())
-                        f_write.close()
+                        file_read = fi.read()
+                        raw_filename = base_name[0]
+                        if 'modified_file_content' in action_file:
+                            if raw_filename in action_file['modified_file_content']:
+                                f_write.write(  action_file['modified_file_content'][raw_filename](file_read) )
+                                f_write.close()
+                        else:
+                            f_write.write( file_read)
+                            f_write.close()
 
             if is_dir:
                 new_path = name.replace(from_content, "").replace("/", "")

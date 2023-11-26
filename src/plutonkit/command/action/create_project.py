@@ -5,6 +5,7 @@ PROJECT_DETAILS_FILE
 from plutonkit.config.system import SERVICE_TYPE
 from plutonkit.framework.blueprint import FrameworkBluePrint
 from plutonkit.helper.filesystem import generate_project_folder_cwd,generate_default_file
+import sys
 
 class CreateProject:
     def __init__(self) -> None:
@@ -21,11 +22,11 @@ class CreateProject:
 
     def callback_execute(self,reference_value,name,step):
 
-        enum_action = ['(%s) %s'%(key+1,val['option_name']) for key,val in enumerate(step)]
-        print("\n%s\n%s "%(name,"\n".join(enum_action)))
-        answer = input('choose only at [%s]'%(len(step) == 1 and '1' or '1-'+str(len(step)) ))
-
         try:
+            enum_action = ['(%s) %s'%(key+1,val['option_name']) for key,val in enumerate(step)]
+            print("\n%s\n%s "%(name,"\n".join(enum_action)))
+            answer = input('choose only at [%s]'%(len(step) == 1 and '1' or '1-'+str(len(step)) ))
+
             int_answer = int(answer)
             available_step = step[int_answer-1]
 
@@ -40,7 +41,9 @@ class CreateProject:
         except Exception:
             print("Invalid argument please select in the available command `%s`\n"%(answer))
             self.callback_execute(reference_value,name,step)
-
+        finally:
+            print("\nYou cancel the `create_project`")
+            sys.exit()
     def project_details_execute(self,reference_value):
         project_name = input("Name of folder project?")
         reference_value['details']['project_name'] = project_name
@@ -50,8 +53,12 @@ class CreateProject:
             self.project_execute(reference_value)
         except Exception as e:
             print(e)
+        finally:
+            print("\nYou cancel the `create_project`")
+            sys.exit()
 
     def project_execute(self,reference_value):
+
         directory = os.getcwd()
 
         enum_action = [f" {val['type']}: {val['name']}" for key,val in enumerate(reference_value['command'])]

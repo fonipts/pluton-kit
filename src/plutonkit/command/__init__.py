@@ -14,3 +14,4 @@ def autoload():
         ACTIONS[str(sys.argv[1])].execute()
     except Exception:
         print("Invalid argument, please type `help` to see available command ")
+

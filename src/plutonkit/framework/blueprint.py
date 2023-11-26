@@ -2,7 +2,7 @@
 
 from yaml import  dump
 
-from plutonkit.helper.filesystem import generate_requirement,generate_filesystem
+from plutonkit.helper.filesystem import default_project_name,generate_requirement,generate_filesystem
 from plutonkit.helper.command import pip_install_requirement,pip_run_command
 from plutonkit.config.framework import SUPPORT_LIBRARY_DJANGO,\
 SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK,\
@@ -10,7 +10,6 @@ SUPPORT_LIBRARY_BOTTLE,\
 SUPPORT_LIBRARY_FAST_API,\
 SUPPORT_LIBRARY_FLASK,\
 SUPPORT_LIBRARY_GRAPHENE,\
-SUPPORT_LIBRARY_STRAWBERRY,\
 SUPPORT_LIBRARY_ARIADNE,\
 SUPPORT_LIBRARY_TARTIFLETTE,\
 SUPPORT_LIBRARY_DJANGO_GRAPHBOX,\
@@ -51,8 +50,8 @@ class FrameworkBluePrint:
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO)
         pip_install_requirement(self.reference_value)
 
-        pip_run_command(['rm','-rf',self.reference_value['details']['project_name']])
-        pip_run_command(['django-admin','startproject',self.reference_value['details']['project_name']])
+        pip_run_command(['rm','-rf',default_project_name(self.reference_value['details']['project_name'])])
+        pip_run_command(['django-admin','startproject',default_project_name(self.reference_value['details']['project_name'])])
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO)
         generate_filesystem(self.reference_value,self.reference_value['details']['project_name'])
 
@@ -61,8 +60,8 @@ class FrameworkBluePrint:
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK)
         pip_install_requirement(self.reference_value)
 
-        pip_run_command(['rm','-rf',self.reference_value['details']['project_name']])
-        pip_run_command(['django-admin','startproject',self.reference_value['details']['project_name']])
+        pip_run_command(['rm','-rf',default_project_name(self.reference_value['details']['project_name'])])
+        pip_run_command(['django-admin','startproject',default_project_name(self.reference_value['details']['project_name'])])
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK)
         generate_filesystem(self.reference_value,self.reference_value['details']['project_name'])
 
@@ -87,26 +86,34 @@ class FrameworkBluePrint:
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_GRAPHENE)
         pip_install_requirement(self.reference_value)
         generate_filesystem(self.reference_value)
-
-    def package_strawberry(self):
-        generate_requirement(self.reference_value,SUPPORT_LIBRARY_STRAWBERRY)
-        pip_install_requirement(self.reference_value)
-        generate_filesystem(self.reference_value)
+        self.__construct_yml_exeecute("start","python main.py")
 
     def package_ariadne(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_ARIADNE)
         pip_install_requirement(self.reference_value)
         generate_filesystem(self.reference_value)
+        self.__construct_yml_exeecute("start","uvicorn main:app")
 
     def package_tartiflette(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_TARTIFLETTE)
         pip_install_requirement(self.reference_value)
         generate_filesystem(self.reference_value)
+        self.__construct_yml_exeecute("start","python main.py")
 
     def package_django_graphbox(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO_GRAPHBOX)
         pip_install_requirement(self.reference_value)
-        generate_filesystem(self.reference_value)
+
+        pip_run_command(['rm','-rf',default_project_name(self.reference_value['details']['project_name'])])
+        pip_run_command(['django-admin','startproject',default_project_name(self.reference_value['details']['project_name'])])
+        generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO_GRAPHBOX)
+        generate_filesystem(self.reference_value,None,{
+            "urls":f"{default_project_name(self.reference_value['details']['project_name'])}/"
+        })
+
+        self.__construct_yml_exeecute("migrate","python manage.py makemigrations")
+        self.__construct_yml_exeecute("migrate","python manage.py migrate")
+        self.__construct_yml_exeecute("start","python manage.py runserver")
 
     def package_default_grpc(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_GRPC)
@@ -114,9 +121,11 @@ class FrameworkBluePrint:
         generate_filesystem(self.reference_value)
 
     def package_default_websocket(self):
-        generate_requirement(self.reference_value,SUPPORT_LIBRARY_WEB_SOCKET)
-        pip_install_requirement(self.reference_value)
-        generate_filesystem(self.reference_value)
+        print("This feature is in progress")
+        #generate_requirement(self.reference_value,SUPPORT_LIBRARY_WEB_SOCKET)
+        #pip_install_requirement(self.reference_value)
+        #generate_filesystem(self.reference_value)
+        #
 
     def package_default_web3(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_WEB3)

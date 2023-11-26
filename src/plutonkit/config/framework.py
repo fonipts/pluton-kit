@@ -13,7 +13,6 @@ FRAMEWORK_WEB = [
 
 FRAMEWORK_GRAPHQL = [
     format_argument("framework","package_graphene","Do you need docker","graphene",DOCKER_SETUP),
-    format_argument("framework","package_strawberry","Do you need docker","strawberry",DOCKER_SETUP),
     format_argument("framework","package_ariadne","Do you need docker","ariadne",DOCKER_SETUP),
     format_argument("framework","package_tartiflette","Do you need docker","tartiflette",DOCKER_SETUP),
     format_argument("framework","package_django_graphbox","Do you need docker","django-graphbox",[]),
@@ -64,17 +63,16 @@ SUPPORT_LIBRARY_FLASK =[
 SUPPORT_LIBRARY_GRAPHENE =[
     'graphene==3.3'
 ]
-SUPPORT_LIBRARY_STRAWBERRY =[
-    'strawberry==3.0'
-]
 SUPPORT_LIBRARY_ARIADNE =[
-    'ariadne==0.21'
+    'ariadne==0.21',
+    'uvicorn[standard]==0.24.0'
 ]
 SUPPORT_LIBRARY_TARTIFLETTE =[
-    'tartiflette==1.4.1'
+    'tartiflette-aiohttp==1.4.0'
 ]
 SUPPORT_LIBRARY_DJANGO_GRAPHBOX =[
-    'django-graphbox==1.2.9'
+    'django-graphbox==1.2.9',
+    'graphene-file-upload==1.3.0'
 ]
 SUPPORT_LIBRARY_GRPC =[
     'grpcio-tools==1.59.2',

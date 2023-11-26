@@ -20,13 +20,31 @@ EXCLUDE_FROM_PACKAGES = [];
 setup(
     name='plutonkit',
     version=version,
-    url='https://codehyouka.xyz/',
+    url='https://plutonkit.codehyouka.xyz/',
     author='Codehyouka',
     author_email='plants.coordinators@gmail.com',
     description=('Start kit for python, for building application'),
     license='MIT',
     packages=find_packages( "src"),
     package_dir={"": "src"},
+    package_data={'': ['*.txt'],
+                  'plutonkit.template':[
+                      'ariadne/*',
+                      'bottle/*',
+                      'default_grpc/*',
+                      'default_web3/*',
+                      'default_websocket/*',
+                      'django/*',
+                      'django/testapp/*',
+                      'django_graphbox/*',
+                      'django_graphbox/myapp*',
+                      'django_graphbox/myproject/*',
+                      'django_rest/*',
+                      'fastapi/*',
+                      'flask/*',
+                      'graphene/*',
+                      'tartiflette/*'
+                  ]},
     include_package_data=True,
     
     entry_points={'console_scripts': [

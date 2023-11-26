@@ -84,5 +84,5 @@ SUPPORT_LIBRARY_WEB_SOCKET =[
 ]
 
 SUPPORT_LIBRARY_WEB3 = [
-
+    "web3==6.11.3"
 ]

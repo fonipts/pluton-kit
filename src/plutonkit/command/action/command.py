@@ -1,6 +1,7 @@
 """Module providing a function printing python version."""
 
 import os
+import re
 import sys
 from yaml import load
 try:
@@ -38,7 +39,8 @@ class Command:
                             try :
                                 for val in content_script[command_value]['command']:
                                     os.chdir(directory)
-                                    pip_run_command(val.split(" "))
+                                    val_clean = re.sub(r'\s{2,}', ' ', val)
+                                    pip_run_command(val_clean.split(" "))
                             except Exception as e2:
                                 print(e2)
                         except Exception:

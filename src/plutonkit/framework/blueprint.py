@@ -120,6 +120,8 @@ class FrameworkBluePrint:
         pip_install_requirement(self.reference_value)
         generate_filesystem(self.reference_value)
 
+        self.__construct_yml_exeecute("proto_generate","python -m grpc_tools.protoc -I./protobufs --python_out=./server/proto   --grpc_python_out=./server/proto ./protobufs/test.proto")
+
     def package_default_websocket(self):
         print("This feature is in progress")
         #generate_requirement(self.reference_value,SUPPORT_LIBRARY_WEB_SOCKET)

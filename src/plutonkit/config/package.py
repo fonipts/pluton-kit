@@ -1,3 +1,5 @@
+"""Module providing a function printing python version."""
+
 from plutonkit.helper.format import format_argument
 
 DATABASE_TYPE = [

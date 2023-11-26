@@ -1,9 +1,9 @@
 
-from plutonkit.config import INTRODUCTION
+"""Module providing a function printing python version."""
+import sys
 from plutonkit.config.command import ACTIONS
 from plutonkit.command.action.help import Help
-
-import sys
+from plutonkit.config import INTRODUCTION
 
 def autoload():
 
@@ -12,6 +12,5 @@ def autoload():
     try:
         ACTIONS['help'] = Help()
         ACTIONS[str(sys.argv[1])].execute()
-    except Exception as e:
+    except Exception:
         print("Invalid argument, please type `help` to see available command ")
-

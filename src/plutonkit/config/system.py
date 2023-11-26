@@ -1,3 +1,5 @@
+"""Module providing a function printing python version."""
+
 from plutonkit.helper.format import format_argument
 from plutonkit.config.framework import DEFAULT_GRPC,FRAMEWORK_WEB,DEFAULT_WEB_SOCKET,FRAMEWORK_GRAPHQL,DEFAULT_WEB3
 
@@ -9,4 +11,3 @@ SERVICE_TYPE = [
     format_argument("service_type","web3","Your Web3/blockain","web3",DEFAULT_WEB3),
 
 ]
-

@@ -1,3 +1,5 @@
+"""Module providing a function printing python version."""
+
 from plutonkit.config.command import ACTIONS
 
 class Help:

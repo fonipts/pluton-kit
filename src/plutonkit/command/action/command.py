@@ -1,10 +1,12 @@
+"""Module providing a function printing python version."""
+
 import os
+import sys
 from yaml import load
 try:
     from yaml import CLoader as Loader
 except ImportError:
     from yaml import Loader
-import sys
 
 from plutonkit.helper.command import pip_run_command
 from plutonkit.config import PROJECT_COMMAND_FILE
@@ -16,12 +18,12 @@ class Command:
     def comment(self):
         return "Executing command using plutonkit"
     def execute(self):
-        DIRECTORY = os.getcwd()
-        path = os.path.join(DIRECTORY, PROJECT_COMMAND_FILE)
+        directory = os.getcwd()
+        path = os.path.join(directory, PROJECT_COMMAND_FILE)
         if os.path.exists(path):
             is_file = os.path.isfile(path)
             if is_file:
-                with open(path , 'r') as fi:
+                with open(path , 'r', encoding="utf-8") as fi:
                     try:
                         read = fi.read()
                         content = load(str(read), Loader=Loader)
@@ -35,14 +37,13 @@ class Command:
 
                             try :
                                 for val in content_script[command_value]['command']:
-                                    os.chdir(DIRECTORY)
+                                    os.chdir(directory)
                                     pip_run_command(val.split(" "))
                             except Exception as e2:
                                 print(e2)
-                        except Exception as e1:
+                        except Exception:
                             print("Please specify your command like `plutonkit command start`")
-                    except Exception as e:
-                        print("Invalid yaml file content",e)
+                    except Exception:
+                        print("Invalid yaml file content")
         else:
             print("This command file `%s` is missing in the directory project"%(PROJECT_COMMAND_FILE))
-

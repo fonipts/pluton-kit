@@ -1,6 +1,8 @@
+"""Module providing a function printing python version."""
+
 __version__ = "1.0.0a0"
 
-def setup(set_prefix=True):
+def setup():
     """
     Configure the settings (this happens as a side effect of accessing the
     first setting), configure logging and populate the app registry.

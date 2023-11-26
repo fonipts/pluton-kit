@@ -1,8 +1,9 @@
+"""Module providing a function printing python version."""
+
 from yaml import  dump
 
 from plutonkit.helper.filesystem import generate_requirement,generate_filesystem
 from plutonkit.helper.command import pip_install_requirement,pip_run_command
-
 from plutonkit.config.framework import SUPPORT_LIBRARY_DJANGO,\
 SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK,\
 SUPPORT_LIBRARY_BOTTLE,\
@@ -37,10 +38,12 @@ class FrameworkBluePrint:
             "name":self.reference_value['details']['project_name'],
             "package":self.framework_name.replace("package_","")
         })
+
     def get_execute_script(self):
         return dump({
             "script":self.parameter_execute_variable
         })
+
     def get_docker_script(self):
         return ""
 
@@ -67,40 +70,49 @@ class FrameworkBluePrint:
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_BOTTLE)
         pip_install_requirement(self.reference_value)
         generate_filesystem(self.reference_value)
+
     def package_fastapi(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_FAST_API)
         pip_install_requirement(self.reference_value)
         generate_filesystem(self.reference_value)
         self.__construct_yml_exeecute("start","uvicorn main:app")
+
     def package_flask(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_FLASK)
         pip_install_requirement(self.reference_value)
         generate_filesystem(self.reference_value)
         self.__construct_yml_exeecute("start","flask --app main run")
+
     def package_graphene(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_GRAPHENE)
         pip_install_requirement(self.reference_value)
         generate_filesystem(self.reference_value)
+
     def package_strawberry(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_STRAWBERRY)
         pip_install_requirement(self.reference_value)
         generate_filesystem(self.reference_value)
+
     def package_ariadne(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_ARIADNE)
         pip_install_requirement(self.reference_value)
         generate_filesystem(self.reference_value)
+
     def package_tartiflette(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_TARTIFLETTE)
         pip_install_requirement(self.reference_value)
         generate_filesystem(self.reference_value)
+
     def package_django_graphbox(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO_GRAPHBOX)
         pip_install_requirement(self.reference_value)
         generate_filesystem(self.reference_value)
+
     def package_default_grpc(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_GRPC)
         pip_install_requirement(self.reference_value)
         generate_filesystem(self.reference_value)
+
     def package_default_websocket(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_WEB_SOCKET)
         pip_install_requirement(self.reference_value)
@@ -110,4 +122,3 @@ class FrameworkBluePrint:
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_WEB3)
         pip_install_requirement(self.reference_value)
         generate_filesystem(self.reference_value)
-

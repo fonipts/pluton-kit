@@ -1,7 +1,7 @@
-name: Hello world
+name: Pluton kit
 scans:
   - project:
-     name: ruby
+     name: pluton_python
      type: codescan
      lang: python
      is_modify_file: true

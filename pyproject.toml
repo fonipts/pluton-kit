@@ -39,6 +39,7 @@ classifiers = [
     "Topic :: Internet :: WWW/HTTP",
 ]
 dependencies = [
+    "PyYAML>=6.0.1",
 ]
 dynamic = ["version"]
 

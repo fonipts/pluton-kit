@@ -32,7 +32,9 @@ setup(
     entry_points={'console_scripts': [
         'plutonkit = plutonkit.command:autoload',
     ]},
-    install_requires=[],
+    install_requires=[
+        "PyYAML>=6.0.1"
+    ],
     platforms='any',
     extras_require={
             "pytest": ["pytest"],

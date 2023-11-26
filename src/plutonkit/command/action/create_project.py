@@ -1,8 +1,13 @@
+from plutonkit.config import PROJECT_COMMAND_FILE,\
+PROJECT_DETAILS_FILE,\
+DOCKER_FILE,\
+DOCKER_COMPOSE_FILE
 from plutonkit.config.system import SERVICE_TYPE
 import sys
 import os
 from plutonkit.helper.filesystem import generate_project_folder_cwd
 from plutonkit.framework.blueprint import FrameworkBluePrint
+from plutonkit.helper.filesystem import generate_default_file
 
 class CreateProject:
     def __init__(self) -> None:
@@ -16,8 +21,6 @@ class CreateProject:
             "command":[]
         }
         self.callback_execute(DETAILS_COMMAND,"What is your service type?",SERVICE_TYPE)
-
-
 
     def callback_execute(self,reference_value,name,step):
 
@@ -64,8 +67,9 @@ class CreateProject:
             if os.path.exists(DIR_PATH):
                 raise Exception("The folder name `%s` does exist" %(reference_value['details']['project_name']))
             generate_project_folder_cwd(reference_value )
-            framework = FrameworkBluePrint(DIR_PATH, reference_value)
+            framework = FrameworkBluePrint(DIR_PATH, reference_value,framework_value)
             getattr(framework, framework_value)()
+            generate_default_file(reference_value,PROJECT_COMMAND_FILE,framework.get_execute_script())
+            generate_default_file(reference_value,PROJECT_DETAILS_FILE,framework.get_project_script())
         else:
             print("Your confirmation say `No`")
-            

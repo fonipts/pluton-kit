@@ -1,8 +1,8 @@
 from plutonkit.command.action.create_project import CreateProject
-from plutonkit.command.action.execute import Execute
+from plutonkit.command.action.command import Command
 
 ACTIONS = {
     "create_project":CreateProject(),
-    "execute":Execute(),
-    #"help":Help()
+    "command":Command(),
+
 }

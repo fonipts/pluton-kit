@@ -21,6 +21,10 @@ DEFAULT_GRPC = [
     format_argument("framework","package_default_grpc","Do you need docker","default",DOCKER_SETUP),
 ]
 
+DEFAULT_WEB3 = [
+    format_argument("framework","package_default_web3","Do you need docker","default",DOCKER_SETUP),
+]
+
 DEFAULT_WEB_SOCKET = [
     format_argument("framework","package_default_websocket","Do you need docker","default",DOCKER_SETUP),
 ]
@@ -76,5 +80,9 @@ SUPPORT_LIBRARY_GRPC =[
 
 ]
 SUPPORT_LIBRARY_WEB_SOCKET =[
-     
+
+]
+
+SUPPORT_LIBRARY_WEB3 = [
+
 ]

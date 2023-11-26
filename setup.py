@@ -37,7 +37,7 @@ setup(
                       'django/*',
                       'django/testapp/*',
                       'django_graphbox/*',
-                      'django_graphbox/myapp*',
+                      'django_graphbox/myapp/*',
                       'django_graphbox/myproject/*',
                       'django_rest/*',
                       'fastapi/*',

@@ -41,9 +41,7 @@ class CreateProject:
         except Exception:
             print("Invalid argument please select in the available command `%s`\n"%(answer))
             self.callback_execute(reference_value,name,step)
-        finally:
-            print("\nYou cancel the `create_project`")
-            sys.exit()
+
     def project_details_execute(self,reference_value):
         project_name = input("Name of folder project?")
         reference_value['details']['project_name'] = project_name
@@ -53,9 +51,6 @@ class CreateProject:
             self.project_execute(reference_value)
         except Exception as e:
             print(e)
-        finally:
-            print("\nYou cancel the `create_project`")
-            sys.exit()
 
     def project_execute(self,reference_value):
 

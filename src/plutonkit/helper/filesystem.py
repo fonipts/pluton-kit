@@ -29,6 +29,27 @@ def generate_filesystem(reference_value,sub_folder=None,action_file={}):
     else:
         callback_template_filesystem(dir_path, os.path.join(directory, default_project_name(reference_value['details']['project_name']),default_project_name(sub_folder)),{},action_file)
 
+def modified_project_filesystem(reference_value,action_file={}):
+    directory = os.getcwd()
+    default_dir = os.path.join(directory,default_project_name(reference_value['details']['project_name']))
+    callback_modified_project_filesystem(default_dir,default_dir,action_file)
+
+def callback_modified_project_filesystem(to_dir,copy_main_dir,action_file={}):
+    if os.path.exists(to_dir):
+        for name in glob.glob(os.path.join(to_dir,"*")):
+            is_file = os.path.isfile(name)
+            is_dir = os.path.isdir(name)
+            if is_file:
+                base_name = os.path.splitext(os.path.basename(name))
+                ref_filename = name
+                with open(name, 'r', encoding="utf-8") as fi:
+                    file_read = fi.read()
+                    print(file_read)
+            if is_dir:
+                new_path = name.replace(to_dir, "").replace("/", "")
+                new_dir = os.path.join(to_dir,new_path)
+                callback_modified_project_filesystem(new_dir,action_file)
+
 def callback_template_filesystem(from_content, to_content,variable,action_file):
 
     if os.path.exists(from_content):

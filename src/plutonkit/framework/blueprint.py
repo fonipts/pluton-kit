@@ -2,7 +2,10 @@
 
 from yaml import  dump
 
-from plutonkit.helper.filesystem import default_project_name,generate_requirement,generate_filesystem
+from plutonkit.framework.package.django_script import DjangoScript
+
+from plutonkit.core.blueprint_architecture import BlueprintArchitecture
+from plutonkit.helper.filesystem import generate_requirement
 from plutonkit.helper.command import pip_install_requirement,pip_run_command
 from plutonkit.config.framework import SUPPORT_LIBRARY_DJANGO,\
 SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK,\
@@ -17,10 +20,10 @@ SUPPORT_LIBRARY_GRPC,\
 SUPPORT_LIBRARY_WEB_SOCKET,\
 SUPPORT_LIBRARY_WEB3
 
-class FrameworkBluePrint:
+class FrameworkBluePrint(BlueprintArchitecture):
     def __init__(self,path,reference_value,framework_name) -> None:
+        super().__init__(reference_value)
         self.path = path
-        self.reference_value = reference_value
         self.parameter_constant = []
         self.parameter_execute_variable = {}
         self.framework_name=framework_name
@@ -34,7 +37,7 @@ class FrameworkBluePrint:
 
     def get_project_script(self):
         return  dump({
-            "name":self.reference_value['details']['project_name'],
+            "name":self.getProjectName(),
             "package":self.framework_name.replace("package_","")
         })
 
@@ -50,66 +53,125 @@ class FrameworkBluePrint:
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO)
         pip_install_requirement(self.reference_value)
 
-        pip_run_command(['rm','-rf',default_project_name(self.reference_value['details']['project_name'])])
-        pip_run_command(['django-admin','startproject',default_project_name(self.reference_value['details']['project_name'])])
+        pip_run_command(['rm','-rf',self.getProjectName()])
+        pip_run_command(['django-admin','startproject',self.getProjectName()])
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO)
-        generate_filesystem(self.reference_value,self.reference_value['details']['project_name'])
+        self.generate_filesystem(self.getDefaultProjectName())
+
+        django = DjangoScript(argSetting = {
+            "value":[self.getProjectName(".apptest")],
+            "import":[]
+        },
+        argUrl = {
+            "value":["path('health/', health)"],
+            "import":["from "+self.getProjectName(".apptest.views import health")]
+        })
+        self.modified_project_filesystem({
+            "modified_file_content":{
+                "settings":django.getSettings,
+                "urls":django.getUrl
+            }
+        })
+        self.__construct_yml_exeecute("migrate","python manage.py makemigrations")
+        self.__construct_yml_exeecute("migrate","python manage.py migrate")
+        self.__construct_yml_exeecute("start","python manage.py runserver")
 
     def package_django_rest(self):
 
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK)
         pip_install_requirement(self.reference_value)
 
-        pip_run_command(['rm','-rf',default_project_name(self.reference_value['details']['project_name'])])
-        pip_run_command(['django-admin','startproject',default_project_name(self.reference_value['details']['project_name'])])
+        pip_run_command(['rm','-rf',self.getProjectName()])
+        pip_run_command(['django-admin','startproject',self.getProjectName()])
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK)
-        generate_filesystem(self.reference_value,self.reference_value['details']['project_name'])
+        self.generate_filesystem(self.getDefaultProjectName())
+
+        django = DjangoScript(argSetting = {
+            "value":[self.getProjectName(".apptest")],
+            "import":[],
+            "append":[]#"REST_FRAMEWORK = []"]
+        },
+        argUrl = {
+            "value":["path('', include('"+self.getProjectName(".apptest.url")+"'))"],
+            "import":["from django.urls import include"]
+        })
+        self.modified_project_filesystem({
+            "modified_file_content":{
+                "settings":django.getSettings,
+                "urls":django.getUrl
+            }
+        })
+        self.__construct_yml_exeecute("migrate","python manage.py makemigrations")
+        self.__construct_yml_exeecute("migrate","python manage.py migrate")
+        self.__construct_yml_exeecute("start","python manage.py runserver")
 
     def package_bottle(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_BOTTLE)
         pip_install_requirement(self.reference_value)
-        generate_filesystem(self.reference_value)
+        self.generate_filesystem()
 
     def package_fastapi(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_FAST_API)
         pip_install_requirement(self.reference_value)
-        generate_filesystem(self.reference_value)
+        self.generate_filesystem()
         self.__construct_yml_exeecute("start","uvicorn main:app")
 
     def package_flask(self):
-        generate_requirement(self.reference_value,SUPPORT_LIBRARY_FLASK)
+
+        generate_requirement(self.reference_value,SUPPORT_LIBRARY_FLASK+['Flask-SQLAlchemy==3.1.1'])
+        print(self.reference_value)
         pip_install_requirement(self.reference_value)
-        generate_filesystem(self.reference_value)
+        self.generate_filesystem()
         self.__construct_yml_exeecute("start","flask --app main run")
 
     def package_graphene(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_GRAPHENE)
         pip_install_requirement(self.reference_value)
-        generate_filesystem(self.reference_value)
+        self.generate_filesystem()
         self.__construct_yml_exeecute("start","python main.py")
 
     def package_ariadne(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_ARIADNE)
         pip_install_requirement(self.reference_value)
-        generate_filesystem(self.reference_value)
+        self.generate_filesystem()
         self.__construct_yml_exeecute("start","uvicorn main:app")
 
     def package_tartiflette(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_TARTIFLETTE)
         pip_install_requirement(self.reference_value)
-        generate_filesystem(self.reference_value)
+        self.generate_filesystem()
         self.__construct_yml_exeecute("start","python main.py")
 
     def package_django_graphbox(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO_GRAPHBOX)
         pip_install_requirement(self.reference_value)
 
-        pip_run_command(['rm','-rf',default_project_name(self.reference_value['details']['project_name'])])
-        pip_run_command(['django-admin','startproject',default_project_name(self.reference_value['details']['project_name'])])
+        pip_run_command(['rm','-rf',self.getProjectName()])
+        pip_run_command(['django-admin','startproject',self.getProjectName()])
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO_GRAPHBOX)
-        generate_filesystem(self.reference_value,None,{
+        self.generate_filesystem(None,{
             "modified_position":{
-                "urls":f"{default_project_name(self.reference_value['details']['project_name'])}/"
+                "urls":f"{self.getProjectName()}/"
+            }
+        })
+        django = DjangoScript(argSetting = {
+            "value":["graphene_django","graph_schema.myapp","graph_schema.myproject"],
+            "import":[]
+        },
+        argUrl = {
+            "value":[
+                "path('graphql/', csrf_exempt(FileUploadGraphQLView.as_view(graphiql=True, schema=schema)))"
+            ],
+            "import":[
+                "from graphene_file_upload.django import FileUploadGraphQLView",
+                "from django.views.decorators.csrf import csrf_exempt",
+                "from graph_schema.myproject.schema import schema",
+            ]
+        })
+        self.modified_project_filesystem({
+            "modified_file_content":{
+                "settings":django.getSettings,
+                "urls":django.getUrl
             }
         })
 
@@ -120,7 +182,7 @@ class FrameworkBluePrint:
     def package_default_grpc(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_GRPC)
         pip_install_requirement(self.reference_value)
-        generate_filesystem(self.reference_value)
+        self.generate_filesystem()
 
         self.__construct_yml_exeecute("proto_generate","python -m grpc_tools.protoc -I./protobufs --python_out=./server/proto   --grpc_python_out=./server/proto ./protobufs/test.proto")
 
@@ -134,4 +196,4 @@ class FrameworkBluePrint:
     def package_default_web3(self):
         generate_requirement(self.reference_value,SUPPORT_LIBRARY_WEB3)
         pip_install_requirement(self.reference_value)
-        generate_filesystem(self.reference_value)
+        self.generate_filesystem()

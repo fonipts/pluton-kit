@@ -1,6 +1,7 @@
 from flask import Flask
 
 app = Flask(__name__)
+({SQL_ALCH_DB})
 
 @app.route("/")
 def hello_world():

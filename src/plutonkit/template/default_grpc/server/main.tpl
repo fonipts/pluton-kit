@@ -14,6 +14,9 @@ class TestServicer(test_pb2_grpc.TestServicer):
         pass
     def health(self,request, context):
         return test_pb2.HealthResponse(title="title")
+
+({SQL_ALCH_DB})
+        
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     test_pb2_grpc.add_TestServicer_to_server(

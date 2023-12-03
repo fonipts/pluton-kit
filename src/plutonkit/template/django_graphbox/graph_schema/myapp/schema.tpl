@@ -1,5 +1,5 @@
 from django_graphbox.builder import SchemaBuilder
-from myapp.models import MyModel
+from graph_schema.myapp.models import MyModel
 
 builder = SchemaBuilder()
 builder.add_model(MyModel)

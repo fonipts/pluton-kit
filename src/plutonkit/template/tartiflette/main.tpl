@@ -12,7 +12,7 @@ sdl = """
         hello(name: String): String
     }
 """
-
+({SQL_ALCH_DB})
 web.run_app(
     register_graphql_handlers(
         web.Application(),

@@ -1,6 +1,6 @@
 """Module providing a function printing python version."""
 
-from plutonkit.helper.format import format_argument
+from plutonkit.management.format import format_argument
 
 DATABASE_TYPE = [
     format_argument("db_type","db_postgresql","What is postgresql","postgresql",[]),

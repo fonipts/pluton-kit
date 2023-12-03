@@ -1,5 +1,5 @@
 import graphene
-from myapp.schema import query_class, mutation_class
+from graph_schema.myapp.schema import query_class, mutation_class
 
 class Query(query_class, graphene.ObjectType):
     pass

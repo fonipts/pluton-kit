@@ -3,7 +3,7 @@ from typing import Union
 from fastapi import FastAPI
 
 app = FastAPI()
-
+({SQL_ALCH_DB})
 
 @app.get("/")
 def read_root():

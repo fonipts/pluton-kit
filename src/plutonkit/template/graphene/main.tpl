@@ -6,6 +6,7 @@ class Query(graphene.ObjectType):
   def resolve_hello(self, info, name):
     return 'Hello ' + name
 
+({SQL_ALCH_DB})
 schema = graphene.Schema(query=Query)
 result = schema.execute('{ hello }')
 print(result.data['hello']) # "Hello World"

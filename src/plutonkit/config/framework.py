@@ -1,6 +1,6 @@
 """Module providing a function printing python version."""
 
-from plutonkit.helper.format import format_argument
+from plutonkit.management.format import format_argument
 from plutonkit.config.package import DOCKER_SETUP,DOCKER_SETUP_NO_DB
 
 FRAMEWORK_WEB = [

@@ -1,11 +1,11 @@
 """Module providing a function printing python version."""
 
 from plutonkit.management.format import format_argument
-from plutonkit.config.package import DOCKER_SETUP,DOCKER_SETUP_NO_DB
+from plutonkit.config.package import DOCKER_SETUP,DOCKER_SETUP_DB_TYPE
 
 FRAMEWORK_WEB = [
-    format_argument("framework","package_django","Do you need docker","django",DOCKER_SETUP_NO_DB),
-    format_argument("framework","package_django_rest","Do you need docker","django rest framework",DOCKER_SETUP_NO_DB),
+    format_argument("framework","package_django","Do you need docker","django",DOCKER_SETUP_DB_TYPE),
+    format_argument("framework","package_django_rest","Do you need docker","django rest framework",DOCKER_SETUP_DB_TYPE),
     format_argument("framework","package_bottle","Do you need docker","bottle",DOCKER_SETUP),
     format_argument("framework","package_fastapi","Do you need docker","fastapi",DOCKER_SETUP),
     format_argument("framework","package_flask","Do you need docker","flask",DOCKER_SETUP),
@@ -85,4 +85,20 @@ SUPPORT_LIBRARY_WEB_SOCKET =[
 
 SUPPORT_LIBRARY_WEB3 = [
     "web3==6.11.3"
+]
+
+SUPPORT_LIBRARY_FLASK_SQL_ALCHEMY = [
+    "Flask-SQLAlchemy==3.1.1"
+]
+
+SUPPORT_LIBRARY_SQL_ALCHEMY = [
+    "SQLAlchemy==2.0.23"
+]
+
+SUPPORT_LIBRARY_SQL_POSTGRE = [
+    "psycopg[binary,pool]==3.1.14"
+]
+
+SUPPORT_LIBRARY_SQL_MYSQL = [
+    "PyMySQL==1.1.0"
 ]

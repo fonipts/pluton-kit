@@ -5,4 +5,5 @@ INTRODUCTION = "Welcome to pluton-kit, this is your application builder in pytho
 
 PROJECT_COMMAND_FILE = 'command.yaml'
 PROJECT_DETAILS_FILE = 'project.yaml'
+PROJECT_ENV_FILE = '.env'
 REQUIREMENT = 'requirements.txt'

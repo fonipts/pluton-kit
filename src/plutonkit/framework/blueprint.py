@@ -5,7 +5,6 @@ from yaml import  dump
 from plutonkit.framework.package.django_script import DjangoScript
 
 from plutonkit.core.blueprint_architecture import BlueprintArchitecture
-from plutonkit.helper.filesystem import generate_requirement
 from plutonkit.helper.command import pip_install_requirement,pip_run_command
 from plutonkit.config.framework import SUPPORT_LIBRARY_DJANGO,\
 SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK,\
@@ -48,14 +47,22 @@ class FrameworkBluePrint(BlueprintArchitecture):
 
     def get_docker_script(self):
         return ""
+    def get_env_script(self):
+        return '''
+DB_CONNECTION=
+DB_NAME=
+DB_USER=
+DB_PASSWORD=
+
+'''
 
     def package_django(self):
-        generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO)
+        self.generate_requirement(SUPPORT_LIBRARY_DJANGO)
         pip_install_requirement(self.reference_value)
 
         pip_run_command(['rm','-rf',self.getProjectName()])
         pip_run_command(['django-admin','startproject',self.getProjectName()])
-        generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO)
+        self.generate_requirement(SUPPORT_LIBRARY_DJANGO)
         self.generate_filesystem(self.getDefaultProjectName())
 
         django = DjangoScript(argSetting = {
@@ -78,12 +85,12 @@ class FrameworkBluePrint(BlueprintArchitecture):
 
     def package_django_rest(self):
 
-        generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK)
+        self.generate_requirement(SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK)
         pip_install_requirement(self.reference_value)
 
         pip_run_command(['rm','-rf',self.getProjectName()])
         pip_run_command(['django-admin','startproject',self.getProjectName()])
-        generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK)
+        self.generate_requirement(SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK)
         self.generate_filesystem(self.getDefaultProjectName())
 
         django = DjangoScript(argSetting = {
@@ -106,49 +113,49 @@ class FrameworkBluePrint(BlueprintArchitecture):
         self.__construct_yml_exeecute("start","python manage.py runserver")
 
     def package_bottle(self):
-        generate_requirement(self.reference_value,SUPPORT_LIBRARY_BOTTLE)
+        self.generate_requirement(SUPPORT_LIBRARY_BOTTLE)
         pip_install_requirement(self.reference_value)
         self.generate_filesystem()
 
     def package_fastapi(self):
-        generate_requirement(self.reference_value,SUPPORT_LIBRARY_FAST_API)
+        self.generate_requirement(SUPPORT_LIBRARY_FAST_API)
         pip_install_requirement(self.reference_value)
         self.generate_filesystem()
         self.__construct_yml_exeecute("start","uvicorn main:app")
 
     def package_flask(self):
 
-        generate_requirement(self.reference_value,SUPPORT_LIBRARY_FLASK+['Flask-SQLAlchemy==3.1.1'])
-        print(self.reference_value)
+        self.generate_requirement(SUPPORT_LIBRARY_FLASK)
+
         pip_install_requirement(self.reference_value)
         self.generate_filesystem()
         self.__construct_yml_exeecute("start","flask --app main run")
 
     def package_graphene(self):
-        generate_requirement(self.reference_value,SUPPORT_LIBRARY_GRAPHENE)
+        self.generate_requirement(SUPPORT_LIBRARY_GRAPHENE)
         pip_install_requirement(self.reference_value)
         self.generate_filesystem()
         self.__construct_yml_exeecute("start","python main.py")
 
     def package_ariadne(self):
-        generate_requirement(self.reference_value,SUPPORT_LIBRARY_ARIADNE)
+        self.generate_requirement(SUPPORT_LIBRARY_ARIADNE)
         pip_install_requirement(self.reference_value)
         self.generate_filesystem()
         self.__construct_yml_exeecute("start","uvicorn main:app")
 
     def package_tartiflette(self):
-        generate_requirement(self.reference_value,SUPPORT_LIBRARY_TARTIFLETTE)
+        self.generate_requirement(SUPPORT_LIBRARY_TARTIFLETTE)
         pip_install_requirement(self.reference_value)
         self.generate_filesystem()
         self.__construct_yml_exeecute("start","python main.py")
 
     def package_django_graphbox(self):
-        generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO_GRAPHBOX)
+        self.generate_requirement(SUPPORT_LIBRARY_DJANGO_GRAPHBOX)
         pip_install_requirement(self.reference_value)
 
         pip_run_command(['rm','-rf',self.getProjectName()])
         pip_run_command(['django-admin','startproject',self.getProjectName()])
-        generate_requirement(self.reference_value,SUPPORT_LIBRARY_DJANGO_GRAPHBOX)
+        self.generate_requirement(SUPPORT_LIBRARY_DJANGO_GRAPHBOX)
         self.generate_filesystem(None,{
             "modified_position":{
                 "urls":f"{self.getProjectName()}/"
@@ -180,7 +187,7 @@ class FrameworkBluePrint(BlueprintArchitecture):
         self.__construct_yml_exeecute("start","python manage.py runserver")
 
     def package_default_grpc(self):
-        generate_requirement(self.reference_value,SUPPORT_LIBRARY_GRPC)
+        self.generate_requirement(SUPPORT_LIBRARY_GRPC)
         pip_install_requirement(self.reference_value)
         self.generate_filesystem()
 
@@ -194,6 +201,6 @@ class FrameworkBluePrint(BlueprintArchitecture):
         #
 
     def package_default_web3(self):
-        generate_requirement(self.reference_value,SUPPORT_LIBRARY_WEB3)
+        self.generate_requirement(SUPPORT_LIBRARY_WEB3)
         pip_install_requirement(self.reference_value)
         self.generate_filesystem()

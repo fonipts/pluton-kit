@@ -1,7 +1,8 @@
 from flask import Flask
+({SQL_ALCH_IMPORT})
 
 app = Flask(__name__)
-({SQL_ALCH_DB})
+({SQL_ALCH_DB_CONTENT})
 
 @app.route("/")
 def hello_world():

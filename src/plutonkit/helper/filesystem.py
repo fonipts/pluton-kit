@@ -88,10 +88,7 @@ def callback_modified_project_filesystem(to_dir,copy_main_dir,action_file={}):
                     base_name = os.path.splitext(os.path.basename(name))
                     raw_filename = base_name[0]
                     template = Template(fi.read(),name)
-                    #template.setVariable(variable)
                     file_read = template.getContent()
-                    #print(action_file,raw_filename,":::action_file")
-                    #if 'modified_file_content' in action_file:
                     if raw_filename in action_file.get('modified_file_content',{}):
 
                         modified_content = action_file['modified_file_content'][raw_filename](file_read)
@@ -100,17 +97,13 @@ def callback_modified_project_filesystem(to_dir,copy_main_dir,action_file={}):
                             f_write.close()
                     else:
                         pass
-                            #f_write.write( file_read)
-                            #f_write.close()
-                    #file_read = fi.read()
-                    #print(file_read)
             if is_dir:
                 new_path = name.replace(to_dir, "").replace("/", "")
                 new_dir = os.path.join(to_dir,new_path)
                 callback_modified_project_filesystem(new_dir,copy_main_dir,action_file)
 
-def generate_requirement(reference_value,library):
+def generate_requirement(reference_value,library=[]):
     directory = os.getcwd()
     with open(os.path.join(directory, default_project_name(reference_value['details']['project_name']),REQUIREMENT), 'w', encoding="utf-8") as fw:
-        fw.write('\n'.join(STANDARD_LIBRARY+library))
+        fw.write('\n'.join(STANDARD_LIBRARY+library+[""]))
         fw.close()

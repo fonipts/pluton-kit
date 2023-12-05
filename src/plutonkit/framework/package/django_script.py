@@ -4,6 +4,7 @@ class DjangoScript:
     def __init__(self,argSetting={},argUrl={}) -> None:
         self.argSetting=argSetting
         self.argUrl=argUrl
+
     def getSettings(self,content):
 
         arg_import = self.argSetting.get("import",[])
@@ -21,6 +22,7 @@ class DjangoScript:
         content  = content.replace(get_replace_install,content_replace)
         content =content+"\n".join([x for x in arg_append])+"\n"
         return content
+
     def getUrl(self,content):
         arg_import = self.argUrl.get("import",[])
         arg_url = self.argUrl.get("value",[])

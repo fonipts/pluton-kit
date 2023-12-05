@@ -1,11 +1,12 @@
 """Module providing a function printing python version."""
 import os
 from plutonkit.config import PROJECT_COMMAND_FILE,\
-PROJECT_DETAILS_FILE
+PROJECT_DETAILS_FILE,\
+PROJECT_ENV_FILE
 from plutonkit.config.system import SERVICE_TYPE
 from plutonkit.framework.blueprint import FrameworkBluePrint
 from plutonkit.helper.filesystem import generate_project_folder_cwd,generate_default_file
-import sys
+from plutonkit.helper.config import get_config
 
 class CreateProject:
     def __init__(self) -> None:
@@ -57,7 +58,8 @@ class CreateProject:
         directory = os.getcwd()
 
         enum_action = [f" {val['type']}: {val['name']}" for key,val in enumerate(reference_value['command'])]
-        framework_value = [val['name'] for key,val in enumerate(reference_value['command']) if val['type'] =='framework' ][0]
+        command_value  = get_config(reference_value)
+        framework_value = command_value['framework']
 
         folder_name = 'Project name: %s'%(reference_value['details']['project_name'])
         answer = input("%s\n%s\nDo you want to continue?(y/n) > "%("\n".join(enum_action),folder_name))
@@ -70,5 +72,11 @@ class CreateProject:
             getattr(framework, framework_value)()
             generate_default_file(reference_value,PROJECT_COMMAND_FILE,framework.get_execute_script())
             generate_default_file(reference_value,PROJECT_DETAILS_FILE,framework.get_project_script())
+            generate_default_file(reference_value,self.__getEnvFileName(framework_value),framework.get_env_script())
         else:
             print("Your confirmation say `No`")
+
+    def __getEnvFileName(self,framework_value):
+        if framework_value =="package_default_grpc":
+            return "server/%s"%(PROJECT_ENV_FILE)
+        return PROJECT_ENV_FILE

@@ -6,8 +6,10 @@ import test_pb2
 import logging
 import grpc
 from concurrent import futures
+({SQL_ALCH_IMPORT})
 
 
+({SQL_ALCH_DB_CONTENT})
 
 class TestServicer(test_pb2_grpc.TestServicer):
     def __init__(self):
@@ -15,7 +17,7 @@ class TestServicer(test_pb2_grpc.TestServicer):
     def health(self,request, context):
         return test_pb2.HealthResponse(title="title")
 
-({SQL_ALCH_DB})
+
         
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

@@ -1,5 +1,4 @@
 import sys
-
 sys.path.insert(0,'../server/proto')
 import test_pb2_grpc
 import test_pb2

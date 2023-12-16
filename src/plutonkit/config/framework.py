@@ -20,10 +20,15 @@ FRAMEWORK_GRAPHQL = [
 
 DEFAULT_GRPC = [
     format_argument("framework","package_default_grpc","Do you need docker","default",DOCKER_SETUP),
+    format_argument("framework","package_default_grpc_w_interceptor","Do you need docker","with interceptor auth support",DOCKER_SETUP),
 ]
 
 DEFAULT_WEB3 = [
     format_argument("framework","package_default_web3","Do you need docker","default",DOCKER_SETUP),
+]
+
+DEFAULT_PACKAGE = [
+    format_argument("framework","package_default_packaging","Start creating your new apps","default",[]),
 ]
 
 DEFAULT_WEB_SOCKET = [
@@ -78,6 +83,9 @@ SUPPORT_LIBRARY_GRPC =[
     'grpcio-tools==1.59.2',
     'grpcio==1.59.2'
 
+]
+SUPPORT_LIBRARY_GRPC_INTERCEPTOR = SUPPORT_LIBRARY_GRPC.copy()+[
+    'PyJWT==2.8.0'
 ]
 SUPPORT_LIBRARY_WEB_SOCKET =[
 

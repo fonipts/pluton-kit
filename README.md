@@ -27,7 +27,7 @@ The commands must in this format  `plutonkit <Command type>`
 |command | Executing command using plutonkit | `plutonkit command start`|
 |help | See available command for plutonkit | `plutonkit help` |
 
-![Alt text](resources/pluton_kit_instruction.gif?raw=true "Title")
+![Alt text](resources/pluton-kit-terminal-design.gif?raw=true "Title")
 
 
 [pip-url]: https://pypi.org/project/plutonkit/

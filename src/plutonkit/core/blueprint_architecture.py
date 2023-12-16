@@ -1,6 +1,8 @@
 from plutonkit.helper.filesystem import default_project_name,generate_requirement,generate_filesystem,modified_project_filesystem
 from plutonkit.helper.config import get_config
 from plutonkit.framework.package.database_script import DatabaseScript
+from plutonkit.config.framework import SUPPORT_LIBRARY_FLASK_SQL_ALCHEMY,\
+SUPPORT_LIBRARY_SQL_ALCHEMY
 
 class BlueprintArchitecture:
     def __init__(self,reference_value) -> None:
@@ -28,3 +30,4 @@ class BlueprintArchitecture:
         variable['SQL_ALCH_DB_CONTENT'] =self.database_script.getContent()
         variable['SQL_ALCH_IMPORT'] = self.database_script.getImport()
         variable['DJANGO_TEST_NAME'] =self.getProjectName()
+        variable['TEST_NAME'] =self.getProjectName()

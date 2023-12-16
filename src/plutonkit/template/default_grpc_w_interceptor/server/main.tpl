@@ -8,16 +8,26 @@ APPS = [
 for value in APPS:
     sys.path.append(value)
 
-from settings import ROUTES
 import logging
 import grpc
 from concurrent import futures
 ({SQL_ALCH_IMPORT})
+from utils.interceptor import AuthenticationInterceptor
+
+from settings import ROUTES
 
 ({SQL_ALCH_DB_CONTENT})
 
+authenticator = AuthenticationInterceptor(
+        'authorization',
+        '42',
+        grpc.StatusCode.UNAUTHENTICATED,
+        'Access denied!'
+    )
+       
 def serve():
-    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10),
+                         interceptors=(authenticator,))
 
     for value in ROUTES:
         value['server'](value['service'](),server)
@@ -25,7 +35,6 @@ def serve():
     server.add_insecure_port("[::]:50051")
     server.start()
     server.wait_for_termination()
-
 
 if __name__ == "__main__":
     logging.basicConfig()

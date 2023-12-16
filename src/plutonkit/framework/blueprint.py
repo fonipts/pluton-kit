@@ -17,7 +17,8 @@ SUPPORT_LIBRARY_TARTIFLETTE,\
 SUPPORT_LIBRARY_DJANGO_GRAPHBOX,\
 SUPPORT_LIBRARY_GRPC,\
 SUPPORT_LIBRARY_WEB_SOCKET,\
-SUPPORT_LIBRARY_WEB3
+SUPPORT_LIBRARY_WEB3,\
+SUPPORT_LIBRARY_GRPC_INTERCEPTOR
 
 class FrameworkBluePrint(BlueprintArchitecture):
     def __init__(self,path,reference_value,framework_name) -> None:
@@ -41,6 +42,7 @@ class FrameworkBluePrint(BlueprintArchitecture):
         })
 
     def get_execute_script(self):
+        self.parameter_execute_variable["pip_install"] = {"command":["pip install -r requirements.txt"]}
         return dump({
             "script":self.parameter_execute_variable
         })
@@ -193,6 +195,13 @@ DB_PASSWORD=
 
         self.__construct_yml_exeecute("proto_generate","python -m grpc_tools.protoc -I./protobufs --python_out=./server/proto   --grpc_python_out=./server/proto ./protobufs/test.proto")
 
+    def package_default_grpc_w_interceptor(self):
+        self.generate_requirement(SUPPORT_LIBRARY_GRPC_INTERCEPTOR)
+        pip_install_requirement(self.reference_value)
+        self.generate_filesystem()
+
+        self.__construct_yml_exeecute("proto_generate","python -m grpc_tools.protoc -I./protobufs --python_out=./server/proto   --grpc_python_out=./server/proto ./protobufs/test.proto")
+
     def package_default_websocket(self):
         print("This feature is in progress")
         #generate_requirement(self.reference_value,SUPPORT_LIBRARY_WEB_SOCKET)
@@ -203,4 +212,7 @@ DB_PASSWORD=
     def package_default_web3(self):
         self.generate_requirement(SUPPORT_LIBRARY_WEB3)
         pip_install_requirement(self.reference_value)
+        self.generate_filesystem()
+
+    def package_default_packaging(self):
         self.generate_filesystem()

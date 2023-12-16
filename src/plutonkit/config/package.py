@@ -3,6 +3,7 @@
 from plutonkit.management.format import format_argument
 
 DATABASE_TYPE = [
+    format_argument("db_type","db_sqlite","What is sqlite","sqlite",[]),
     format_argument("db_type","db_postgresql","What is postgresql","postgresql",[]),
     format_argument("db_type","db_mysql","What is mysql","mysql",[])
 ]

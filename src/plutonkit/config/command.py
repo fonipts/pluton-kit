@@ -6,5 +6,4 @@ from plutonkit.command.action.command import Command
 ACTIONS = {
     "create_project":CreateProject(),
     "command":Command(),
-
 }

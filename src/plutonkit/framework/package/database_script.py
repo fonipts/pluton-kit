@@ -15,10 +15,12 @@ class DatabaseScript:
 
         if self.db_package =="package_sqlalchemy":
             database_uri =""
+            if self.db_type =="db_sqlite":
+                database_uri = "sqlite:///test.sqlite"
             if self.db_type =="db_mysql":
-                database_uri ="mysql://{config('DB_USER')}:{config('DB_PASSWORD')}@{config('DB_CONNECTION')}/{config('DB_NAME')}"
+                database_uri ="'mysql://%s:%s@%s/%s'%(config('DB_USER'),config('DB_PASSWORD'),config('DB_CONNECTION'),config('DB_NAME'))"
             if self.db_type =="db_postgresql":
-                database_uri ="postgresql+psycopg://{config('DB_USER')}:{config('DB_PASSWORD')}@{config('DB_CONNECTION')}/{config('DB_NAME')}"
+                database_uri ="'postgresql+psycopg://%s:%s@%s/%s'%(config('DB_USER'),config('DB_PASSWORD'),config('DB_CONNECTION'),config('DB_NAME'))"
 
             if self.framework =="package_flask":
 
@@ -27,13 +29,13 @@ db = SQLAlchemy()
 # create the app
 app = Flask(__name__)
 # configure the SQLite database, relative to the app instance folder
-app.config["SQLALCHEMY_DATABASE_URI"] = "%s"
+app.config["SQLALCHEMY_DATABASE_URI"] = %s
 # initialize the app with the extension
 db.init_app(app)
             '''%(database_uri)
 
             return '''
-engine = create_engine("%s")'''%(database_uri)
+engine = create_engine(%s)'''%(database_uri)
 
         if self.framework =="django":
                 if self.db_type =="db_mysql":
@@ -67,7 +69,7 @@ engine = create_engine("%s")'''%(database_uri)
     def getRequirement(self):
 
         imprt = []
-        if self.db_package  == "package_db_none":
+        if self.db_package  == "package_sqlalchemy":
             imprt = SUPPORT_LIBRARY_SQL_ALCHEMY
         if self.__isFlaskDb():
             imprt = SUPPORT_LIBRARY_FLASK_SQL_ALCHEMY

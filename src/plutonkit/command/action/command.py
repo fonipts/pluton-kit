@@ -18,7 +18,9 @@ class Command:
 
     def comment(self):
         return "Executing command using plutonkit"
+
     def execute(self):
+
         directory = os.getcwd()
         path = os.path.join(directory, PROJECT_COMMAND_FILE)
         if os.path.exists(path):
@@ -30,22 +32,22 @@ class Command:
                         content = load(str(read), Loader=Loader)
 
                         content_script = content['script']
-                        try:
-                            command_value = sys.argv[2]
-                            if command_value not in content_script:
-                                print("Invalid command variable")
-                                return
+                        if len(sys.argv) <= 2:
+                            print("Please specify your command like `plutonkit command pip_install`")
+                            exit(0)
+                        command_value = sys.argv[2]
+                        if command_value not in content_script:
+                            print("Invalid command variable")
+                            exit(0)
 
-                            try :
-                                for val in content_script[command_value]['command']:
-                                    os.chdir(directory)
-                                    val_clean = re.sub(r'\s{2,}', ' ', val)
-                                    pip_run_command(val_clean.split(" "))
-                            except Exception as e2:
-                                print(e2)
-                        except Exception:
-                            print("Please specify your command like `plutonkit command start`")
+                        for val in content_script[command_value]['command']:
+                            os.chdir(directory)
+                            val_clean = re.sub(r'\s{2,}', ' ', val)
+                            pip_run_command(val_clean.split(" "))
+
                     except Exception:
                         print("Invalid yaml file content")
+                        exit(0)
         else:
             print("This command file `%s` is missing in the directory project"%(PROJECT_COMMAND_FILE))
+            exit(0)

@@ -1,5 +1,7 @@
 """Module providing a function printing python version."""
 import os
+from curses import wrapper
+
 from plutonkit.config import PROJECT_COMMAND_FILE,\
 PROJECT_DETAILS_FILE,\
 PROJECT_ENV_FILE
@@ -24,17 +26,28 @@ class CreateProject:
     def callback_execute(self,reference_value,name,step):
 
         try:
-            enum_action = ['(%s) %s'%(key+1,val['option_name']) for key,val in enumerate(step)]
-            print("\n%s\n%s "%(name,"\n".join(enum_action)))
-            answer = input('choose only at [%s]'%(len(step) == 1 and '1' or '1-'+str(len(step)) ))
+            field_type = 'input'
+            if len( reference_value["command"])>0:
+                field_type = reference_value["command"][len( reference_value["command"])-1]['field_type']
+            if field_type == 'multiple_choice':
 
-            int_answer = int(answer)
-            available_step = step[int_answer-1]
+                enum_action = ['[%s]  %s'%(key+1,val['option_name']) for key,val in enumerate(step)]
+                print("\n%s\n%s "%(name,"\n".join(enum_action)))
+                answer = input('choose only at [%s]'%(len(step) == 1 and '1' or '1-'+str(len(step)) ))
 
-            reference_value["command"].append({
-            "name":available_step['name'],
-            "type":available_step['type'],
-            })
+            else:
+                enum_action = ['(%s) %s'%(key+1,val['option_name']) for key,val in enumerate(step)]
+                print("\n%s\n%s "%(name,"\n".join(enum_action)))
+                answer = input('choose only at [%s]'%(len(step) == 1 and '1' or '1-'+str(len(step)) ))
+
+                int_answer = int(answer)
+                available_step = step[int_answer-1]
+                reference_value["command"].append({
+                    "name":available_step['name'],
+                    "type":available_step['type'],
+                    'field_type':available_step['field_type']
+                })
+
             if len(available_step['config']) >0:
                 self.callback_execute(reference_value,available_step['question'],available_step['config'])
             else:
@@ -51,7 +64,8 @@ class CreateProject:
         try:
             self.project_execute(reference_value)
         except Exception as e:
-            print(e)
+            print(e,"error")
+            exit(0)
 
     def project_execute(self,reference_value):
 
@@ -67,14 +81,17 @@ class CreateProject:
         if answer == "y":
             if os.path.exists(dir_path):
                 raise Exception("The folder name `%s` does exist" %(reference_value['details']['project_name']))
+
             generate_project_folder_cwd(reference_value )
             framework = FrameworkBluePrint(dir_path, reference_value,framework_value)
             getattr(framework, framework_value)()
             generate_default_file(reference_value,PROJECT_COMMAND_FILE,framework.get_execute_script())
             generate_default_file(reference_value,PROJECT_DETAILS_FILE,framework.get_project_script())
             generate_default_file(reference_value,self.__getEnvFileName(framework_value),framework.get_env_script())
+            exit(0)
         else:
             print("Your confirmation say `No`")
+            exit(0)
 
     def __getEnvFileName(self,framework_value):
         if framework_value =="package_default_grpc":

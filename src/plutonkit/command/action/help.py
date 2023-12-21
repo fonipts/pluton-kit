@@ -14,3 +14,4 @@ class Help:
         for key,val in ACTIONS.items():
             template += "\t(%s) %s\n"%(key,val.comment())
         print(template)
+        exit(0)

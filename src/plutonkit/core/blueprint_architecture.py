@@ -8,7 +8,8 @@ class BlueprintArchitecture:
     def __init__(self,reference_value) -> None:
         self.reference_value = reference_value
         self.config= get_config(self.reference_value)
-        self.database_script = DatabaseScript( self.config['framework'], self.config['db_package'] , self.config['db_type'] )
+
+        self.database_script = DatabaseScript( self.__get_content_value('framework'), self.__get_content_value('db_package') , self.__get_content_value('db_type') )
 
     def getProjectName(self,suffix = "") -> str:
 
@@ -25,6 +26,9 @@ class BlueprintArchitecture:
 
         library += self.database_script.getRequirement()
         return generate_requirement(self.reference_value,library)
+
+    def __get_content_value(self,key):
+        return key in self.config and self.config[key] or ''
 
     def __sql_db(self,variable):
         variable['SQL_ALCH_DB_CONTENT'] =self.database_script.getContent()

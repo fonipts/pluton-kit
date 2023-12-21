@@ -59,6 +59,7 @@ DB_PASSWORD=
 '''
 
     def package_django(self):
+        print("fundadasdasdasd")
         self.generate_requirement(SUPPORT_LIBRARY_DJANGO)
         pip_install_requirement(self.reference_value)
 

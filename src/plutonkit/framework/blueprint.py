@@ -43,12 +43,15 @@ class FrameworkBluePrint(BlueprintArchitecture):
 
     def get_execute_script(self):
         self.parameter_execute_variable["pip_install"] = {"command":["pip install -r requirements.txt"]}
+
+        if 'docker' in self.reference_value['command']:
+                if  self.reference_value['command']['docker'] == "default_docker_yes":
+                    self.parameter_execute_variable["docker_build"] = {"command":["docker build -t apps ."]}
+                    self.parameter_execute_variable["docker_run"] = {"command":["docker run --name apps"]}
         return dump({
             "script":self.parameter_execute_variable
         })
 
-    def get_docker_script(self):
-        return ""
     def get_env_script(self):
         return '''
 DB_CONNECTION=
@@ -59,7 +62,6 @@ DB_PASSWORD=
 '''
 
     def package_django(self):
-        print("fundadasdasdasd")
         self.generate_requirement(SUPPORT_LIBRARY_DJANGO)
         pip_install_requirement(self.reference_value)
 

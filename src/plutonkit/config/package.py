@@ -16,6 +16,7 @@ DOCKER_IMAGE_TYPE = [
     format_argument_input("docker_image_type","docker_image_python","Your Database library","python",DATABASE_PACKAGE),
     format_argument_input("docker_image_type","docker_image_nginx","Your Database library","nginx",DATABASE_PACKAGE),
     format_argument_input("docker_image_type","docker_image_apache","Your Database library","apache",DATABASE_PACKAGE),
+    format_argument_input("docker_image_type","docker_image_apache2","Your Database library","apache2",DATABASE_PACKAGE),
 ]
 
 DOCKER_SETUP = [
@@ -28,3 +29,7 @@ DOCKER_SETUP_DB_TYPE = [
     format_argument_input("docker","default_docker_no","Your Database library","no",DATABASE_TYPE),
 ]
 
+DOCKER_IMAGE_PYTHON = "python:latest"
+DOCKER_IMAGE_NGINX = "nginx:stable-alpine3.17-perl"
+DOCKER_IMAGE_APACHE = "http:latest"
+DOCKER_IMAGE_APACHE2 = "ubuntu/apache2:latest"

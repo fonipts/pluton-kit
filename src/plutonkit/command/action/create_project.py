@@ -4,9 +4,12 @@ from curses import wrapper
 
 from plutonkit.config import PROJECT_COMMAND_FILE,\
 PROJECT_DETAILS_FILE,\
-PROJECT_ENV_FILE
+PROJECT_ENV_FILE,\
+DOCKER_FILE,\
+DOCKER_COMPOSE_FILE
 from plutonkit.config.system import SERVICE_TYPE
 from plutonkit.framework.blueprint import FrameworkBluePrint
+from plutonkit.framework.blueprint_docker import  FrameworkBluePrintDocker
 from plutonkit.helper.filesystem import generate_project_folder_cwd,generate_default_file
 from plutonkit.helper.config import get_config
 
@@ -78,6 +81,7 @@ class CreateProject:
         folder_name = 'Project name: %s'%(reference_value['details']['project_name'])
         answer = input("%s\n%s\nDo you want to continue?(y/n) > "%("\n".join(enum_action),folder_name))
         dir_path = os.path.join(directory, reference_value['details']['project_name'])
+
         if answer == "y":
             if os.path.exists(dir_path):
                 raise Exception("The folder name `%s` does exist" %(reference_value['details']['project_name']))
@@ -87,13 +91,18 @@ class CreateProject:
             getattr(framework, framework_value)()
             generate_default_file(reference_value,PROJECT_COMMAND_FILE,framework.get_execute_script())
             generate_default_file(reference_value,PROJECT_DETAILS_FILE,framework.get_project_script())
-            generate_default_file(reference_value,self.__getEnvFileName(framework_value),framework.get_env_script())
+            generate_default_file(reference_value,self.__getEnvFileName(framework_value,PROJECT_ENV_FILE),framework.get_env_script())
+            if 'docker' in command_value:
+                if  command_value['docker'] == "default_docker_yes":
+                    docker_framework = FrameworkBluePrintDocker(reference_value,framework_value)
+                    generate_default_file(reference_value,self.__getEnvFileName(framework_value,DOCKER_FILE),docker_framework.getDocker())
+                    generate_default_file(reference_value,self.__getEnvFileName(framework_value,DOCKER_COMPOSE_FILE),docker_framework.getDockerFile())
             exit(0)
         else:
             print("Your confirmation say `No`")
             exit(0)
 
-    def __getEnvFileName(self,framework_value):
+    def __getEnvFileName(self,framework_value,file_name):
         if framework_value =="package_default_grpc":
-            return "server/%s"%(PROJECT_ENV_FILE)
-        return PROJECT_ENV_FILE
+            return "server/%s"%(file_name)
+        return file_name

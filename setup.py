@@ -35,6 +35,10 @@ setup(
                       'default_grpc/client/*',
                       'default_grpc/protobufs/*',
                       'default_grpc/server/*',
+                      'default_grpc_w_interceptor/*',
+                      'default_grpc_w_interceptor/client/*',
+                      'default_grpc_w_interceptor/protobufs/*',
+                      'default_grpc_w_interceptor/server/*',
                       'default_web3/*',
                       'default_websocket/*',
                       'django/*',
@@ -46,7 +50,8 @@ setup(
                       'fastapi/*',
                       'flask/*',
                       'graphene/*',
-                      'tartiflette/*'
+                      'tartiflette/*',
+                      'default_packaging/*'
                   ]},
     include_package_data=True,
     

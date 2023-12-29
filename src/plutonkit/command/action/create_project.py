@@ -103,6 +103,6 @@ class CreateProject:
             exit(0)
 
     def __getEnvFileName(self,framework_value,file_name):
-        if framework_value =="package_default_grpc":
+        if framework_value in ["package_default_grpc","package_default_grpc_w_interceptor"]:
             return "server/%s"%(file_name)
         return file_name

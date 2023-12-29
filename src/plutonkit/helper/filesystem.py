@@ -20,6 +20,15 @@ def generate_default_file(reference_value,name,content):
         fw.write(content)
         fw.close()
 
+def is_file_invalid(name):
+    is_file = os.path.isfile(name)
+    if is_file:
+        base_name = os.path.splitext(os.path.basename(name))
+        if len(base_name) >1 :
+            return base_name[1] not in ['.pyc']
+        return True
+    return False
+
 def generate_filesystem(reference_value,sub_folder=None,action_file={},variable={}):
     directory = os.getcwd()
     framework_value = [val['name'] for key,val in enumerate(reference_value['command']) if val['type'] =='framework' ][0]
@@ -34,7 +43,7 @@ def callback_template_filesystem(from_content, to_content,variable,action_file):
 
     if os.path.exists(from_content):
         for name in glob.glob(os.path.join(from_content,"*")):
-            is_file = os.path.isfile(name)
+            is_file = is_file_invalid(name)
             is_dir = os.path.isdir(name)
             if is_file:
 
@@ -79,7 +88,7 @@ def callback_modified_project_filesystem(to_dir,copy_main_dir,action_file={}):
 
     if os.path.exists(to_dir):
         for name in glob.glob(os.path.join(to_dir,"*")):
-            is_file = os.path.isfile(name)
+            is_file = is_file_invalid(name)
             is_dir = os.path.isdir(name)
             if is_file:
                 base_name = os.path.splitext(os.path.basename(name))

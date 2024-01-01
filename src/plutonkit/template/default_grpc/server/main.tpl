@@ -12,9 +12,7 @@ from settings import ROUTES
 import logging
 import grpc
 from concurrent import futures
-({SQL_ALCH_IMPORT})
 
-({SQL_ALCH_DB_CONTENT})
 
 def serve():
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

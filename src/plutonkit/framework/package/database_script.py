@@ -18,9 +18,9 @@ class DatabaseScript:
             if self.db_type =="db_sqlite":
                 database_uri = "sqlite:///test.sqlite"
             if self.db_type =="db_mysql":
-                database_uri ="'mysql://%s:%s@%s/%s'%(config('DB_USER'),config('DB_PASSWORD'),config('DB_CONNECTION'),config('DB_NAME'))"
+                database_uri ="'mysql://%s:%s@%s/%s'%(config('DB_USER'),quote_plus(config('DB_PASSWORD')),config('DB_CONNECTION'),config('DB_NAME'))"
             if self.db_type =="db_postgresql":
-                database_uri ="'postgresql+psycopg://%s:%s@%s/%s'%(config('DB_USER'),config('DB_PASSWORD'),config('DB_CONNECTION'),config('DB_NAME'))"
+                database_uri ="'postgresql+psycopg://%s:%s@%s/%s'%(config('DB_USER'),quote_plus(config('DB_PASSWORD')),config('DB_CONNECTION'),config('DB_NAME'))"
 
             if self.framework =="package_flask":
 
@@ -35,7 +35,10 @@ db.init_app(app)
             '''%(database_uri)
 
             return '''
-engine = create_engine(%s)'''%(database_uri)
+engine = create_engine(%s)
+conn = engine.connect()
+Base = declarative_base()
+'''%(database_uri)
 
         if self.framework =="django":
                 if self.db_type =="db_mysql":
@@ -52,17 +55,20 @@ engine = create_engine(%s)'''%(database_uri)
 
                 return "\n".join([
                     "from flask_sqlalchemy import SQLAlchemy",
-                    "from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column",
-                    "from decouple import config"
+                    "from sqlalchemy.orm import declarative_base",
+                    "from decouple import config",
+                    "from urllib.parse import quote_plus"
                 ])
             return "\n".join([
                     "from sqlalchemy import create_engine",
-                    "from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column",
-                    "from decouple import config"
+                    "from sqlalchemy.orm import declarative_base",
+                    "from decouple import config",
+                    "from urllib.parse import quote_plus"
                 ])
         if self.framework =="django":
             return "\n".join([
-                    "from decouple import config"
+                    "from decouple import config",
+                    "from urllib.parse import quote_plus"
                 ])
         return ""
 

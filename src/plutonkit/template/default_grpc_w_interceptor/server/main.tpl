@@ -11,12 +11,10 @@ for value in APPS:
 import logging
 import grpc
 from concurrent import futures
-({SQL_ALCH_IMPORT})
 from utils.interceptor import AuthenticationInterceptor
 
 from settings import ROUTES
 
-({SQL_ALCH_DB_CONTENT})
 
 authenticator = AuthenticationInterceptor(
         'authorization',

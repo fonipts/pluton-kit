@@ -1,9 +1,7 @@
 from typing import Union
-({SQL_ALCH_IMPORT})
 from fastapi import FastAPI
 
 app = FastAPI()
-({SQL_ALCH_DB_CONTENT})
 
 @app.get("/")
 def read_root():

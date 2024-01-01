@@ -44,6 +44,7 @@ class Command:
                             os.chdir(directory)
                             val_clean = re.sub(r'\s{2,}', ' ', val)
                             pip_run_command(val_clean.split(" "))
+                            exit(0)
 
                     except Exception:
                         print("Invalid yaml file content")

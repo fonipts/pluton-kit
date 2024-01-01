@@ -38,6 +38,8 @@ db.init_app(app)
 engine = create_engine(%s)
 conn = engine.connect()
 Base = declarative_base()
+Session = sessionmaker(bind=engine)
+session = Session()
 '''%(database_uri)
 
         if self.framework =="django":
@@ -55,13 +57,13 @@ Base = declarative_base()
 
                 return "\n".join([
                     "from flask_sqlalchemy import SQLAlchemy",
-                    "from sqlalchemy.orm import declarative_base",
+                    "from sqlalchemy.orm import declarative_base,sessionmaker",
                     "from decouple import config",
                     "from urllib.parse import quote_plus"
                 ])
             return "\n".join([
                     "from sqlalchemy import create_engine",
-                    "from sqlalchemy.orm import declarative_base",
+                    "from sqlalchemy.orm import declarative_base,sessionmaker",
                     "from decouple import config",
                     "from urllib.parse import quote_plus"
                 ])

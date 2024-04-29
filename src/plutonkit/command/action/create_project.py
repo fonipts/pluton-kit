@@ -92,18 +92,18 @@ class CreateProject:
             getattr(framework, framework_value)()
             generate_default_file(reference_value,PROJECT_COMMAND_FILE,framework.get_execute_script())
             generate_default_file(reference_value,PROJECT_DETAILS_FILE,framework.get_project_script())
-            generate_default_file(reference_value,self.__getEnvFileName(framework_value,PROJECT_ENV_FILE),framework.get_env_script())
+            generate_default_file(reference_value,self.__get_env_file_name(framework_value,PROJECT_ENV_FILE),framework.get_env_script())
             if "docker" in command_value:
                 if  command_value["docker"] == "default_docker_yes":
                     docker_framework = FrameworkBluePrintDocker(reference_value,framework_value)
-                    generate_default_file(reference_value,self.__getEnvFileName(framework_value,DOCKER_FILE),docker_framework.getDocker())
-                    generate_default_file(reference_value,self.__getEnvFileName(framework_value,DOCKER_COMPOSE_FILE),docker_framework.getDockerFile())
+                    generate_default_file(reference_value,self.__get_env_file_name(framework_value,DOCKER_FILE),docker_framework.getDocker())
+                    generate_default_file(reference_value,self.__get_env_file_name(framework_value,DOCKER_COMPOSE_FILE),docker_framework.getDockerFile())
             sys.exit(0)
         else:
             print("Your confirmation say `No`")
             sys.exit(0)
 
-    def __getEnvFileName(self,framework_value,file_name):
+    def __get_env_file_name(self,framework_value,file_name):
         if framework_value in ["package_default_grpc","package_default_grpc_w_interceptor"]:
             return "server/%s"%(file_name)
         return file_name

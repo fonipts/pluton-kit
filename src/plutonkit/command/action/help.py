@@ -3,13 +3,13 @@
 from plutonkit.config.command import ACTIONS
 import sys
 
-
 class Help:
     def __init__(self) -> None:
         pass
 
     def comment(self):
         return "To see all available commands"
+
     def execute(self):
         template = "Here are the available commands you can used\nCommands:\n"
 

@@ -1,8 +1,7 @@
 from plutonkit.helper.filesystem import default_project_name,generate_requirement,generate_filesystem,modified_project_filesystem
 from plutonkit.helper.config import get_config
 from plutonkit.framework.package.database_script import DatabaseScript
-from plutonkit.config.framework import (SUPPORT_LIBRARY_FLASK_SQL_ALCHEMY,
-SUPPORT_LIBRARY_SQL_ALCHEMY)
+from plutonkit.config.framework import SUPPORT_LIBRARY_FLASK_SQL_ALCHEMY, SUPPORT_LIBRARY_SQL_ALCHEMY
 
 class BlueprintArchitecture:
     def __init__(self,reference_value) -> None:

@@ -9,13 +9,13 @@ import signal
 import time
 
 #noqa: Our signal handler
-def signal_handler(signum, frame):
+def signal_handler():
     print('\nInvalid control +key or press control+z to exit')
     print('\nPlease try to select appropriate key selection')
 
-def exit_handler(signum, frame):
+def exit_handler():
     print('\nExiting....')
-    exit(0)
+    sys.exit(0)
 
 def autoload():
 
@@ -45,7 +45,7 @@ def load_command():
     print(TEMPLATE)
     try:
         while 1:
-            ACTIONS["command"].modifyArgvIndex(1).execute()
+            ACTIONS["command"].modify_argv_index(1).execute()
             time.sleep(30)
     except Exception:
         print("Invalid command request")

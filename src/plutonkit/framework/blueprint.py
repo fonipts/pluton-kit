@@ -6,19 +6,19 @@ from plutonkit.framework.package.django_script import DjangoScript
 
 from plutonkit.core.blueprint_architecture import BlueprintArchitecture
 from plutonkit.helper.command import pip_install_requirement,pip_run_command
-from plutonkit.config.framework import SUPPORT_LIBRARY_DJANGO,\
-SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK,\
-SUPPORT_LIBRARY_BOTTLE,\
-SUPPORT_LIBRARY_FAST_API,\
-SUPPORT_LIBRARY_FLASK,\
-SUPPORT_LIBRARY_GRAPHENE,\
-SUPPORT_LIBRARY_ARIADNE,\
-SUPPORT_LIBRARY_TARTIFLETTE,\
-SUPPORT_LIBRARY_DJANGO_GRAPHBOX,\
-SUPPORT_LIBRARY_GRPC,\
-SUPPORT_LIBRARY_WEB_SOCKET,\
-SUPPORT_LIBRARY_WEB3,\
-SUPPORT_LIBRARY_GRPC_INTERCEPTOR
+from plutonkit.config.framework import (SUPPORT_LIBRARY_DJANGO,
+SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK,
+SUPPORT_LIBRARY_BOTTLE,
+SUPPORT_LIBRARY_FAST_API,
+SUPPORT_LIBRARY_FLASK,
+SUPPORT_LIBRARY_GRAPHENE,
+SUPPORT_LIBRARY_ARIADNE,
+SUPPORT_LIBRARY_TARTIFLETTE,
+SUPPORT_LIBRARY_DJANGO_GRAPHBOX,
+SUPPORT_LIBRARY_GRPC,
+SUPPORT_LIBRARY_WEB_SOCKET,
+SUPPORT_LIBRARY_WEB3,
+SUPPORT_LIBRARY_GRPC_INTERCEPTOR)
 
 class FrameworkBluePrint(BlueprintArchitecture):
     def __init__(self,path,reference_value,framework_name) -> None:
@@ -32,8 +32,8 @@ class FrameworkBluePrint(BlueprintArchitecture):
         if name not in self.parameter_execute_variable:
             self.parameter_execute_variable[name] = {"command":[value]}
         else:
-            variable_command = self.parameter_execute_variable[name]['command']
-            self.parameter_execute_variable[name]['command'] = variable_command+[value]
+            variable_command = self.parameter_execute_variable[name]["command"]
+            self.parameter_execute_variable[name]["command"] = variable_command+[value]
 
     def get_project_script(self):
         return  dump({
@@ -44,8 +44,8 @@ class FrameworkBluePrint(BlueprintArchitecture):
     def get_execute_script(self):
         self.parameter_execute_variable["pip_install"] = {"command":["pip install -r requirements.txt"]}
 
-        if 'docker' in self.reference_value['command']:
-                if  self.reference_value['command']['docker'] == "default_docker_yes":
+        if "docker" in self.reference_value["command"]:
+                if  self.reference_value["command"]["docker"] == "default_docker_yes":
                     self.parameter_execute_variable["docker_build"] = {"command":["docker build -t apps ."]}
                     self.parameter_execute_variable["docker_run"] = {"command":["docker run --name apps"]}
         return dump({
@@ -53,20 +53,20 @@ class FrameworkBluePrint(BlueprintArchitecture):
         })
 
     def get_env_script(self):
-        return '''
+        return """
 DB_CONNECTION=
 DB_NAME=
 DB_USER=
 DB_PASSWORD=
 
-'''
+"""
 
     def package_django(self):
         self.generate_requirement(SUPPORT_LIBRARY_DJANGO)
         pip_install_requirement(self.reference_value)
 
-        pip_run_command(['rm','-rf',self.getProjectName()])
-        pip_run_command(['django-admin','startproject',self.getProjectName()])
+        pip_run_command(["rm","-rf",self.getProjectName()])
+        pip_run_command(["django-admin","startproject",self.getProjectName()])
         self.generate_requirement(SUPPORT_LIBRARY_DJANGO)
         self.generate_filesystem(self.getDefaultProjectName())
 
@@ -75,7 +75,7 @@ DB_PASSWORD=
             "import":[]
         },
         argUrl = {
-            "value":["path('health/', health)"],
+            "value":['path("health/", health)'],
             "import":["from "+self.getProjectName(".apptest.views import health")]
         })
         self.modified_project_filesystem({
@@ -93,18 +93,18 @@ DB_PASSWORD=
         self.generate_requirement(SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK)
         pip_install_requirement(self.reference_value)
 
-        pip_run_command(['rm','-rf',self.getProjectName()])
-        pip_run_command(['django-admin','startproject',self.getProjectName()])
+        pip_run_command(["rm","-rf",self.getProjectName()])
+        pip_run_command(["django-admin","startproject",self.getProjectName()])
         self.generate_requirement(SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK)
         self.generate_filesystem(self.getDefaultProjectName())
 
         django = DjangoScript(argSetting = {
             "value":[self.getProjectName(".apptest")],
             "import":[],
-            "append":[]#"REST_FRAMEWORK = []"]
+            "append":[]
         },
         argUrl = {
-            "value":["path('', include('"+self.getProjectName(".apptest.url")+"'))"],
+            "value":['path("", include("'+self.getProjectName(".apptest.url")+'"))'],
             "import":["from django.urls import include"]
         })
         self.modified_project_filesystem({
@@ -158,8 +158,8 @@ DB_PASSWORD=
         self.generate_requirement(SUPPORT_LIBRARY_DJANGO_GRAPHBOX)
         pip_install_requirement(self.reference_value)
 
-        pip_run_command(['rm','-rf',self.getProjectName()])
-        pip_run_command(['django-admin','startproject',self.getProjectName()])
+        pip_run_command(["rm","-rf",self.getProjectName()])
+        pip_run_command(["django-admin","startproject",self.getProjectName()])
         self.generate_requirement(SUPPORT_LIBRARY_DJANGO_GRAPHBOX)
         self.generate_filesystem(None,{
             "modified_position":{
@@ -172,7 +172,7 @@ DB_PASSWORD=
         },
         argUrl = {
             "value":[
-                "path('graphql/', csrf_exempt(FileUploadGraphQLView.as_view(graphiql=True, schema=schema)))"
+                'path("graphql/", csrf_exempt(FileUploadGraphQLView.as_view(graphiql=True, schema=schema)))'
             ],
             "import":[
                 "from graphene_file_upload.django import FileUploadGraphQLView",

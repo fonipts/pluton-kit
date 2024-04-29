@@ -8,7 +8,7 @@ from plutonkit.config import INTRODUCTION
 import signal
 import time
 
-# Our signal handler
+#noqa: Our signal handler
 def signal_handler(signum, frame):
     print('\nInvalid control +key or press control+z to exit')
     print('\nPlease try to select appropriate key selection')
@@ -21,15 +21,31 @@ def autoload():
 
     signal.signal(signal.SIGINT, signal_handler)
 
-# Register the exit handler with `SIGTSTP` (Ctrl + Z)
+#noqa: Register the exit handler with `SIGTSTP` (Ctrl + Z)
     signal.signal(signal.SIGTSTP, exit_handler)
 
     TEMPLATE = "%s\n" % (INTRODUCTION)
     print(TEMPLATE)
     try:
         while 1:
-            ACTIONS['help'] = Help()
+            ACTIONS["help"] = Help()
             ACTIONS[str(sys.argv[1])].execute()
             time.sleep(30)
     except Exception:
-        print("Invalid argument, please type `help` to see available command ")
+        print("Invalid argument, please type `help` to see available command")
+
+def load_command():
+
+    signal.signal(signal.SIGINT, signal_handler)
+
+#noqa: Register the exit handler with `SIGTSTP` (Ctrl + Z)
+    signal.signal(signal.SIGTSTP, exit_handler)
+
+    TEMPLATE = "%s\n" % (INTRODUCTION)
+    print(TEMPLATE)
+    try:
+        while 1:
+            ACTIONS["command"].modifyArgvIndex(1).execute()
+            time.sleep(30)
+    except Exception:
+        print("Invalid command request")

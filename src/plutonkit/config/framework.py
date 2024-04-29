@@ -35,57 +35,57 @@ DEFAULT_WEB_SOCKET = [
     format_argument_input("framework","package_default_websocket","Do you need docker","default",DOCKER_SETUP),
 ]
 STANDARD_LIBRARY = [
-    'pylint==3.0.2',
-    'pytest==7.4.3',
-    'python-decouple==3.8'
+    "pylint==3.0.2",
+    "pytest==7.4.3",
+    "python-decouple==3.8"
 ]
 SUPPORT_LIBRARY_OTHERS =[
-    'Django==4.2.7'
+    "Django==4.2.7"
 ]
 
 SUPPORT_LIBRARY_DJANGO =[
-    'Django==4.2.7'
+    "Django==4.2.7"
 ]
 
 SUPPORT_LIBRARY_DJANGO_REST_FRAMEWORK = [
-    'Django==4.1',
-    'djangorestframework==3.14.0',
-    'markdown==3.5.1',
-    'django-filter==23.3'
+    "Django==4.1",
+    "djangorestframework==3.14.0",
+    "markdown==3.5.1",
+    "django-filter==23.3"
 ]
 
 SUPPORT_LIBRARY_BOTTLE =[
-    'bottle==0.12.25'
+    "bottle==0.12.25"
 ]
 SUPPORT_LIBRARY_FAST_API =[
-    'fastapi==0.104.1',
-    'Pydantic==2.5.2',
-    'uvicorn[standard]==0.24.0'
+    "fastapi==0.104.1",
+    "Pydantic==2.5.2",
+    "uvicorn[standard]==0.24.0"
 ]
 SUPPORT_LIBRARY_FLASK =[
-    'Flask==3.0.0'
+    "Flask==3.0.0"
 ]
 SUPPORT_LIBRARY_GRAPHENE =[
-    'graphene==3.3'
+    "graphene==3.3"
 ]
 SUPPORT_LIBRARY_ARIADNE =[
-    'ariadne==0.21',
-    'uvicorn[standard]==0.24.0'
+    "ariadne==0.21",
+    "uvicorn[standard]==0.24.0"
 ]
 SUPPORT_LIBRARY_TARTIFLETTE =[
-    'tartiflette-aiohttp==1.4.0'
+    "tartiflette-aiohttp==1.4.0"
 ]
 SUPPORT_LIBRARY_DJANGO_GRAPHBOX =[
-    'django-graphbox==1.2.9',
-    'graphene-file-upload==1.3.0'
+    "django-graphbox==1.2.9",
+    "graphene-file-upload==1.3.0"
 ]
 SUPPORT_LIBRARY_GRPC =[
-    'grpcio-tools==1.59.2',
-    'grpcio==1.59.2'
+    "grpcio-tools==1.59.2",
+    "grpcio==1.59.2"
 
 ]
 SUPPORT_LIBRARY_GRPC_INTERCEPTOR = SUPPORT_LIBRARY_GRPC.copy()+[
-    'PyJWT==2.8.0'
+    "PyJWT==2.8.0"
 ]
 SUPPORT_LIBRARY_WEB_SOCKET =[
 

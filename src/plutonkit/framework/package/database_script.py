@@ -1,8 +1,8 @@
 import re
-from plutonkit.config.framework import SUPPORT_LIBRARY_FLASK_SQL_ALCHEMY,\
-SUPPORT_LIBRARY_SQL_ALCHEMY,\
-SUPPORT_LIBRARY_SQL_POSTGRE,\
-SUPPORT_LIBRARY_SQL_MYSQL
+from plutonkit.config.framework import (SUPPORT_LIBRARY_FLASK_SQL_ALCHEMY,
+SUPPORT_LIBRARY_SQL_ALCHEMY,
+SUPPORT_LIBRARY_SQL_POSTGRE,
+SUPPORT_LIBRARY_SQL_MYSQL)
 
 class DatabaseScript:
     def __init__(self,framework,db_package,db_type) -> None:
@@ -10,50 +10,50 @@ class DatabaseScript:
         self.db_package = db_package
         self.db_type = db_type
     def __isFlaskDb(self):
-        return self.framework =="package_flask" and self.db_package =="package_sqlalchemy"
+        return self.framework == "package_flask" and self.db_package == "package_sqlalchemy"
     def getContent(self):
 
-        if self.db_package =="package_sqlalchemy":
+        if self.db_package == "package_sqlalchemy":
             database_uri =""
-            if self.db_type =="db_sqlite":
+            if self.db_type == "db_sqlite":
                 database_uri = "sqlite:///test.sqlite"
-            if self.db_type =="db_mysql":
+            if self.db_type == "db_mysql":
                 database_uri ="'mysql://%s:%s@%s/%s'%(config('DB_USER'),quote_plus(config('DB_PASSWORD')),config('DB_CONNECTION'),config('DB_NAME'))"
-            if self.db_type =="db_postgresql":
+            if self.db_type == "db_postgresql":
                 database_uri ="'postgresql+psycopg://%s:%s@%s/%s'%(config('DB_USER'),quote_plus(config('DB_PASSWORD')),config('DB_CONNECTION'),config('DB_NAME'))"
 
-            if self.framework =="package_flask":
+            if self.framework == "package_flask":
 
-                return '''
+                return """
 db = SQLAlchemy()
-# create the app
+#noqa: create the app
 app = Flask(__name__)
-# configure the SQLite database, relative to the app instance folder
+#noqa: configure the SQLite database, relative to the app instance folder
 app.config["SQLALCHEMY_DATABASE_URI"] = %s
-# initialize the app with the extension
+#noqa: initialize the app with the extension
 db.init_app(app)
-            '''%(database_uri)
+"""%(database_uri)
 
-            return '''
+            return """
 engine = create_engine(%s)
 conn = engine.connect()
 Base = declarative_base()
 Session = sessionmaker(bind=engine)
 session = Session()
-'''%(database_uri)
+"""%(database_uri)
 
-        if self.framework =="django":
-                if self.db_type =="db_mysql":
+        if self.framework == "django":
+                if self.db_type == "db_mysql":
                     pass
-                if self.db_type =="db_postgresql":
+                if self.db_type == "db_postgresql":
                     pass
 
         return ""
 
     def getImport(self):
 
-        if self.db_package =="package_sqlalchemy":
-            if self.framework =="package_flask":
+        if self.db_package == "package_sqlalchemy":
+            if self.framework == "package_flask":
 
                 return "\n".join([
                     "from flask_sqlalchemy import SQLAlchemy",
@@ -67,7 +67,7 @@ session = Session()
                     "from decouple import config",
                     "from urllib.parse import quote_plus"
                 ])
-        if self.framework =="django":
+        if self.framework == "django":
             return "\n".join([
                     "from decouple import config",
                     "from urllib.parse import quote_plus"
@@ -77,12 +77,12 @@ session = Session()
     def getRequirement(self):
 
         imprt = []
-        if self.db_package  == "package_sqlalchemy":
+        if self.db_package == "package_sqlalchemy":
             imprt = SUPPORT_LIBRARY_SQL_ALCHEMY
         if self.__isFlaskDb():
             imprt = SUPPORT_LIBRARY_FLASK_SQL_ALCHEMY
-        if self.db_type =="db_mysql":
-            imprt+=SUPPORT_LIBRARY_SQL_MYSQL
-        if self.db_type =="db_postgresql":
-            imprt+=SUPPORT_LIBRARY_SQL_POSTGRE
+        if self.db_type == "db_mysql":
+            imprt += SUPPORT_LIBRARY_SQL_MYSQL
+        if self.db_type == "db_postgresql":
+            imprt += SUPPORT_LIBRARY_SQL_POSTGRE
         return imprt

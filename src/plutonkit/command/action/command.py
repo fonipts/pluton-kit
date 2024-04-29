@@ -11,10 +11,15 @@ except ImportError:
 
 from plutonkit.helper.command import pip_run_command
 from plutonkit.config import PROJECT_COMMAND_FILE
+from plutonkit.framework.command.structure_command import StructureCommand
 
 class Command:
     def __init__(self) -> None:
-        pass
+        self.index = 2
+
+    def modifyArgvIndex(self,index):
+        self.index = index
+        return self
 
     def comment(self):
         return "Executing command using plutonkit"
@@ -26,27 +31,38 @@ class Command:
         if os.path.exists(path):
             is_file = os.path.isfile(path)
             if is_file:
-                with open(path , 'r', encoding="utf-8") as fi:
+                with open(path , "r", encoding="utf-8") as fi:
                     try:
                         read = fi.read()
                         content = load(str(read), Loader=Loader)
 
-                        content_script = content['script']
-                        if len(sys.argv) <= 2:
-                            print("Please specify your command like `plutonkit command pip_install`")
+                        structureCommandCls = StructureCommand(content,directory)
+                        get_errors = structureCommandCls.get_error()
+                        if len(get_errors) == 0:
+                            command_list = sys.argv[self.index::]
+                            command_value = ":.:".join(command_list)
+                            list_commands = structureCommandCls.get_list_commands()
+                            if command_value in list_commands:
+                                cmd_arg = list_commands[command_value]
+                                for val in cmd_arg["command"]:
+                                    val_clean = re.sub(r'\s{2,}', ' ', val)
+                                    os.chdir(cmd_arg["chdir"])
+
+                                    pip_run_command(val_clean.split(" "))
+                                    exit(0)
+                            else:
+                                print("you are using an invalid command")
+                                print("Please select the command below.")
+                                for key,value in list_commands.items():
+                                    print("  "," ".join(key.split(":.:"))," .... ",value.get("description","[no comment]") )
                             exit(0)
-                        command_value = sys.argv[2]
-                        if command_value not in content_script:
-                            print("Invalid command variable")
+                        else:
+                            for err in get_errors:
+                                print(err)
                             exit(0)
 
-                        for val in content_script[command_value]['command']:
-                            os.chdir(directory)
-                            val_clean = re.sub(r'\s{2,}', ' ', val)
-                            pip_run_command(val_clean.split(" "))
-                            exit(0)
-
-                    except Exception:
+                    except Exception as e:
+                        print(e)
                         print("Invalid yaml file content")
                         exit(0)
         else:

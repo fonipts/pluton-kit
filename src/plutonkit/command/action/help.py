@@ -9,8 +9,8 @@ class Help:
     def comment(self):
         return "To see all available commands"
     def execute(self):
-        template = "Here are the available commands you can used\n"\
-            "Commands:\n"
+        template = "Here are the available commands you can used\nCommands:\n"
+
         for key,val in ACTIONS.items():
             template += "\t(%s) %s\n"%(key,val.comment())
         print(template)

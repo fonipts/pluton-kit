@@ -12,7 +12,7 @@ Building from scratch is quite a dauting task. Constructing your thought, lookin
 ## Installation
 In your local machine
 ```html
-python setup.py install
+pip install -e .
 ```
 In using Pip install
 ```html

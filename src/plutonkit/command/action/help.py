@@ -1,6 +1,8 @@
 """Module providing a function printing python version."""
 
 from plutonkit.config.command import ACTIONS
+import sys
+
 
 class Help:
     def __init__(self) -> None:
@@ -14,4 +16,4 @@ class Help:
         for key,val in ACTIONS.items():
             template += "\t(%s) %s\n"%(key,val.comment())
         print(template)
-        exit(0)
+        sys.exit(0)

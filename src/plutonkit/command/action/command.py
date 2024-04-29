@@ -49,22 +49,22 @@ class Command:
                                     os.chdir(cmd_arg["chdir"])
 
                                     pip_run_command(val_clean.split(" "))
-                                    exit(0)
+                                    sys.exit(0)
                             else:
                                 print("you are using an invalid command")
                                 print("Please select the command below.")
                                 for key,value in list_commands.items():
                                     print("  "," ".join(key.split(":.:"))," .... ",value.get("description","[no comment]") )
-                            exit(0)
+                            sys.exit(0)
                         else:
                             for err in get_errors:
                                 print(err)
-                            exit(0)
+                            sys.exit(0)
 
                     except Exception as e:
                         print(e)
                         print("Invalid yaml file content")
-                        exit(0)
+                        sys.exit(0)
         else:
             print("This command file `%s` is missing in the directory project"%(PROJECT_COMMAND_FILE))
-            exit(0)
+            sys.exit(0)

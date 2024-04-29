@@ -12,6 +12,7 @@ from plutonkit.framework.blueprint import FrameworkBluePrint
 from plutonkit.framework.blueprint_docker import  FrameworkBluePrintDocker
 from plutonkit.helper.filesystem import generate_project_folder_cwd,generate_default_file
 from plutonkit.helper.config import get_config
+import sys
 
 class CreateProject:
     def __init__(self) -> None:
@@ -68,7 +69,7 @@ class CreateProject:
             self.project_execute(reference_value)
         except Exception as e:
             print(e,"error")
-            exit(0)
+            sys.exit(0)
 
     def project_execute(self,reference_value):
 
@@ -97,10 +98,10 @@ class CreateProject:
                     docker_framework = FrameworkBluePrintDocker(reference_value,framework_value)
                     generate_default_file(reference_value,self.__getEnvFileName(framework_value,DOCKER_FILE),docker_framework.getDocker())
                     generate_default_file(reference_value,self.__getEnvFileName(framework_value,DOCKER_COMPOSE_FILE),docker_framework.getDockerFile())
-            exit(0)
+            sys.exit(0)
         else:
             print("Your confirmation say `No`")
-            exit(0)
+            sys.exit(0)
 
     def __getEnvFileName(self,framework_value,file_name):
         if framework_value in ["package_default_grpc","package_default_grpc_w_interceptor"]:

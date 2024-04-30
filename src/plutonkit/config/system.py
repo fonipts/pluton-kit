@@ -10,5 +10,4 @@ SERVICE_TYPE = [
     format_argument_input("service_type","graphql","Your GraphQl Framework","graphql",FRAMEWORK_GRAPHQL),
     format_argument_input("service_type","web3","Your Web3/blockain","web3",DEFAULT_WEB3),
     format_argument_input("service_type","packaging_app","Your New packaging apps","packaging_app",DEFAULT_PACKAGE),
-
 ]

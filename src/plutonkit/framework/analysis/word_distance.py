@@ -3,7 +3,6 @@ import math
 
 class WordDistance:
     def __init__(self,valid_words) -> None:
-
         self.valid_words = valid_words
 
     def getAveDistance(self, word)->List[float]:
@@ -13,6 +12,7 @@ class WordDistance:
                 (self.__word_distance(lookup,word)/len(word) + self.__word_distance(lookup,word)/len(lookup)  )/2
             )
         return list_ave_word
+
     def __word_distance(self,ref_word, verify_word):
         indx_cnt = 0
         valid_count = 0

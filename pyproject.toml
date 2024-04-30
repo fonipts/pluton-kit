@@ -36,6 +36,10 @@ classifiers = [
 ]
 dependencies = [
     "PyYAML>=6.0.1",
+    "pytest",
+    "pytz",
+    "pylint",
+    "requests"
 ]
 
 [project.urls]

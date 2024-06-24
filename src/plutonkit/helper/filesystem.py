@@ -1,10 +1,11 @@
 """Module providing a function printing python version."""
 
 import os
-import glob
 from plutonkit.config import REQUIREMENT
 from plutonkit.config.framework import STANDARD_LIBRARY
 import yaml
+from plutonkit.management.template.TheTemplate import TheTemplate
+
 
 def default_project_name(name):
     return f"{name}_project"
@@ -25,7 +26,7 @@ def create_yaml_file(project_name,filename,library={}):
         fw.write(yaml.dump(library, default_flow_style=False))
         fw.close()
 
-def write_file_content(directory,folder_name,file,content):
+def write_file_content(directory:str,folder_name:str,file:str,content:str,args = {}):
     file_path = os.path.dirname(file)
     if file_path != "":
         new_folder = os.path.join(directory, default_project_name(folder_name),file_path)
@@ -38,7 +39,13 @@ def write_file_content(directory,folder_name,file,content):
         if base_name[1] == ".tpl":
             raw_filename = base_name[0]
             name = os.path.join(directory, default_project_name(folder_name),f"{raw_filename}.py")
+            content = convert_template(content,args)
 
     with open(name, "w") as f_write:
         f_write.write(  content )
         f_write.close()
+
+def convert_template(content:str, args):
+    nwcls = TheTemplate(content, args)
+    
+    return nwcls.get_content()

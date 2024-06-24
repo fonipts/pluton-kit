@@ -11,5 +11,4 @@ def pip_install_requirement(reference_value):
     subprocess.call(["pip","install","-r",path])
 
 def pip_run_command(command):
-
     subprocess.call(command)

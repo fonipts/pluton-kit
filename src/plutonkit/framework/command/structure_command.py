@@ -57,9 +57,9 @@ class StructureCommand:
 
         environment = self.reference_value.get("environment",{})
 
-        find_value = re.findall(r"(\$\{)([a-zA-Z0-0_]{1,})(\})", value)
+        find_value = re.findall(r"(\{\$)([a-zA-Z0-0_]{1,})(\})", value)
         if len(find_value) >0:
             for  val in find_value:
-                value  = value.replace("".join(val), environment.get(val[1],""))
+                value = value.replace("".join(val), environment.get(val[1],""))
 
         return value

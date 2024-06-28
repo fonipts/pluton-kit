@@ -1,14 +1,12 @@
 """Module providing a function printing python version."""
-
 import os
 from plutonkit.config import REQUIREMENT
 from plutonkit.config.framework import STANDARD_LIBRARY
 import yaml
-from plutonkit.management.template.TheTemplate import TheTemplate
-
+from .template import convert_shortcode, convert_template
 
 def default_project_name(name):
-    return f"{name}_project"
+    return f"{name}"
 
 def generate_project_folder_cwd(project_name):
     directory = os.getcwd()
@@ -35,17 +33,20 @@ def write_file_content(directory:str,folder_name:str,file:str,content:str,args =
 
     name = os.path.join(directory, default_project_name(folder_name),file)
     base_name = os.path.splitext(name)
+
+    content = convert_shortcode(content,args)
     if len(base_name) >1 :
         if base_name[1] == ".tpl":
             raw_filename = base_name[0]
             name = os.path.join(directory, default_project_name(folder_name),f"{raw_filename}.py")
             content = convert_template(content,args)
+        elif base_name[1] in [".py"]:
+            pass
+        else:
+            content = convert_template(content,args)
+
 
     with open(name, "w") as f_write:
         f_write.write(  content )
         f_write.close()
 
-def convert_template(content:str, args):
-    nwcls = TheTemplate(content, args)
-    
-    return nwcls.get_content()

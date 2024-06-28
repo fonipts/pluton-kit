@@ -1,7 +1,6 @@
 """Module providing a function printing python version."""
 
 from plutonkit.management.format import format_argument_input
-from plutonkit.config.package import DOCKER_SETUP,DOCKER_SETUP_DB_TYPE
 
 FRAMEWORK_WEB = [
     format_argument_input("framework","django","Do you need docker","django",[]),
@@ -41,18 +40,3 @@ STANDARD_LIBRARY = [
     "python-decouple==3.8"
 ]
 
-SUPPORT_LIBRARY_FLASK_SQL_ALCHEMY = [
-    "Flask-SQLAlchemy==3.1.1"
-]
-
-SUPPORT_LIBRARY_SQL_ALCHEMY = [
-    "SQLAlchemy==2.0.23"
-]
-
-SUPPORT_LIBRARY_SQL_POSTGRE = [
-    "psycopg[binary,pool]==3.1.14"
-]
-
-SUPPORT_LIBRARY_SQL_MYSQL = [
-    "PyMySQL==1.1.0"
-]

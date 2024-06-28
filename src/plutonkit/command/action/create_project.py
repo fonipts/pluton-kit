@@ -79,6 +79,7 @@ class CreateProject:
         folder_name = "Project name: %s"%(project_name)
         answer = input("\n%s\nDo you want to proceed installation process?(y/n) > "%(folder_name))
         if answer == "y":
+
             framework_bluePrint = FrameworkBluePrint(remote_blueprint)
             framework_bluePrint.set_folder_name(project_name)
             framework_bluePrint.execute()

@@ -1,10 +1,11 @@
 # pluton-kit
-Start kit for python, for web, websocket, grpc and graphql framework
+Create your project from the list of template from available
 
 [![PIP version][pip-image]][pip-url] 
 
 [Site](https://plutonkit.codehyouka.xyz/) |
 [Docs](https://plutonkit.codehyouka.xyz/api) |
+[Architecture lobby](https://github.com/fonipts/pluton-lobby) |
 
 ## Introduction
 Building from scratch is quite a dauting task. Constructing your thought, looking for feature and research it will take alot of your time in figuring what will you do next. Therefore I decided to create application where you can choose in different framework, either zero or hero it will help you alot visualize what framework will you choose.

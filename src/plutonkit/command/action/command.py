@@ -9,7 +9,7 @@ try:
 except ImportError:
     from yaml import Loader
 
-from plutonkit.helper.command import pip_run_command
+from plutonkit.helper.command import clean_command_split,pip_run_command
 from plutonkit.config import PROJECT_COMMAND_FILE
 from plutonkit.framework.command.structure_command import StructureCommand
 
@@ -50,9 +50,8 @@ class Command:
                         if command_value in list_commands:
                             cmd_arg = list_commands[command_value]
                             for val in cmd_arg["command"]:
-                                val_clean = re.sub(r'\s{2,}', ' ', val)
                                 os.chdir(cmd_arg["chdir"])
-                                pip_run_command(val_clean.split(" "))
+                                pip_run_command(clean_command_split(val))
                                 sys.exit(0)
                         else:
                             print("you are using an invalid command")

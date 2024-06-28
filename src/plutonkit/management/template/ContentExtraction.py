@@ -10,28 +10,28 @@ class ContentExtraction:
     def __get_component(self):
         val = []
         last_key = ""
-        cond_list = [x for x in self.__get_key_component() if x in ['condition'] ]
-      
+        cond_list = [x for x in self.__get_key_component() if x in ["condition"] ]
+
         if len(cond_list) > 0:
             raw_data = []
             is_valid_value = True
             count_cond = 0
             for row in self.components:
-                if row['name'] == "condition":
+                if row["name"] == "condition":
                     is_valid_value = False
-                    cond_valid = ConditionIdentify(row['input'][0], self.args)
+                    cond_valid = ConditionIdentify(row["input"][0], self.args)
                     if count_cond == 0 and cond_valid.validCond():
                         is_valid_value = True
                         count_cond += 1
-                elif row['name'] == "end":
+                elif row["name"] == "end":
                     is_valid_value = False
                     if count_cond == 0:
                         is_valid_value = True
                 else:
                     if is_valid_value == True:
                         raw_data.append(row)
-            return raw_data     
-        
+            return raw_data
+
         return self.components
     def __get_key_component(self):
         keys:str = []

@@ -9,10 +9,10 @@ class TemplateStruct:
         self.contents:list[str] = contents.split("\n")
         self.join_contents = ""
         self.template:list[str] = self.__find_template(self.contents)
-        
+
         self.get_component_template:list[str] = self.__component_template(self.template)
         self.convert_template:list[str] = self.__convert_template(self.get_component_template)
-    
+
     def __find_template(self,contents:list[str]):
         templates = []
         rows = []
@@ -25,11 +25,11 @@ class TemplateStruct:
                     rows = []
                 else:
                     rows.append(content)
-            
+
             if re.match(r"\(\{",content):
-               
+
                 rows.append(content)
-     
+
         return templates
 
     def __component_template(self,contents:list[str]):
@@ -43,17 +43,17 @@ class TemplateStruct:
             rows_count = 0
             is_name = True
             for row in raw_content:
-                start_value = re.findall(r"@([a-zA-Z0-0_]{1,})[\n\t\s]{0,}\{", row)
+                start_value = re.findall(r"@([a-zA-Z0-9_]{1,})[\n\t\s]{0,}\{", row)
 
                 if len(start_value) >0:
                     row_name = start_value[0]
-                    is_name = False 
+                    is_name = False
 
                 if row_name != "":
                     findall_open = len(re.findall(r"{",row))
                     findall_close = len(re.findall(r"}",row))
                     if findall_open > 0:
-                        rows_count += findall_open 
+                        rows_count += findall_open
                     if findall_close > 0:
                         rows_count -= findall_close
 
@@ -65,14 +65,14 @@ class TemplateStruct:
                                 "input": deepcopy(rows_input)
                             }
                         )
-                       
+
                         rows_input = []
                         row_name = ""
-                        
+
                     else:
                         if is_name:
                             rows_input.append(row)
-                        is_name = True 
+                        is_name = True
             templates.append({
                 "template":content,
                 "component":rows_capture_data
@@ -82,7 +82,7 @@ class TemplateStruct:
 
         self.join_contents = "\n".join(self.contents)
         data = []
-        
+
 
         for template in templates:
             list_template = template.get("template",[])
@@ -93,9 +93,8 @@ class TemplateStruct:
                 "template": str_template,
                 "component":template_instruction.get_component
             })
-        
-        return data     
+
+        return data
 
     def get_content(self) -> str:
         return self.join_contents
-    

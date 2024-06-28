@@ -3,6 +3,7 @@
 from plutonkit.config.command import ACTIONS
 import sys
 
+
 class Help:
     def __init__(self) -> None:
         pass
@@ -13,7 +14,7 @@ class Help:
     def execute(self):
         template = "Here are the available commands you can used\nCommands:\n"
 
-        for key,val in ACTIONS.items():
-            template += "\t(%s) %s\n"%(key,val.comment())
+        for key, val in ACTIONS.items():
+            template += "\t(%s) %s\n" % (key, val.comment())
         print(template)
         sys.exit(0)

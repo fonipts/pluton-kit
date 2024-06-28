@@ -2,7 +2,7 @@ from ..logic.ConditionIdentify import ConditionIdentify
 
 
 class ContentExtraction:
-    def __init__(self,components:str,args={}):
+    def __init__(self, components: str, args={}):
         self.components = components
         self.args = args
         self.get_component = self.__get_component()
@@ -10,7 +10,7 @@ class ContentExtraction:
     def __get_component(self):
         val = []
         last_key = ""
-        cond_list = [x for x in self.__get_key_component() if x in ["condition"] ]
+        cond_list = [x for x in self.__get_key_component() if x in ["condition"]]
 
         if len(cond_list) > 0:
             raw_data = []
@@ -33,11 +33,13 @@ class ContentExtraction:
             return raw_data
 
         return self.components
+
     def __get_key_component(self):
-        keys:str = []
+        keys: str = []
         for component in self.components:
-            keys.append( component["name"] )
+            keys.append(component["name"])
         return keys
+
     def get_content(self) -> str:
         content = ""
         return content

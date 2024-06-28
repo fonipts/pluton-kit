@@ -4,6 +4,6 @@ from plutonkit.command.action.create_project import CreateProject
 from plutonkit.command.action.command import Command
 
 ACTIONS = {
-    "create_project":CreateProject(),
-    "command":Command(),
+    "create_project": CreateProject(),
+    "command": Command(),
 }

@@ -2,6 +2,7 @@
 
 __version__ = "1.0.0a0"
 
+
 def setup():
     """
     Configure the settings (this happens as a side effect of accessing the
@@ -11,4 +12,3 @@ def setup():
     import plutonkit.config
     import plutonkit.command
     import plutonkit.core
-

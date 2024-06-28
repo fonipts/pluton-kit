@@ -1,4 +1,3 @@
-
 class InquiryTerminal:
     def __init__(self, choices=[]) -> None:
         self.ref_answer = {}
@@ -7,7 +6,7 @@ class InquiryTerminal:
         self.is_terminate = False
 
     def execute(self):
-        if len(self.choices)>0:
+        if len(self.choices) > 0:
             self._selection(self.choices)
         else:
             self.is_terminate = True
@@ -21,29 +20,32 @@ class InquiryTerminal:
     def isTerminate(self):
         return self.is_terminate
 
-    def _selection(self,choices):
+    def _selection(self, choices):
         choice = choices[0]
 
-        name = choice.get("name","")
-        question = choice.get("question","")
-        type = choice.get("type","")
-        default = choice.get("default","")
+        name = choice.get("name", "")
+        question = choice.get("question", "")
+        type = choice.get("type", "")
+        default = choice.get("default", "")
 
         if type == "input":
             question = input(f"{question}?:")
-            if question =="":
+            if question == "":
                 question = default
             self.ref_answer[name] = question
             choices.pop(0)
         if type == "single_choice":
-            option = choice.get("option",[])
+            option = choice.get("option", [])
 
-            enum_action = [ f"[{key+1}] {val}" for key,val in enumerate(option)]
-            print("\n%s\n%s "%(question,"\n".join(enum_action)))
+            enum_action = [f"[{key+1}] {val}" for key, val in enumerate(option)]
+            print("\n%s\n%s " % (question, "\n".join(enum_action)))
             try:
-                answer = input("choose only at [%s]"%(len(option) == 1 and "1" or "1-"+str(len(option)) ))
+                answer = input(
+                    "choose only at [%s]"
+                    % (len(option) == 1 and "1" or "1-" + str(len(option)))
+                )
 
-                available_step = option[int(answer)-1]
+                available_step = option[int(answer) - 1]
                 self.ref_answer[name] = available_step
                 choices.pop(0)
             except:
@@ -51,17 +53,23 @@ class InquiryTerminal:
                 self._selection(choices)
 
         if type == "multiple_choice":
-            option = choice.get("option",[])
+            option = choice.get("option", [])
 
-            enum_action = [ f"[{key+1}] {val}" for key,val in enumerate(option)]
-            print("\n%s\n%s (use comma `,` for multiple selection)"%(question,"\n".join(enum_action)))
+            enum_action = [f"[{key+1}] {val}" for key, val in enumerate(option)]
+            print(
+                "\n%s\n%s (use comma `,` for multiple selection)"
+                % (question, "\n".join(enum_action))
+            )
             try:
-                answer = input("choose only at [%s]"%(len(option) == 1 and "1" or "1-"+str(len(option)) ))
+                answer = input(
+                    "choose only at [%s]"
+                    % (len(option) == 1 and "1" or "1-" + str(len(option)))
+                )
 
                 self.ref_answer[name] = ""
                 answer_split = answer.split(",")
                 for kk in answer_split:
-                    available_step = option[int(kk)-1]
+                    available_step = option[int(kk) - 1]
 
                 self.ref_answer[name] = answer
                 choices.pop(0)
@@ -69,8 +77,7 @@ class InquiryTerminal:
                 print("Invalid option, try again")
                 self._selection(choices)
 
-
-        if len(choices)>0:
+        if len(choices) > 0:
             self._selection(choices)
         else:
             self.is_terminate = True

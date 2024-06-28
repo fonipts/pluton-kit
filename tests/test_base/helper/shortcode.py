@@ -1,11 +1,9 @@
-from plutonkit.framework.command.structure_command import StructureCommand
+from plutonkit.helper.template import convert_shortcode
+import unittest
 
-class TestCommandBlueprint:
-    def test_login(self):
-        pass
+class TestChortcode(unittest.TestCase):
+    def test_convert_shortcode_valid(self):
+        self.assertEqual(convert_shortcode("{{name}}",{"name":"FOO"}), 'FOO')
 
-    def test_modification(self):
-        assert True
-
-    def test_deletion(self):
-        pass
+    def test_convert_shortcode_invalid(self):
+        self.assertNotEqual(convert_shortcode("{{name}}",{"name":"FOO"}), 'FO')

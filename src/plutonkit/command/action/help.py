@@ -16,6 +16,6 @@ class Help:
         template = "Here are the available commands you can used\nCommands:\n"
 
         for key, val in ACTIONS.items():
-            template += "\t(%s) %s\n" % (key, val.comment())
+            template += f"\t({key}) {val.comment()}\n"
         print(template)
         sys.exit(0)

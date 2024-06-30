@@ -1,15 +1,9 @@
 """Module providing a function printing python version."""
 
 import os
-
-from yaml import load
-
-try:
-    from yaml import CLoader as Loader
-except ImportError:
-    from yaml import Loader
-
 import sys
+
+from yaml import Loader, load
 
 from plutonkit.config import PROJECT_DETAILS_FILE, REMOTE_URL_RAW
 from plutonkit.config.system import SERVICE_TYPE
@@ -56,11 +50,10 @@ class CreateProject:
                 "[%s]  %s" % (key + 1, val["option_name"])
                 for key, val in enumerate(step)
             ]
-            print("\n%s\n%s " % (name, "\n".join(enum_action)))
-            answer = input(
-                "choose only at [%s]"
-                % (len(step) == 1 and "1" or "1-" + str(len(step)))
-            )
+            join_enum_action = "\n".join(enum_action)
+            print(f"\n{name}\n{join_enum_action} ")
+            answer_step = len(step) == 1 and "1" or "1-" + str(len(step))
+            answer = input(f"choose only at [{answer_step}]")
             int_answer = int(answer)
             available_step = step[int_answer - 1]
             reference_value["command"].append(
@@ -80,11 +73,8 @@ class CreateProject:
             else:
                 self.query_execute(reference_value)
         except Exception:
-            print(
-                "Invalid argument please select in the available command `%s`\n"
-                % (answer)
-            )
-            self.callback_execute(reference_value, name, step)
+            print(f"Invalid argument please select in the available command `{answer}`\n")
+            #  self.callback_execute(reference_value, name, step)
 
     def query_execute(self, reference_value):
 
@@ -96,15 +86,13 @@ class CreateProject:
     def project_details_execute(self, remote_blueprint):
 
         project_name = input("Name of folder project?")
-        folder_name = "Project name: %s" % (project_name)
-        answer = input(
-            "\n%s\nDo you want to proceed installation process?(y/n) > " % (folder_name)
-        )
+        folder_name = f"Project name: {project_name}"
+        answer = input(f"\n{folder_name}\nDo you want to proceed installation process?(y/n) > " )
         if answer == "y":
 
-            framework_bluePrint = FrameworkBluePrint(remote_blueprint)
-            framework_bluePrint.set_folder_name(project_name)
-            framework_bluePrint.execute()
+            framework_blueprint = FrameworkBluePrint(remote_blueprint)
+            framework_blueprint.set_folder_name(project_name)
+            framework_blueprint.execute()
             sys.exit(0)
         else:
             print("Your confirmation say `No`")

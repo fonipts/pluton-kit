@@ -71,8 +71,5 @@ class Command:
                             print(err)
                         sys.exit(0)
         else:
-            print(
-                "This command file `%s` is missing in the directory project"
-                % (PROJECT_COMMAND_FILE)
-            )
+            print(f"This command file `{PROJECT_COMMAND_FILE}` is missing in the directory project")
             sys.exit(0)

@@ -13,17 +13,17 @@ class TheTemplate:
         lst = []
         for v in contents:
             lst.append(v.lstrip())
-    
-        if name =="content":
+
+        if name == "content":
             return "\n".join(lst)
         if name == "script":
             try:
                 local_ns = {}
-                local_ns['content'] = sub_content
+                local_ns["content"] = sub_content
 
                 exec("\n".join(lst), None, local_ns)
 
-                return local_ns['content']
+                return local_ns["content"]
             except Exception as e:
                 print(e,"(error)","\n".join(lst))
                 return ""

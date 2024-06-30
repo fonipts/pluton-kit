@@ -1,4 +1,3 @@
-from plutonkit.helper.template import convert_shortcode
 from plutonkit.management.logic.ConditionIdentify import ConditionIdentify
 import unittest
 

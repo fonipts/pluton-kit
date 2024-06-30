@@ -68,6 +68,6 @@ def write_file_content(
         else:
             content = convert_template(content, args)
 
-    with open(name, "w") as f_write:
+    with open(name, "w", encoding="utf-8") as f_write:
         f_write.write(content)
         f_write.close()

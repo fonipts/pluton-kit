@@ -4,7 +4,7 @@ from plutonkit.helper.arguments import get_dict_value
 
 
 class ConditionIdentify:
-    def __init__(self, cond: str, arg={}):
+    def __init__(self, cond: str, arg=None):
         self.cond: str = cond.strip()
         self.arg = arg
         self.valid = False

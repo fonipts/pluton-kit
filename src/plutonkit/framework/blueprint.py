@@ -1,20 +1,14 @@
 """Module providing a function printing python version."""
 
+import os
+import sys
+
 import requests
-from yaml import load
+from yaml import Loader, load
 
 from plutonkit.config import (
     ARCHITECTURE_DETAILS_FILE, PROJECT_COMMAND_FILE, PROJECT_DETAILS_FILE,
 )
-
-try:
-    from yaml import CLoader as Loader
-except ImportError:
-    from yaml import Loader
-
-import os
-import sys
-
 from plutonkit.helper.command import clean_command_split, pip_run_command
 from plutonkit.helper.filesystem import (
     create_yaml_file, generate_project_folder_cwd, generate_requirement,

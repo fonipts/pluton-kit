@@ -28,8 +28,7 @@ def autoload():
     # noqa: Register the exit handler with `SIGTSTP` (Ctrl + Z)
     signal.signal(signal.SIGTSTP, exit_handler)
 
-    TEMPLATE = "%s\n" % (INTRODUCTION)
-    print(TEMPLATE)
+    print(f"{INTRODUCTION}\n")
     try:
         while 1:
             ACTIONS["help"] = Help()
@@ -46,8 +45,7 @@ def load_command():
     # noqa: Register the exit handler with `SIGTSTP` (Ctrl + Z)
     signal.signal(signal.SIGTSTP, exit_handler)
 
-    TEMPLATE = "%s\n" % (INTRODUCTION)
-    print(TEMPLATE)
+    print(f"{INTRODUCTION}\n")
     try:
         while 1:
             ACTIONS["command"].modify_argv_index(1).execute()

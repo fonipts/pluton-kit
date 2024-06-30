@@ -5,7 +5,7 @@ from .ContentExtraction import ContentExtraction
 
 
 class TemplateStruct:
-    def __init__(self, contents: str, args={}):
+    def __init__(self, contents: str, args=None):
         self.args = args
         self.contents: list[str] = contents.split("\n")
         self.join_contents = ""
@@ -78,7 +78,7 @@ class TemplateStruct:
             templates.append({"template": content, "component": rows_capture_data})
         return templates
 
-    def __convert_template(self, templates=[]):
+    def __convert_template(self, templates=None):
 
         self.join_contents = "\n".join(self.contents)
         data = []

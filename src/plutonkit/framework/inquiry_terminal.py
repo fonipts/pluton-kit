@@ -38,12 +38,11 @@ class InquiryTerminal:
             option = choice.get("option", [])
 
             enum_action = [f"[{key+1}] {val}" for key, val in enumerate(option)]
-            print("\n%s\n%s " % (question, "\n".join(enum_action)))
+            join_enum_action = "\n".join(enum_action)
+            print(f"\n{question}\n{join_enum_action} ")
             try:
-                answer = input(
-                    "choose only at [%s]"
-                    % (len(option) == 1 and "1" or "1-" + str(len(option)))
-                )
+                options_ans = (len(option) == 1 and "1" or "1-" + str(len(option)))
+                answer = input(f"choose only at [{options_ans}]")
 
                 available_step = option[int(answer) - 1]
                 self.ref_answer[name] = available_step
@@ -56,15 +55,11 @@ class InquiryTerminal:
             option = choice.get("option", [])
 
             enum_action = [f"[{key+1}] {val}" for key, val in enumerate(option)]
-            print(
-                "\n%s\n%s (use comma `,` for multiple selection)"
-                % (question, "\n".join(enum_action))
-            )
+            join_enum_action = "\n".join(enum_action)
+            print(f"\n{question}\n{join_enum_action} (use comma `,` for multiple selection)" )
             try:
-                answer = input(
-                    "choose only at [%s]"
-                    % (len(option) == 1 and "1" or "1-" + str(len(option)))
-                )
+                answer_multiple_choices =  (len(option) == 1 and "1" or "1-" + str(len(option)))
+                answer = input(f"choose only at [{answer_multiple_choices}]" )
 
                 self.ref_answer[name] = ""
                 answer_split = answer.split(",")

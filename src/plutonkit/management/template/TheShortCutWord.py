@@ -27,8 +27,7 @@ class TheShortCutWord:
         actions.pop(0)
         if len(actions) > 0:
             return self.__get_init_action(val, actions)
-        else:
-            return val
+        return val
 
     def __get_action(self, vals):
         list_template = []
@@ -50,7 +49,7 @@ class TheShortCutWord:
         split_value = val.split("|")
 
         val_retrieve = get_dict_value(split_value[0].split("."), self.args)
-        if val_retrieve != None and len(split_value) > 1:
+        if val_retrieve is not None and len(split_value) > 1:
             arg_pass = self.__get_action(split_value[1:])
             val_retrieve = self.__get_init_action(val_retrieve, arg_pass)
         return val_retrieve

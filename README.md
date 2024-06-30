@@ -20,6 +20,8 @@ In using Pip install
 pip install plutonkit
 ```
 
+## Why we need another project template
+
 ## Available command you can use at your terminal
 The commands must in this format  `plutonkit <Command type>` 
 |Command type | Description| Example |

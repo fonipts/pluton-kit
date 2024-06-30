@@ -1,12 +1,12 @@
 """Module providing a function printing python version."""
 
+import signal
 import sys
-from plutonkit.config.command import ACTIONS
+import time
+
 from plutonkit.command.action.help import Help
 from plutonkit.config import INTRODUCTION
-
-import signal
-import time
+from plutonkit.config.command import ACTIONS
 
 # noqa: Our signal handler
 

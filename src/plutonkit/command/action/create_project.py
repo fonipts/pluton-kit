@@ -1,17 +1,20 @@
 """Module providing a function printing python version."""
 
 import os
+
 from yaml import load
 
 try:
     from yaml import CLoader as Loader
 except ImportError:
     from yaml import Loader
+
+import sys
+
 from plutonkit.config import PROJECT_DETAILS_FILE, REMOTE_URL_RAW
 from plutonkit.config.system import SERVICE_TYPE
 from plutonkit.framework.blueprint import FrameworkBluePrint
 from plutonkit.helper.config import get_config
-import sys
 
 
 class CreateProject:

@@ -1,9 +1,12 @@
 """Module providing a function printing python version."""
 
 import os
+
+import yaml
+
 from plutonkit.config import REQUIREMENT
 from plutonkit.config.framework import STANDARD_LIBRARY
-import yaml
+
 from .template import convert_shortcode, convert_template
 
 
@@ -16,7 +19,7 @@ def generate_project_folder_cwd(project_name):
     os.makedirs(os.path.join(directory, default_project_name(project_name)))
 
 
-def generate_requirement(project_name, library=[]):
+def generate_requirement(project_name, library=None):
     directory = os.getcwd()
     with open(
         os.path.join(directory, default_project_name(project_name), REQUIREMENT),
@@ -27,7 +30,7 @@ def generate_requirement(project_name, library=[]):
         fw.close()
 
 
-def create_yaml_file(project_name, filename, library={}):
+def create_yaml_file(project_name, filename, library=None):
     directory = os.getcwd()
     with open(
         os.path.join(directory, default_project_name(project_name), filename),
@@ -39,14 +42,14 @@ def create_yaml_file(project_name, filename, library={}):
 
 
 def write_file_content(
-    directory: str, folder_name: str, file: str, content: str, args={}
+    directory: str, folder_name: str, file: str, content: str, args=None
 ):
     file_path = os.path.dirname(file)
     if file_path != "":
         new_folder = os.path.join(
             directory, default_project_name(folder_name), file_path
         )
-        if os.path.exists(new_folder) == False:
+        if os.path.exists(new_folder) is False:
             os.makedirs(new_folder)
 
     name = os.path.join(directory, default_project_name(folder_name), file)

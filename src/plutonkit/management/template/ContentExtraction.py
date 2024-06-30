@@ -8,8 +8,6 @@ class ContentExtraction:
         self.get_component = self.__get_component()
 
     def __get_component(self):
-        val = []
-        last_key = ""
         cond_list = [x for x in self.__get_key_component() if x in ["condition"]]
 
         if len(cond_list) > 0:
@@ -28,7 +26,7 @@ class ContentExtraction:
                     if count_cond == 0:
                         is_valid_value = True
                 else:
-                    if is_valid_value == True:
+                    if is_valid_value:
                         raw_data.append(row)
             return raw_data
 

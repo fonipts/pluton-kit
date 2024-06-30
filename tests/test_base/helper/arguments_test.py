@@ -7,3 +7,4 @@ class TestAruments(unittest.TestCase):
 
     def test_convert_arguments_invalid(self):
         self.assertNotEqual(get_dict_value(["name"],{"name":"FOO"}), 'FO')
+ 

@@ -2,6 +2,7 @@
 
 import os
 import sys
+
 from yaml import load
 
 try:
@@ -9,9 +10,9 @@ try:
 except ImportError:
     from yaml import Loader
 
-from plutonkit.helper.command import clean_command_split, pip_run_command
 from plutonkit.config import PROJECT_COMMAND_FILE
 from plutonkit.framework.command.structure_command import StructureCommand
+from plutonkit.helper.command import clean_command_split, pip_run_command
 
 
 class Command:

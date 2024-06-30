@@ -1,8 +1,9 @@
 """Module providing a function printing python version."""
 
 import os
-import subprocess
 import re
+import subprocess
+
 from plutonkit.config import REQUIREMENT
 from plutonkit.helper.filesystem import default_project_name
 

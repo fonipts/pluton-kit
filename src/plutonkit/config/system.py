@@ -1,14 +1,10 @@
 """Module providing a function printing python version."""
 
-from plutonkit.management.format import format_argument_input
 from plutonkit.config.framework import (
-    DEFAULT_GRPC,
-    FRAMEWORK_WEB,
-    DEFAULT_WEB_SOCKET,
-    FRAMEWORK_GRAPHQL,
-    DEFAULT_WEB3,
-    DEFAULT_PACKAGE,
+    DEFAULT_GRPC, DEFAULT_PACKAGE, DEFAULT_WEB3, DEFAULT_WEB_SOCKET,
+    FRAMEWORK_GRAPHQL, FRAMEWORK_WEB,
 )
+from plutonkit.management.format import format_argument_input
 
 SERVICE_TYPE = [
     format_argument_input(

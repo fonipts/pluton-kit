@@ -1,0 +1,8 @@
+autopep8
+black
+pytest
+pytz
+pylint
+PyYAML
+requests
+isort

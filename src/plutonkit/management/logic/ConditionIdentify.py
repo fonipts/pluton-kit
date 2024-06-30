@@ -1,5 +1,6 @@
-from plutonkit.helper.arguments import get_dict_value
 import re
+
+from plutonkit.helper.arguments import get_dict_value
 
 
 class ConditionIdentify:

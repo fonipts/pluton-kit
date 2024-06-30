@@ -2,39 +2,39 @@ class InquiryTerminal:
     def __init__(self, choices=[]) -> None:
         self.ref_answer = {}
         self.choices = choices
-        self.is_continue = True
-        self.is_terminate = False
+        self.var_is_continue = True
+        self.var_is_terminate = False
 
     def execute(self):
         if len(self.choices) > 0:
             self._selection(self.choices)
         else:
-            self.is_terminate = True
+            self.var_is_terminate = True
 
-    def getAnswer(self):
+    def get_answer(self):
         return self.ref_answer
 
-    def isContinue(self):
-        return self.is_continue
+    def is_continue(self):
+        return self.var_is_continue
 
-    def isTerminate(self):
-        return self.is_terminate
+    def is_terminate(self):
+        return self.var_is_terminate
 
     def _selection(self, choices):
         choice = choices[0]
 
         name = choice.get("name", "")
         question = choice.get("question", "")
-        type = choice.get("type", "")
+        type_choice = choice.get("type", "")
         default = choice.get("default", "")
 
-        if type == "input":
+        if type_choice == "input":
             question = input(f"{question}?:")
             if question == "":
                 question = default
             self.ref_answer[name] = question
             choices.pop(0)
-        if type == "single_choice":
+        if type_choice == "single_choice":
             option = choice.get("option", [])
 
             enum_action = [f"[{key+1}] {val}" for key, val in enumerate(option)]
@@ -52,7 +52,7 @@ class InquiryTerminal:
                 print("Invalid option, try again")
                 self._selection(choices)
 
-        if type == "multiple_choice":
+        if type_choice == "multiple_choice":
             option = choice.get("option", [])
 
             enum_action = [f"[{key+1}] {val}" for key, val in enumerate(option)]
@@ -80,4 +80,4 @@ class InquiryTerminal:
         if len(choices) > 0:
             self._selection(choices)
         else:
-            self.is_terminate = True
+            self.var_is_terminate = True

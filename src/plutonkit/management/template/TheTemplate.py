@@ -1,5 +1,6 @@
-from .TemplateStruct import TemplateStruct
 import re
+
+from .TemplateStruct import TemplateStruct
 
 
 class TheTemplate:
@@ -7,12 +8,26 @@ class TheTemplate:
         self.args = args
         self.content = self.__wragle_data(content)
 
-    def __command_details(self, name, contents):
-        if name == "content":
-            lst = []
-            for v in contents:
-                lst.append(v.lstrip())
+    def __command_details(self, name, contents,sub_content):
+
+        lst = []
+        for v in contents:
+            lst.append(v.lstrip())
+    
+        if name =="content":
             return "\n".join(lst)
+        if name == "script":
+            try:
+                local_ns = {}
+                local_ns['content'] = sub_content
+
+                exec("\n".join(lst), None, local_ns)
+
+                return local_ns['content']
+            except Exception as e:
+                print(e,"(error)","\n".join(lst))
+                return ""
+        return ""
 
     def __wragle_data(self, content: str):
         find_value = re.findall(r"(\{\$)([a-zA-Z0-9_]{1,})(\})", content)
@@ -24,7 +39,7 @@ class TheTemplate:
         for mv in template_struct.convert_template:
             sub_content = ""
             for sv in mv["component"]:
-                sub_content += self.__command_details(sv["name"], sv["input"])
+                sub_content += self.__command_details(sv["name"], sv["input"],sub_content)
             content = content.replace(mv["template"], sub_content)
 
         return content

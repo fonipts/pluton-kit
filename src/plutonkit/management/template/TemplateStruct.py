@@ -1,6 +1,7 @@
-from .ContentExtraction import ContentExtraction
-from copy import deepcopy
 import re
+from copy import deepcopy
+
+from .ContentExtraction import ContentExtraction
 
 
 class TemplateStruct:

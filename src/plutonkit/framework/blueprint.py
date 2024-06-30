@@ -1,32 +1,29 @@
 """Module providing a function printing python version."""
 
-from plutonkit.config import (
-    ARCHITECTURE_DETAILS_FILE,
-    PROJECT_COMMAND_FILE,
-    PROJECT_DETAILS_FILE,
-)
 import requests
-
 from yaml import load
+
+from plutonkit.config import (
+    ARCHITECTURE_DETAILS_FILE, PROJECT_COMMAND_FILE, PROJECT_DETAILS_FILE,
+)
 
 try:
     from yaml import CLoader as Loader
 except ImportError:
     from yaml import Loader
 
-from plutonkit.helper.filesystem import (
-    create_yaml_file,
-    generate_project_folder_cwd,
-    generate_requirement,
-    write_file_content,
-)
-from plutonkit.helper.command import clean_command_split, pip_run_command
-from plutonkit.helper.template import convert_shortcode
-
 import os
 import sys
-from .inquiry_terminal import InquiryTerminal
+
+from plutonkit.helper.command import clean_command_split, pip_run_command
+from plutonkit.helper.filesystem import (
+    create_yaml_file, generate_project_folder_cwd, generate_requirement,
+    write_file_content,
+)
+from plutonkit.helper.template import convert_shortcode
 from plutonkit.management.logic.ConditionIdentify import ConditionIdentify
+
+from .inquiry_terminal import InquiryTerminal
 
 
 class FrameworkBluePrint:
@@ -52,9 +49,9 @@ class FrameworkBluePrint:
             inquiry_terminal = InquiryTerminal(choices)
             inquiry_terminal.execute()
 
-            while inquiry_terminal.isContinue():
+            while inquiry_terminal.is_continue():
 
-                if inquiry_terminal.isTerminate():
+                if inquiry_terminal.is_terminate():
                     dependencies = content.get("dependencies", [])
                     files = content.get("files", [])
                     script = content.get("script", {})
@@ -69,11 +66,11 @@ class FrameworkBluePrint:
                         self.folder_name, PROJECT_COMMAND_FILE, {"script": script}
                     )
 
-                    self._packages(dependencies, inquiry_terminal.getAnswer())
-                    terminal_answer = inquiry_terminal.getAnswer()
+                    self._packages(dependencies, inquiry_terminal.get_answer())
+                    terminal_answer = inquiry_terminal.get_answer()
                     terminal_answer["folder_name"] = self.folder_name
-                    self._files(files, inquiry_terminal.getAnswer())
-                    self._boot_command(bootscript, inquiry_terminal.getAnswer())
+                    self._files(files, terminal_answer)
+                    self._boot_command(bootscript, terminal_answer)
                     print("Congrats!! your first project has been generated")
                     break
 

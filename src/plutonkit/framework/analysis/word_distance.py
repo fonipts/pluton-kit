@@ -1,12 +1,12 @@
-from typing import List
 import math
+from typing import List
 
 
 class WordDistance:
     def __init__(self, valid_words) -> None:
         self.valid_words = valid_words
 
-    def getAveDistance(self, word) -> List[float]:
+    def get_ave_distance(self, word) -> List[float]:
         list_ave_word = []
         for lookup in self.valid_words:
             list_ave_word.append(

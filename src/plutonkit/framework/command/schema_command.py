@@ -1,4 +1,5 @@
 from typing import List
+
 from plutonkit.framework.analysis.word_distance import WordDistance
 
 VALID_KEY: List[str] = ["environment", "script"]
@@ -15,7 +16,7 @@ class SchemaCommand:
         list_error: List[str] = []
         words_distance = WordDistance(VALID_KEY)
         for key, value in self.reference_value.items():
-            distances = words_distance.getAveDistance(key)
+            distances = words_distance.get_ave_distance(key)
             max_distance = max(distances)
             if max_distance != 1.0:
                 list_error.append(
@@ -30,7 +31,7 @@ class SchemaCommand:
         command_words_distance = WordDistance(COMMAND_VALID_KEY)
         for _, value1 in value.items():
             for key2, value2 in value1.items():
-                sub_distances = command_words_distance.getAveDistance(key2)
+                sub_distances = command_words_distance.get_ave_distance(key2)
                 sub_max_distance = max(sub_distances)
                 if sub_max_distance != 1.0:
                     list_error.append(

@@ -1,6 +1,7 @@
 import re
-from os import environ, path
+from os import path
 from typing import List
+
 from .schema_command import SchemaCommand
 
 

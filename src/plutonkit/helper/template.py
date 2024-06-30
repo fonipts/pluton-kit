@@ -1,5 +1,5 @@
-from plutonkit.management.template.TheTemplate import TheTemplate
 from plutonkit.management.template.TheShortCutWord import TheShortCutWord
+from plutonkit.management.template.TheTemplate import TheTemplate
 
 
 def convert_template(content: str, args) -> str:

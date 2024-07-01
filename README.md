@@ -1,5 +1,5 @@
 # pluton-kit
-Create your project from the list of template from available
+Create your project from the current selection we had on the lobby, But in the future we are working to share your ideas with other developer.
 
 [![PIP version][pip-image]][pip-url] 
 
@@ -21,6 +21,13 @@ pip install plutonkit
 ```
 
 ## Why we need another project template
+There are several template generator that is available public repository, but they lack of user control in favored of there likes.
+- to have condition, for feature that you want and available in architecture.
+- Custom template that makes this project unique.
+
+
+## Roadmap
+Currently we are in alpha phase had not reach 100% test coverage and some linter(due to feature I am currently in focused) but still committed to deliver the improvement if the tool.
 
 ## Available command you can use at your terminal
 The commands must in this format  `plutonkit <Command type>` 

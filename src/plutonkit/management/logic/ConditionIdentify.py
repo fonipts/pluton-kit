@@ -17,7 +17,7 @@ class ConditionIdentify:
     def validStatus(self) -> bool:
         return self.valid
 
-    def validCond(self) -> bool:
+    def validCond(self) -> bool:  # [too-many-return-statements]
 
         if self.valid:
 

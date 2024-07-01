@@ -2,7 +2,7 @@ from ..logic.ConditionIdentify import ConditionIdentify
 
 
 class ContentExtraction:
-    def __init__(self, components: str, args={}):
+    def __init__(self, components: str, args=None):
         self.components = components
         self.args = args
         self.get_component = self.__get_component()

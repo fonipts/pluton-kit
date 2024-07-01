@@ -4,7 +4,7 @@ from .TemplateStruct import TemplateStruct
 
 
 class TheTemplate:
-    def __init__(self, content: str, args={}):
+    def __init__(self, content: str, args=None):
         self.args = args
         self.content = self.__wragle_data(content)
 
@@ -20,11 +20,11 @@ class TheTemplate:
             try:
                 local_ns = {}
                 local_ns["content"] = sub_content
-
+                # pylint: disable-next=exec-used
                 exec("\n".join(lst), None, local_ns)
 
                 return local_ns["content"]
-            except Exception as e:
+            except Exception as e:  # [broad-exception-caught]
                 print(e,"(error)","\n".join(lst))
                 return ""
         return ""

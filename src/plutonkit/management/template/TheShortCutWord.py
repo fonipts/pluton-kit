@@ -4,7 +4,7 @@ from plutonkit.helper.arguments import get_dict_value
 
 
 class TheShortCutWord:
-    def __init__(self, content: str, args={}):
+    def __init__(self, content: str, args=None):
         self.args = args
         self.content = content
         self.data = self.__wragle_data(content)

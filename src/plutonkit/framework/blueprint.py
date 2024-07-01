@@ -51,18 +51,19 @@ class FrameworkBluePrint:
                     script = content.get("script", {})
                     bootscript = content.get("bootscript", [])
 
+                    self._packages(dependencies, inquiry_terminal.get_answer())
+                    terminal_answer = inquiry_terminal.get_answer()
+                    terminal_answer["folder_name"] = self.folder_name
+
                     create_yaml_file(
                         self.folder_name,
                         PROJECT_DETAILS_FILE,
-                        {"name": self.folder_name, "blueprint": self.path},
+                        {"name": self.folder_name, "blueprint": self.path,"default_choices":terminal_answer},
                     )
                     create_yaml_file(
                         self.folder_name, PROJECT_COMMAND_FILE, {"script": script}
                     )
 
-                    self._packages(dependencies, inquiry_terminal.get_answer())
-                    terminal_answer = inquiry_terminal.get_answer()
-                    terminal_answer["folder_name"] = self.folder_name
                     self._files(files, terminal_answer)
                     self._boot_command(bootscript, terminal_answer)
                     print("Congrats!! your first project has been generated")
@@ -74,7 +75,7 @@ class FrameworkBluePrint:
             sys.exit(0)
 
     def _curl(self, path):
-        data = requests.get(path)
+        data = requests.get(path, timeout=25)
         return data
 
     def _packages(self, values, args):

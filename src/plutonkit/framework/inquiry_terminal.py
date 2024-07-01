@@ -1,5 +1,5 @@
 class InquiryTerminal:
-    def __init__(self, choices=[]) -> None:
+    def __init__(self, choices) -> None:
         self.ref_answer = {}
         self.choices = choices
         self.var_is_continue = True

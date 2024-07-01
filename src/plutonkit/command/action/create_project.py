@@ -47,12 +47,12 @@ class CreateProject:
 
         try:
             enum_action = [
-                "[%s]  %s" % (key + 1, val["option_name"])
+                f"{key + 1}  {val.get('option_name')}"
                 for key, val in enumerate(step)
             ]
             join_enum_action = "\n".join(enum_action)
             print(f"\n{name}\n{join_enum_action} ")
-            answer_step = len(step) == 1 and "1" or "1-" + str(len(step))
+            answer_step = len(step) == 1 and "1" or f"1-{str(len(step))}"
             answer = input(f"choose only at [{answer_step}]")
             int_answer = int(answer)
             available_step = step[int_answer - 1]

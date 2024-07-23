@@ -2,7 +2,7 @@
 
 import os
 import sys
-
+import re
 import requests
 from yaml import Loader, load
 
@@ -15,7 +15,7 @@ from plutonkit.helper.filesystem import (
     write_file_content,
 )
 from plutonkit.helper.template import convert_shortcode
-from plutonkit.management.logic.ConditionIdentify import ConditionIdentify
+from plutonkit.management.logic.ConditionSplit import ConditionSplit
 
 from .inquiry_terminal import InquiryTerminal
 
@@ -63,9 +63,9 @@ class FrameworkBluePrint:
                     create_yaml_file(
                         self.folder_name, PROJECT_COMMAND_FILE, {"script": script}
                     )
-
+                    self._boot_command(bootscript, "start",terminal_answer)
                     self._files(files, terminal_answer)
-                    self._boot_command(bootscript, terminal_answer)
+                    self._boot_command(bootscript, "end",terminal_answer)
                     print("Congrats!! your first project has been generated")
                     break
 
@@ -86,12 +86,12 @@ class FrameworkBluePrint:
 
         optional_item = values.get("optional", [])
         for value in optional_item:
-            cond_valid = ConditionIdentify(value.get("condition"), args)
+            cond_valid = ConditionSplit(value.get("condition"), args)
             if "dependent" in value and cond_valid.validCond():
                 library += value.get("dependent", [])
 
-        for value in library:
-            pip_run_command(["pip", "install", value])
+        #for value in library:
+        #    pip_run_command(["pip", "install", value])
         generate_requirement(self.folder_name, library)
 
     def _files(self, values, args):
@@ -102,6 +102,10 @@ class FrameworkBluePrint:
                 file = value["file"]
                 data = self._curl(f"{self.path}/{file}")
                 if data.status_code == 200:
+                    if "mv_file" in value:
+                        file =value["mv_file"]
+                        file = re.sub(r"^(/)","",file)
+    
                     write_file_content(
                         self.directory, self.folder_name, file, data.text, args
                     )
@@ -109,33 +113,46 @@ class FrameworkBluePrint:
                     print(f"error in downloading the file {file}")
         optional_item = values.get("optional", [])
         for value in optional_item:
-            cond_valid = ConditionIdentify(value.get("condition"), args)
+            cond_valid = ConditionSplit(value.get("condition"), args)
+
             if "dependent" in value and cond_valid.validCond():
                 for s_value in value["dependent"]:
                     if "file" in s_value:
-                        file = s_value["file"]
+                        file = convert_shortcode(s_value["file"],args)
                         data = self._curl(f"{self.path}/{file}")
+                        #if "mv_folder_name" in value:
+                        #    file = os.path.join(convert_shortcode(value["mv_folder_name"],args), file)
                         if data.status_code == 200:
+                            if "mv_file" in s_value:
+                                file = convert_shortcode(s_value["mv_file"],args)
+                                file = re.sub(r"^(/)","",file)
+                                print ("@@@@@")
                             write_file_content(
                                 self.directory, self.folder_name, file, data.text, args
                             )
                         else:
                             print(f"error in downloading the file {file}")
 
-    def _boot_command(self, values, args):
-        directory = os.getcwd()
-        path = os.path.join(directory, self.folder_name)
+    def _boot_command(self, values,post_exec, args):
+        
+        path = os.path.join(self.directory, self.folder_name)
         os.chdir(path)
+        print(path,"::",post_exec)
         for value in values:
             command = value.get("command", "")
             condition = value.get("condition", "")
+            value_exec_position = value.get("exec_position", "end")
             is_valid = False
             if condition == "":
                 is_valid = True
             else:
-                cond_valid = ConditionIdentify(condition, args)
+                cond_valid = ConditionSplit(condition, args)
                 is_valid = cond_valid.validCond()
 
-            if is_valid:
+            if is_valid and post_exec == value_exec_position:
                 str_convert = convert_shortcode(command, args)
+                #if "chdir" in value:
+                #    os.chdir(os.path.join(path, value["chdir"]))
                 pip_run_command(clean_command_split(str_convert))
+                #os.chdir(path)
+        #os.chdir(os.path.join(directory, "../"))

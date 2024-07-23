@@ -24,6 +24,9 @@ class TheTemplate:
                 exec("\n".join(lst), None, local_ns)
 
                 return local_ns["content"]
+            except SyntaxError as e:  # [broad-exception-caught]
+                print(e,"(error)","\n".join(lst))
+                return ""
             except Exception as e:  # [broad-exception-caught]
                 print(e,"(error)","\n".join(lst))
                 return ""

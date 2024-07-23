@@ -1,4 +1,4 @@
-from ..logic.ConditionIdentify import ConditionIdentify
+from ..logic.ConditionSplit import ConditionSplit
 
 
 class ContentExtraction:
@@ -17,7 +17,7 @@ class ContentExtraction:
             for row in self.components:
                 if row["name"] == "condition":
                     is_valid_value = False
-                    cond_valid = ConditionIdentify(row["input"][0], self.args)
+                    cond_valid = ConditionSplit(row["input"][0], self.args)
                     if count_cond == 0 and cond_valid.validCond():
                         is_valid_value = True
                         count_cond += 1

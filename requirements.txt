@@ -6,3 +6,4 @@ pylint
 PyYAML
 requests
 isort
+trio

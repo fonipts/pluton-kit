@@ -4,9 +4,9 @@ from plutonkit.management.format import format_argument_input
 
 FRAMEWORK_WEB = [
     format_argument_input("framework", "django", "Do you need docker", "django", []),
-    format_argument_input(
-        "framework", "django_rest", "Do you need docker", "django rest framework", []
-    ),
+  #  format_argument_input(
+  #      "framework", "django_rest", "Do you need docker", "django rest framework", []
+  #  ),
     format_argument_input("framework", "bottle", "Do you need docker", "bottle", []),
     format_argument_input("framework", "fastapi", "Do you need docker", "fastapi", []),
     format_argument_input("framework", "flask", "Do you need docker", "flask", []),
@@ -20,9 +20,9 @@ FRAMEWORK_GRAPHQL = [
     format_argument_input(
         "framework", "tartiflette", "Do you need docker", "tartiflette", []
     ),
-    format_argument_input(
-        "framework", "django_graphbox", "Do you need docker", "django-graphbox", []
-    ),
+   # format_argument_input(
+   #     "framework", "django_graphbox", "Do you need docker", "django-graphbox", []
+   # ),
 ]
 
 DEFAULT_GRPC = [

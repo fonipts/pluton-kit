@@ -48,7 +48,9 @@ class Command:
                 print(e)
                 print("Invalid yaml file content")
                 sys.exit(0)
+        self.command_start(content, directory)
 
+    def command_start(self,content, directory):
         structure_command_cls = StructureCommand(content, directory)
         get_errors = structure_command_cls.get_error()
         if len(get_errors) > 0:

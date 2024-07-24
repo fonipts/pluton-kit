@@ -2,20 +2,23 @@
 
 import os
 import sys
-import re
-import requests
+
 from yaml import Loader, load
 
-from plutonkit.config import (
-    ARCHITECTURE_DETAILS_FILE, PROJECT_COMMAND_FILE, PROJECT_DETAILS_FILE,
-)
+from plutonkit.config import PROJECT_COMMAND_FILE, PROJECT_DETAILS_FILE
 from plutonkit.helper.command import clean_command_split, pip_run_command
 from plutonkit.helper.filesystem import (
     create_yaml_file, generate_project_folder_cwd, generate_requirement,
     write_file_content,
 )
 from plutonkit.helper.template import convert_shortcode
+from plutonkit.management.filesystem.BlueprintFileSchema import (
+    BlueprintFileSchema,
+)
 from plutonkit.management.logic.ConditionSplit import ConditionSplit
+from plutonkit.management.request.ArchitectureRequest import (
+    ArchitectureRequest,
+)
 
 from .inquiry_terminal import InquiryTerminal
 
@@ -25,18 +28,20 @@ class FrameworkBluePrint:
         self.path = path
         self.folder_name = ""
         self.directory = os.getcwd()
+        self.arch_req = None;
 
     def set_folder_name(self, name):
         self.folder_name = name
 
     def execute(self):
-        data = self._curl(f"{self.path}/{ARCHITECTURE_DETAILS_FILE}")
-        if data.status_code != 200:
-            print("Can not access, please try again later")
+        self.arch_req = ArchitectureRequest(self.path, self.directory)
+        if self.arch_req.isValidReq is False:
+            print(self.arch_req.errorMessage)
+            self.arch_req.clearRepoFolder()
             sys.exit(0)
         try:
             generate_project_folder_cwd(self.folder_name)
-            content = load(str(data.text), Loader=Loader)
+            content = load(str(self.arch_req.getValidReq), Loader=Loader)
 
             choices = content.get("choices", [])
 
@@ -66,17 +71,14 @@ class FrameworkBluePrint:
                     self._boot_command(bootscript, "start",terminal_answer)
                     self._files(files, terminal_answer)
                     self._boot_command(bootscript, "end",terminal_answer)
+                    self.arch_req.clearRepoFolder()
                     print("Congrats!! your first project has been generated")
                     break
 
         except Exception as e:
             print(e)
-            print("Invalid yaml file content")
+            print("Invalid details to proceed in creating new project")
             sys.exit(0)
-
-    def _curl(self, path):
-        data = requests.get(path, timeout=25)
-        return data
 
     def _packages(self, values, args):
         default_item = values.get("default", [])
@@ -96,48 +98,36 @@ class FrameworkBluePrint:
 
     def _files(self, values, args):
 
+        files_check:list[BlueprintFileSchema] = []
         default_item = values.get("default", [])
+
         for value in default_item:
-            if "file" in value:
-                file = value["file"]
-                data = self._curl(f"{self.path}/{file}")
-                if data.status_code == 200:
-                    if "mv_file" in value:
-                        file =value["mv_file"]
-                        file = re.sub(r"^(/)","",file)
-    
-                    write_file_content(
-                        self.directory, self.folder_name, file, data.text, args
-                    )
-                else:
-                    print(f"error in downloading the file {file}")
+            files_check.append(BlueprintFileSchema(value,args))
+
         optional_item = values.get("optional", [])
         for value in optional_item:
             cond_valid = ConditionSplit(value.get("condition"), args)
 
             if "dependent" in value and cond_valid.validCond():
                 for s_value in value["dependent"]:
-                    if "file" in s_value:
-                        file = convert_shortcode(s_value["file"],args)
-                        data = self._curl(f"{self.path}/{file}")
-                        #if "mv_folder_name" in value:
-                        #    file = os.path.join(convert_shortcode(value["mv_folder_name"],args), file)
-                        if data.status_code == 200:
-                            if "mv_file" in s_value:
-                                file = convert_shortcode(s_value["mv_file"],args)
-                                file = re.sub(r"^(/)","",file)
-                                print ("@@@@@")
-                            write_file_content(
-                                self.directory, self.folder_name, file, data.text, args
-                            )
-                        else:
-                            print(f"error in downloading the file {file}")
+                    files_check.append(BlueprintFileSchema(s_value,args))
+
+        for value in files_check:
+            if value.isObjFile():
+                data = self.arch_req.getFiles(value.value["file"])
+                if data["is_valid"]:
+                    for save_file in value.get_save_files():
+                        write_file_content(
+                            self.directory, self.folder_name, save_file, data["content"], args
+                        )
+                else:
+                    print(f"error in downloading the file {value.get_save_file()}")
+
 
     def _boot_command(self, values,post_exec, args):
         
         path = os.path.join(self.directory, self.folder_name)
         os.chdir(path)
-        print(path,"::",post_exec)
         for value in values:
             command = value.get("command", "")
             condition = value.get("condition", "")

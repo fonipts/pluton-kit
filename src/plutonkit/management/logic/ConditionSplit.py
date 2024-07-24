@@ -1,14 +1,15 @@
 import re
 from .ConditionIdentify import ConditionIdentify
 
+
 class ConditionSplit:
-    def __init__(self,cond:str,arg = {}):
+    def __init__(self,cond:str,arg):
         self.cond:str = cond.strip()
         self.list_eq = []
-        self.list_or = [];
+        self.list_or = []
         self.arg = arg
-        self.condCnt = 0;
-        self.validCnt = 0;
+        self.condCnt = 0
+        self.validCnt = 0
         self.isValid = True
         self.__bootload()
         
@@ -35,6 +36,6 @@ class ConditionSplit:
                 types = val    
         cond_list_eq = self.__countValid(self.list_eq, len(self.list_eq))
         
-        if cond_list_eq == False:
+        if cond_list_eq is False:
             cond_list_or = self.__countValid(self.list_or, 1)
             self.isValid = cond_list_or

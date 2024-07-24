@@ -1,9 +1,10 @@
 """Module providing a function printing python version."""
 
 import os
+import re
 
 import yaml
-import re
+
 from plutonkit.config import REQUIREMENT
 from plutonkit.config.framework import STANDARD_LIBRARY
 

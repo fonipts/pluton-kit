@@ -11,8 +11,17 @@ class TheTemplate:
     def __command_details(self, name, contents,sub_content):
 
         lst = []
-        for v in contents:
-            lst.append(v.lstrip())
+        first_count_space = 0
+        for k,v in enumerate(contents):
+            
+            check_space = re.findall(r"^([\s\n]{0,})", v)
+
+            space_count = len(check_space[0].split(" "))
+            if k ==0:
+                first_count_space = space_count
+                lst.append(v.lstrip())  # 
+            else:
+                lst.append(v.replace("".join(check_space[first_count_space:space_count-first_count_space]), ""))
 
         if name == "content":
             return "\n".join(lst)

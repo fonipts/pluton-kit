@@ -28,7 +28,7 @@ class FrameworkBluePrint:
         self.path = path
         self.folder_name = ""
         self.directory = os.getcwd()
-        self.arch_req = None;
+        self.arch_req = None
 
     def set_folder_name(self, name):
         self.folder_name = name

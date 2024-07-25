@@ -121,7 +121,7 @@ class FrameworkBluePrint:
                             self.directory, self.folder_name, save_file, data["content"], args
                         )
                 else:
-                    print(f"error in downloading the file {value.get_save_file()}")
+                    print(f"error in downloading the file {value.value['file']}")
 
 
     def _boot_command(self, values,post_exec, args):

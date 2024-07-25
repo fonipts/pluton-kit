@@ -29,13 +29,13 @@ DEFAULT_GRPC = [
     format_argument_input(
         "framework", "default_grpc", "Do you need docker", "default", []
     ),
-    format_argument_input(
-        "framework",
-        "default_grpc_w_interceptor",
-        "Do you need docker",
-        "with interceptor auth support",
-        [],
-    ),
+   # format_argument_input(
+   #     "framework",
+   #     "default_grpc_w_interceptor",
+   #     "Do you need docker",
+   #     "with interceptor auth support",
+   #     [],
+   # ),
 ]
 
 DEFAULT_WEB3 = [

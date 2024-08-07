@@ -2,11 +2,7 @@
 
 import os
 import re
-
 import yaml
-
-from plutonkit.config import REQUIREMENT
-from plutonkit.config.framework import STANDARD_LIBRARY
 
 from .template import convert_shortcode, convert_template
 
@@ -18,17 +14,6 @@ def default_project_name(name):
 def generate_project_folder_cwd(project_name):
     directory = os.getcwd()
     os.makedirs(os.path.join(directory, default_project_name(project_name)))
-
-
-def generate_requirement(project_name, library=None):
-    directory = os.getcwd()
-    with open(
-        os.path.join(directory, default_project_name(project_name), REQUIREMENT),
-        "w",
-        encoding="utf-8",
-    ) as fw:
-        fw.write("\n".join(STANDARD_LIBRARY + library + [""]))
-        fw.close()
 
 
 def create_yaml_file(project_name, filename, library=None):

@@ -34,7 +34,7 @@ The commands must in this format  `plutonkit <Command type>`
 |Command type | Description| Example |
 |------------- | ------------- | ------------- |
 |create_project | Start creating your project in our listed framework  | `plutonkit create_project`|
-|command | Executing command using plutonkit | `plutonkit command start`|
+|cmd | Executing command using plutonkit | `plutonkit cmd start` or `plkcmd start`|
 |help | See available command for plutonkit | `plutonkit help` |
 
 ![Alt text](resources/pluton-kit-terminal-design.gif?raw=true "Title")

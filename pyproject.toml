@@ -49,7 +49,7 @@ Repository = "https://github.com/fonipts/pluton-kit"
 
 [project.scripts]
 plutonkit = "plutonkit.command:autoload"
-pkommand = "plutonkit.command:load_command"
+plkcmd = "plutonkit.command:load_command"
 
 [project.optional-dependencies]
 all = [

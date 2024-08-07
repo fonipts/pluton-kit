@@ -8,9 +8,10 @@ from yaml import Loader, load
 from plutonkit.config import PROJECT_COMMAND_FILE, PROJECT_DETAILS_FILE
 from plutonkit.helper.command import clean_command_split, pip_run_command
 from plutonkit.helper.filesystem import (
-    create_yaml_file, generate_project_folder_cwd, generate_requirement,
+    create_yaml_file, generate_project_folder_cwd,
     write_file_content,
 )
+from plutonkit.config.system import LANG_REQUIREMENT
 from plutonkit.helper.template import convert_shortcode
 from plutonkit.management.filesystem.BlueprintFileSchema import (
     BlueprintFileSchema,
@@ -55,8 +56,9 @@ class FrameworkBluePrint:
                     files = content.get("files", [])
                     script = content.get("script", {})
                     bootscript = content.get("bootscript", [])
+                    settings = content.get("settings")
 
-                    self._packages(dependencies, inquiry_terminal.get_answer())
+                    self._packages(settings,dependencies, inquiry_terminal.get_answer())
                     terminal_answer = inquiry_terminal.get_answer()
                     terminal_answer["folder_name"] = self.folder_name
 
@@ -80,7 +82,7 @@ class FrameworkBluePrint:
             print("Invalid details to proceed in creating new project")
             sys.exit(0)
 
-    def _packages(self, values, args):
+    def _packages(self, setting,values, args):
         default_item = values.get("default", [])
         library = []
         for value in default_item:
@@ -94,7 +96,11 @@ class FrameworkBluePrint:
 
         #for value in library:
         #    pip_run_command(["pip", "install", value])
-        generate_requirement(self.folder_name, library)
+        #generate_requirement(self.folder_name, library)
+        if setting.get("install_type","") in LANG_REQUIREMENT:
+            LANG_REQUIREMENT[setting.get("install_type","")](self.folder_name, library)
+        else:
+            print("Invalid install_type `value`, please check")
 
     def _files(self, values, args):
 
@@ -141,8 +147,5 @@ class FrameworkBluePrint:
 
             if is_valid and post_exec == value_exec_position:
                 str_convert = convert_shortcode(command, args)
-                #if "chdir" in value:
-                #    os.chdir(os.path.join(path, value["chdir"]))
                 pip_run_command(clean_command_split(str_convert))
-                #os.chdir(path)
-        #os.chdir(os.path.join(directory, "../"))
+

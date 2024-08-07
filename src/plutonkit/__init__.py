@@ -8,6 +8,3 @@ def setup():
     first setting), configure logging and populate the app registry.
     Set the thread-local urlresolvers script prefix if `set_prefix` is True.
     """
-    import plutonkit.command
-    import plutonkit.config
-    import plutonkit.core

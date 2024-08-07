@@ -1,8 +1,5 @@
 import re
 
-from plutonkit.config import (
-    ARCHITECTURE_DETAILS_FILE, PROJECT_COMMAND_FILE, PROJECT_DETAILS_FILE,
-)
 from plutonkit.helper.template import convert_shortcode
 
 

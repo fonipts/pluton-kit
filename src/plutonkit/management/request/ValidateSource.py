@@ -12,9 +12,9 @@ class ValidateSource:
         self.__validate_for_git()
 
     def __validate_for_request(self):
-        #raw file github
+        # noqa: raw file github
         match1 = re.search(r"^(http[s]{0,1})\://(raw.githubusercontent.com)", self.path)
-        #raw file gitlab
+        # noqa: raw file gitlab
         match2 = re.search(r"^(http[s]{0,1})\://(gitlab.com).*?(\/\-\/raw\/)", self.path)
         if match1 or match2:
             self.arch_type = "request"

@@ -6,12 +6,11 @@ import sys
 from yaml import Loader, load
 
 from plutonkit.config import PROJECT_COMMAND_FILE, PROJECT_DETAILS_FILE
+from plutonkit.config.system import LANG_REQUIREMENT
 from plutonkit.helper.command import clean_command_split, pip_run_command
 from plutonkit.helper.filesystem import (
-    create_yaml_file, generate_project_folder_cwd,
-    write_file_content,
+    create_yaml_file, generate_project_folder_cwd, write_file_content,
 )
-from plutonkit.config.system import LANG_REQUIREMENT
 from plutonkit.helper.template import convert_shortcode
 from plutonkit.management.filesystem.BlueprintFileSchema import (
     BlueprintFileSchema,

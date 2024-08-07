@@ -1,10 +1,13 @@
 
 
 
+import os
+
 from plutonkit.config import REQUIREMENT
 from plutonkit.config.framework import STANDARD_LIBRARY
-import os
+
 from ....helper.filesystem import default_project_name
+
 
 def pip_generate_requirement(project_name, library=None):
     directory = os.getcwd()

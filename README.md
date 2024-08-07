@@ -34,11 +34,26 @@ The commands must in this format  `plutonkit <Command type>`
 |Command type | Description| Example |
 |------------- | ------------- | ------------- |
 |create_project | Start creating your project in our listed framework  | `plutonkit create_project`|
-|cmd | Executing command using plutonkit | `plutonkit cmd start` or `plkcmd start`|
+|cmd | Executing command using plutonkit. the details of your command can be found at `command.yaml` | `plutonkit cmd start` or `plkcmd start`|
 |help | See available command for plutonkit | `plutonkit help` |
 
 ![Alt text](resources/pluton-kit-terminal-design.gif?raw=true "Title")
 
+
+## How to use the command
+Structure of your command, should follow this format
+
+in `command.yaml` :
+```html
+script:
+  {command_name}:
+    command:
+    - {executed command}
+   
+
+```
+For quick command execution, we had a new abbrevation that called
+`plkcmd` instead of `plutonkit cmd`. 
 
 [pip-url]: https://pypi.org/project/plutonkit/
 [pip-image]: https://img.shields.io/badge/plutonkit-0.01alpha0-brightgreen

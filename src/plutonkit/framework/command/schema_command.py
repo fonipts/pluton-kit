@@ -5,7 +5,6 @@ from plutonkit.framework.analysis.word_distance import WordDistance
 VALID_KEY: List[str] = ["environment", "script"]
 COMMAND_VALID_KEY: List[str] = ["command", "description", "group", "chdir"]
 
-
 class SchemaCommand:
     def __init__(self, reference_value) -> None:
 

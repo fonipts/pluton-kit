@@ -41,7 +41,7 @@ class InquiryTerminal:
             join_enum_action = "\n".join(enum_action)
             print(f"\n{question}\n{join_enum_action} ")
             try:
-                options_ans = (len(option) == 1 and "1" or "1-" + str(len(option)))
+                options_ans = "1" if len(option) == 1 else "1-" + str(len(option))
                 answer = input(f"choose only at [{options_ans}]")
 
                 available_step = option[int(answer) - 1]
@@ -58,7 +58,7 @@ class InquiryTerminal:
             join_enum_action = "\n".join(enum_action)
             print(f"\n{question}\n{join_enum_action} (use comma `,` for multiple selection)" )
             try:
-                answer_multiple_choices =  (len(option) == 1 and "1" or "1-" + str(len(option)))
+                answer_multiple_choices =  "1" if len(option) == 1 else "1-" + str(len(option))
                 answer = input(f"choose only at [{answer_multiple_choices}]" )
 
                 self.ref_answer[name] = ""

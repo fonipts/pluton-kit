@@ -17,10 +17,8 @@ def pip_install_requirement(reference_value):
     )
     subprocess.call(["pip", "install", "-r", path])
 
-
 def pip_run_command(command):
     subprocess.call(command)
-
 
 def clean_command_split(command: str):
     command = re.sub(r"\s{2,}", " ", command)

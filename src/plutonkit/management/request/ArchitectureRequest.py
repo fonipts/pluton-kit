@@ -28,13 +28,13 @@ class ArchitectureRequest:
             else:
                 self.errorMessage = responses[data.status_code]
         if self.validate.arch_type == "git":
-            
+
             try:
                 subprocess.check_output(
-                    ["git", 'clone', self.validate.path],
+                    ["git", "clone", self.validate.path],
                     cwd=self.dirs,
                     stderr=subprocess.STDOUT,
-                )    
+                )
                 arch_file = self._read_file(ARCHITECTURE_DETAILS_FILE)
                 if arch_file["is_valid"]:
                     self.isValidReq = True
@@ -42,10 +42,9 @@ class ArchitectureRequest:
                 else:
                     self.errorMessage = "No `"+ARCHITECTURE_DETAILS_FILE+"` was found in repository"
             except subprocess.CalledProcessError as clone_error:
-                output = clone_error.output.decode('utf-8')
+                output = clone_error.output.decode("utf-8")
                 self.errorMessage = output
 
-    
     def getFiles(self,file):
         if self.validate.arch_type == "request":
             data = self._curl(f"{self.path}/{file}")
@@ -80,11 +79,10 @@ class ArchitectureRequest:
             self.isValidReq = True
             try:
                 subprocess.check_output(
-                    ["rm", '-rf', self.validate.repo_name],
+                    ["rm", "-rf", self.validate.repo_name],
                     cwd=self.dirs,
                     stderr=subprocess.STDOUT,
-                )    
-                print(self.validate.repo_name,"::")
+                )
             except subprocess.CalledProcessError as clone_error:
-                output = clone_error.output.decode('utf-8')
+                output = clone_error.output.decode("utf-8")
                 print(output)

@@ -93,9 +93,6 @@ class FrameworkBluePrint:
             if "dependent" in value and cond_valid.validCond():
                 library += value.get("dependent", [])
 
-        #for value in library:
-        #    pip_run_command(["pip", "install", value])
-        #generate_requirement(self.folder_name, library)
         if setting.get("install_type","") in LANG_REQUIREMENT:
             LANG_REQUIREMENT[setting.get("install_type","")](self.folder_name, library)
         else:
@@ -128,9 +125,8 @@ class FrameworkBluePrint:
                 else:
                     print(f"error in downloading the file {value.value['file']}")
 
-
     def _boot_command(self, values,post_exec, args):
-        
+
         path = os.path.join(self.directory, self.folder_name)
         os.chdir(path)
         for value in values:
@@ -147,4 +143,3 @@ class FrameworkBluePrint:
             if is_valid and post_exec == value_exec_position:
                 str_convert = convert_shortcode(command, args)
                 pip_run_command(clean_command_split(str_convert))
-

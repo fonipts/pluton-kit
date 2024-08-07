@@ -4,7 +4,7 @@ import re
 class ValidateSource:
     def __init__(self,path) -> None:
         self.path = path
-        
+
         self.arch_type = None
         self.repo_name = None
         self.repo_path_dir = ""

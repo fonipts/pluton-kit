@@ -12,15 +12,15 @@ class BlueprintFileSchema:
         self.args = args
 
     def isObjFile(self):
-        return "file" in self.value  
+        return "file" in self.value
     def get_save_files(self):
         if "mv_file" in self.value:
-            return [ 
+            return [
                 self.__clean_file_name(convert_shortcode(self.value["mv_file"], self.args))
                 ]
         return [
             self.__clean_file_name(convert_shortcode(self.value["file"], self.args))
-            ] 
+            ]
 
     def __clean_file_name(self, name):
         name = re.sub(r"^(/)","",name)

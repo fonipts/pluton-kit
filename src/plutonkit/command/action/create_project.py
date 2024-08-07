@@ -52,7 +52,7 @@ class CreateProject:
             ]
             join_enum_action = "\n".join(enum_action)
             print(f"\n{name}\n{join_enum_action} ")
-            answer_step = len(step) == 1 and "1" or f"1-{str(len(step))}"
+            answer_step = "1" if len(step) == 1 else f"1-{str(len(step))}"
             answer = input(f"choose only at [{answer_step}]")
             int_answer = int(answer)
             available_step = step[int_answer - 1]
@@ -74,7 +74,6 @@ class CreateProject:
                 self.query_execute(reference_value)
         except Exception:
             print(f"Invalid argument please select in the available command `{answer}`\n")
-            #  self.callback_execute(reference_value, name, step)
 
     def query_execute(self, reference_value):
 

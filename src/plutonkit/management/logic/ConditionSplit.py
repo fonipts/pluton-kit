@@ -13,7 +13,7 @@ class ConditionSplit:
         self.validCnt = 0
         self.isValid = True
         self.__bootload()
-        
+
     def validCond(self):
         return self.isValid
 
@@ -21,8 +21,8 @@ class ConditionSplit:
         cnt = 0
         for val in list_cond:
             if val:
-                cnt +=1
-        return cnt == count_cond        
+                cnt += 1
+        return cnt == count_cond
     def __bootload(self):
         tokens = re.split(r"([&]{2}|[\|]{2})", self.cond)
         types = "&&"
@@ -32,11 +32,11 @@ class ConditionSplit:
                 if types == "&&":
                     self.list_eq.append(ConditionIdentify(val, self.arg).validCond())
                 if types == "||":
-                    self.list_or.append(ConditionIdentify(val, self.arg).validCond())    
+                    self.list_or.append(ConditionIdentify(val, self.arg).validCond())
             if mod_val == 1:
-                types = val    
+                types = val
         cond_list_eq = self.__countValid(self.list_eq, len(self.list_eq))
-        
+
         if cond_list_eq is False:
             cond_list_or = self.__countValid(self.list_or, 1)
             self.isValid = cond_list_or

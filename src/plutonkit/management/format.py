@@ -1,6 +1,5 @@
 """Module providing a function printing python version."""
 
-
 def format_argument_input(type_format, name, question, option_name, config):
     return {
         "field_type": "input",

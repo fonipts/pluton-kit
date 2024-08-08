@@ -2,6 +2,7 @@
 Create your project from the current selection we had on the lobby, But in the future we are working to share your ideas with other developer.
 
 [![PIP version][pip-image]][pip-url] 
+[![Build Status](https://github.com/fonipts/pluton-kit/actions/workflows/cicd.yml/badge.svg?branch=main)](https://github.com/fonipts/pluton-kit/actions)
 
 [Site](https://plutonkit.codehyouka.xyz/) |
 [Docs](https://plutonkit.codehyouka.xyz/api) |
@@ -37,7 +38,7 @@ The commands must in this format  `plutonkit <Command type>`
 |cmd | Executing command using plutonkit. the details of your command can be found at `command.yaml` | `plutonkit cmd start` or `plkcmd start`|
 |help | See available command for plutonkit | `plutonkit help` |
 
-![Alt text](resources/pluton-kit-terminal-design.gif?raw=true "Title")
+![Alt text](resources/pluton-kit-terminal-design.gif?raw=true "terminal")
 
 
 ## How to use the command

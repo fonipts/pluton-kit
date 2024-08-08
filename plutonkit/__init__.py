@@ -1,6 +1,6 @@
 """Module providing a function printing python version."""
 
-__version__ = "1.0.0a21"
+__version__ = "1.0.0a22"
 
 def setup():
     """

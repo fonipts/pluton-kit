@@ -23,10 +23,10 @@ jobs:
           pip install -e .
       - name: Check sorting import
         run: |
-          isort src/* --check-only
+          isort plutonkit/* --check-only
       - name: Check with pylint
         run: |
-           pylint ./src/ --disable=missing-docstring   
+           pylint ./plutonkit/ --disable=missing-docstring   
       - name: Test with pytest
         run: |
           pytest    

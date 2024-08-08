@@ -1,0 +1,18 @@
+environment:
+  path: ./test.txt
+  name: Plutok-kit name	
+script:
+  pip_install:
+    description: Hellow wolrd ${name}
+    chdir: ../	
+    command:
+    - pip install -r requirements.txt
+    group: 
+      pip_install: 
+        description: Hellow wolrd naku sub yan
+        command:
+        - pip install -r requirements.txt
+  proto_generate:
+    command:
+    - python -m grpc_tools.protoc -I./protobufs --python_out=./server/proto   --grpc_python_out=./server/proto
+      ./protobufs/test.proto

@@ -5,7 +5,7 @@ build-backend = "hatchling.build"
 [project]
 name = "plutonkit"
 version = "0.0.1a0"
-description = "Start kit for python for building application"
+description = "Startkit for template project, for your desired structure of framework"
 long_description_content_type = "text/markdown"
 requires-python = ">=3.8"
 license = "MIT"

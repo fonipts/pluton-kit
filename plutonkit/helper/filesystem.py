@@ -51,6 +51,6 @@ def write_file_content(
                 directory, default_project_name(folder_name), f"{raw_filename}{raw_fileext}"
             )
             content = convert_template(content, args)
-    with open(name, "w", encoding="utf-8") as f_write:
+    with open(convert_shortcode(name,args), "w", encoding="utf-8") as f_write:
         f_write.write(content)
         f_write.close()

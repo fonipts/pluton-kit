@@ -10,6 +10,7 @@ class ValidateSource:
         self.repo_path_dir = ""
         self.__validate_for_request()
         self.__validate_for_git()
+        self.__validate_for_local()
 
     def __validate_for_request(self):
         # noqa: raw file github
@@ -27,3 +28,9 @@ class ValidateSource:
             if len(split_path)>1:
                 self.path = split_path[0]+".git"
                 self.repo_path_dir = "/".join(split_path[1::])
+
+    def __validate_for_local(self):
+        # noqa: raw file github
+        match1 = re.search(r"^([.]{1,}|[\/]{1}[A-Za-z]{1,}|[A-Za-z]{1}\:[\/]{1})", self.path)
+        if match1:
+            self.arch_type = "local"

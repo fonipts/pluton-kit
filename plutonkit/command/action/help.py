@@ -1,5 +1,3 @@
-"""Module providing a function printing python version."""
-
 import sys
 
 from plutonkit.config.command import ACTIONS

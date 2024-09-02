@@ -45,6 +45,16 @@ class ArchitectureRequest:
                 output = clone_error.output.decode("utf-8")
                 self.errorMessage = output
 
+        if self.validate.arch_type == "local":    
+
+            arch_file = self._read_file(ARCHITECTURE_DETAILS_FILE)
+            if arch_file["is_valid"]:
+                self.isValidReq = True
+                self.getValidReq = arch_file["content"]
+            else:
+                self.errorMessage = "No `"+ARCHITECTURE_DETAILS_FILE+"` was found in local directory"
+             
+
     def getFiles(self,file):
         if self.validate.arch_type == "request":
             data = self._curl(f"{self.path}/{file}")
@@ -54,13 +64,18 @@ class ArchitectureRequest:
             }
         if self.validate.arch_type == "git":
             return self._read_file(file)
+        if self.validate.arch_type == "local":
+            return self._read_file(file)
         return {"is_valid": False}
 
     def _curl(self, path):
         data = requests.get(path, timeout=25)
         return data
     def _read_file(self, file):
-        path = os.path.join(self.dirs, self.validate.repo_name,self.validate.repo_path_dir,file)
+        if self.validate.arch_type == "local":
+            path = os.path.join(self.dirs, self.path,file)
+        else:
+            path = os.path.join(self.dirs, self.validate.repo_name,self.validate.repo_path_dir,file)
 
         try:
             f_read = open(path, "r", encoding="utf-8")

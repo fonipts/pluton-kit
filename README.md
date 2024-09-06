@@ -2,7 +2,7 @@
 Create your project from the current selection we had on the lobby, But in the future we are working to share your ideas with other developer.
 
 [![PIP version][pip-image]][pip-url] 
-[![Build Status](https://github.com/fonipts/pluton-kit/actions/workflows/cicd.yml/badge.svg?branch=main)](https://github.com/fonipts/pluton-kit/actions)
+[![Build Status](https://github.com/fonipts/pluton-kit/actions/workflows/cicd.yaml/badge.svg?branch=main)](https://github.com/fonipts/pluton-kit/actions)
 
 [Site](https://plutonkit.codehyouka.xyz/) |
 [Docs](https://plutonkit.codehyouka.xyz/api) |
@@ -13,11 +13,11 @@ Building from scratch is quite a dauting task. Constructing your thought, lookin
 
 ## Installation
 In your local machine
-```html
+```
 pip install -e .
 ```
 In using Pip install
-```html
+```
 pip install plutonkit
 ```
 
@@ -34,7 +34,9 @@ Currently we are in alpha phase had not reach 100% test coverage and some linter
 The commands must in this format  `plutonkit <Command type>` 
 |Command type | Description| Example |
 |------------- | ------------- | ------------- |
+|create_achitecture | Start creating your own architecture from scratch  | `plutonkit create_achitecture`|
 |create_project | Start creating your project in our listed framework  | `plutonkit create_project`|
+|validate_blueprint | Validated your blueprint before shipping to production  | `plutonkit validate_blueprint <directory name>`|
 |cmd | Executing command using plutonkit. the details of your command can be found at `command.yaml` | `plutonkit cmd start` or `plkcmd start`|
 |help | See available command for plutonkit | `plutonkit help` |
 
@@ -44,9 +46,9 @@ The commands must in this format  `plutonkit <Command type>`
 ## How to use the command
 Structure of your command, should follow this format
 
-in `command.yaml` :
-```html
-script:
+in `command.yaml` 
+```
+script: 
   {command_name}:
     command:
     - {executed command}

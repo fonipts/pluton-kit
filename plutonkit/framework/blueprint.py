@@ -1,5 +1,3 @@
-"""Module providing a function printing python version."""
-
 import os
 import sys
 
@@ -20,7 +18,7 @@ from plutonkit.management.request.ArchitectureRequest import (
     ArchitectureRequest,
 )
 
-from .inquiry_terminal import InquiryTerminal
+from plutonkit.management.terminal.inquiry_terminal import InquiryTerminal
 
 
 class FrameworkBluePrint:

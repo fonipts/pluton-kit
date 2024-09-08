@@ -14,8 +14,9 @@ from plutonkit.helper.command import clean_command_split, pip_run_command
 
 
 class Command:
-    def __init__(self) -> None:
+    def __init__(self, argv) -> None:
         self.index = 2
+        self.argv = argv
 
     def modify_argv_index(self, index):
         self.index = index
@@ -48,7 +49,7 @@ class Command:
                 sys.exit(0)
         self.command_start(content, directory)
 
-    def command_start(self,content, directory):
+    def command_start(self, content, directory):
         structure_command_cls = StructureCommand(content, directory)
         get_errors = structure_command_cls.get_error()
         if len(get_errors) > 0:
@@ -56,7 +57,7 @@ class Command:
                 print(err)
             sys.exit(0)
 
-        command_list = sys.argv[self.index : :]
+        command_list = self.argv[self.index::]
         command_value = ":.:".join(command_list)
         list_commands = structure_command_cls.get_list_commands()
         if command_value in list_commands:
@@ -70,8 +71,8 @@ class Command:
             print("Please select the command below.")
             for key, value in list_commands.items():
                 print("  ",
-                    " ".join(key.split(":.:")),
-                    " .... ",
-                    value.get("description", "[no comment]"),
-                )
+                      " ".join(key.split(":.:")),
+                      " .... ",
+                      value.get("description", "[no comment]"),
+                      )
         sys.exit(0)

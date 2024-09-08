@@ -56,10 +56,10 @@ class InquiryTerminal:
 
             enum_action = [f"[{key+1}] {val}" for key, val in enumerate(option)]
             join_enum_action = "\n".join(enum_action)
-            print(f"\n{question}\n{join_enum_action} (use comma `,` for multiple selection)" )
+            print(f"\n{question}\n{join_enum_action} (use comma `,` for multiple selection)")
             try:
-                answer_multiple_choices =  "1" if len(option) == 1 else "1-" + str(len(option))
-                answer = input(f"choose only at [{answer_multiple_choices}]" )
+                answer_multiple_choices = "1" if len(option) == 1 else "1-" + str(len(option))
+                answer = input(f"choose only at [{answer_multiple_choices}]")
 
                 self.ref_answer[name] = ""
                 answer_split = answer.split(",")

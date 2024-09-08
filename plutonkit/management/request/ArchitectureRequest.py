@@ -10,13 +10,13 @@ from .ValidateSource import ValidateSource
 
 
 class ArchitectureRequest:
-    def __init__(self,path, dirs) -> None:
+    def __init__(self, path, dirs) -> None:
         self.path = path
         self.dirs = dirs
         self.validate = ValidateSource(path)
         self.isValidReq = False
         self.getValidReq = None
-        self.errorMessage = None
+        self.errorMessage = "`source` in blueprint was invalid, please check and try again later"
         self.__init_architecture()
 
     def __init_architecture(self):
@@ -40,22 +40,21 @@ class ArchitectureRequest:
                     self.isValidReq = True
                     self.getValidReq = arch_file["content"]
                 else:
-                    self.errorMessage = "No `"+ARCHITECTURE_DETAILS_FILE+"` was found in repository"
+                    self.errorMessage = "No `" + ARCHITECTURE_DETAILS_FILE + "` was found in repository"
             except subprocess.CalledProcessError as clone_error:
                 output = clone_error.output.decode("utf-8")
                 self.errorMessage = output
 
-        if self.validate.arch_type == "local":    
+        if self.validate.arch_type == "local":
 
             arch_file = self._read_file(ARCHITECTURE_DETAILS_FILE)
             if arch_file["is_valid"]:
                 self.isValidReq = True
                 self.getValidReq = arch_file["content"]
             else:
-                self.errorMessage = "No `"+ARCHITECTURE_DETAILS_FILE+"` was found in local directory"
-             
+                self.errorMessage = "No `" + ARCHITECTURE_DETAILS_FILE + "` was found in local directory"
 
-    def getFiles(self,file):
+    def getFiles(self, file):
         if self.validate.arch_type == "request":
             data = self._curl(f"{self.path}/{file}")
             return {
@@ -71,11 +70,12 @@ class ArchitectureRequest:
     def _curl(self, path):
         data = requests.get(path, timeout=25)
         return data
+
     def _read_file(self, file):
         if self.validate.arch_type == "local":
-            path = os.path.join(self.dirs, self.path,file)
+            path = os.path.join(self.dirs, self.path, file)
         else:
-            path = os.path.join(self.dirs, self.validate.repo_name,self.validate.repo_path_dir,file)
+            path = os.path.join(self.dirs, self.validate.repo_name, self.validate.repo_path_dir, file)
 
         try:
             f_read = open(path, "r", encoding="utf-8")

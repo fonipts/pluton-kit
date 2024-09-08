@@ -4,8 +4,8 @@ from plutonkit.config.command import ACTIONS
 
 
 class Help:
-    def __init__(self) -> None:
-        pass
+    def __init__(self, argv) -> None:
+        self.argv = argv
 
     def comment(self):
         return "To see all available commands"

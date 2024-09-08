@@ -2,6 +2,7 @@
 
 __version__ = "1.0.2a0"
 
+
 def setup():
     """
     Configure the settings (this happens as a side effect of accessing the

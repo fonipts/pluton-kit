@@ -10,13 +10,28 @@ from plutonkit.helper.config import get_config
 
 
 class CreateProject:
-    def __init__(self) -> None:
-        pass
+    def __init__(self, argv) -> None:
+        self.argv = argv
 
     def comment(self):
         return "Start creating your project in our listed framework"
 
     def execute(self):
+
+        option_cmd = self.argv[2::]
+        if len(option_cmd) > 0:
+            view_extra_cmd = self._get_arg_value(option_cmd)
+            if "source" in view_extra_cmd:
+                self.project_details_execute(view_extra_cmd["source"])
+            else:
+                print("Please use the source as default\n")
+                print("`plutonkit create_project source=<source of blueprint> ")
+                sys.exit(0)
+        else:
+            self.acces_lobby_blueprint()
+
+    def acces_lobby_blueprint(self):
+
         directory = os.getcwd()
         path = os.path.join(directory, PROJECT_DETAILS_FILE)
         if os.path.exists(path):
@@ -84,7 +99,7 @@ class CreateProject:
 
         project_name = input("Name of folder project?")
         folder_name = f"Project name: {project_name}"
-        answer = input(f"\n{folder_name}\nDo you want to proceed installation process?(y/n) > " )
+        answer = input(f"\n{folder_name}\nDo you want to proceed installation process?(y/n) > ")
         if answer == "y":
 
             framework_blueprint = FrameworkBluePrint(remote_blueprint)
@@ -94,3 +109,17 @@ class CreateProject:
         else:
             print("Your confirmation say `No`")
             sys.exit(0)
+
+    def _get_arg_value(self, args):
+        local_obj = {}
+        local_obj["extra"] = []
+
+        for val in args:
+            word_split = val.split("=")
+
+            if len(word_split) > 0:
+                local_obj[word_split[0]] = "=".join(word_split[1::])
+            else:
+                local_obj["extra"].append(val)
+
+        return local_obj

@@ -8,11 +8,11 @@ class TheTemplate:
         self.args = args
         self.content = self.__wragle_data(content)
 
-    def __command_details(self, name, contents,sub_content):
+    def __command_details(self, name, contents, sub_content):
 
         lst = []
         first_count_space = 0
-        for k,v in enumerate(contents):
+        for k, v in enumerate(contents):
 
             check_space = re.findall(r"^([\s\n]{0,})", v)
 
@@ -21,7 +21,7 @@ class TheTemplate:
                 first_count_space = space_count
                 lst.append(v.lstrip())  #
             else:
-                lst.append(v.replace("".join(check_space[first_count_space:space_count-first_count_space]), ""))
+                lst.append(v.replace("".join(check_space[first_count_space:space_count - first_count_space]), ""))
 
         if name == "content":
             return "\n".join(lst)
@@ -34,10 +34,10 @@ class TheTemplate:
 
                 return local_ns["content"]
             except SyntaxError as e:  # [broad-exception-caught]
-                print(e,"(error)","\n".join(lst))
+                print(e, "(error)", "\n".join(lst))
                 return ""
             except Exception as e:  # [broad-exception-caught]
-                print(e,"(error)","\n".join(lst))
+                print(e, "(error)", "\n".join(lst))
                 return ""
         return ""
 
@@ -51,7 +51,7 @@ class TheTemplate:
         for mv in template_struct.convert_template:
             sub_content = ""
             for sv in mv["component"]:
-                sub_content += self.__command_details(sv["name"], sv["input"],sub_content)
+                sub_content += self.__command_details(sv["name"], sv["input"], sub_content)
             content = content.replace(mv["template"], sub_content)
 
         return content

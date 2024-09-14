@@ -1,7 +1,7 @@
 from plutonkit.helper.template import convert_shortcode
 import unittest
 
-class TestChortcode(unittest.TestCase):
+class TestShortcode(unittest.TestCase):
     def test_convert_shortcode_valid(self):
         self.assertEqual(convert_shortcode("{{name}}",{"name":"FOO"}), 'FOO')
 

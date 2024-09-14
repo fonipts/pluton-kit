@@ -5,6 +5,7 @@ from http.client import responses
 import requests
 
 from plutonkit.config import ARCHITECTURE_DETAILS_FILE
+from plutonkit.config.message import ARCHITECTURE_REQUEST_ERROR_MESSAGE
 
 from .ValidateSource import ValidateSource
 
@@ -16,7 +17,7 @@ class ArchitectureRequest:
         self.validate = ValidateSource(path)
         self.isValidReq = False
         self.getValidReq = None
-        self.errorMessage = "`source` in blueprint was invalid, please check and try again later"
+        self.errorMessage = ARCHITECTURE_REQUEST_ERROR_MESSAGE
         self.__init_architecture()
 
     def __init_architecture(self):
@@ -39,8 +40,7 @@ class ArchitectureRequest:
                 if arch_file["is_valid"]:
                     self.isValidReq = True
                     self.getValidReq = arch_file["content"]
-                else:
-                    self.errorMessage = "No `" + ARCHITECTURE_DETAILS_FILE + "` was found in repository"
+
             except subprocess.CalledProcessError as clone_error:
                 output = clone_error.output.decode("utf-8")
                 self.errorMessage = output
@@ -48,11 +48,12 @@ class ArchitectureRequest:
         if self.validate.arch_type == "local":
 
             arch_file = self._read_file(ARCHITECTURE_DETAILS_FILE)
-            if arch_file["is_valid"]:
-                self.isValidReq = True
-                self.getValidReq = arch_file["content"]
-            else:
-                self.errorMessage = "No `" + ARCHITECTURE_DETAILS_FILE + "` was found in local directory"
+            self.isValidReq = arch_file["is_valid"]
+            self.errorMessage = arch_file["content"]
+
+        if self.isValidReq is False and self.errorMessage != ARCHITECTURE_REQUEST_ERROR_MESSAGE:
+            self.errorMessage = f"No `{ARCHITECTURE_DETAILS_FILE}` was found in local directory"
+
 
     def getFiles(self, file):
         if self.validate.arch_type == "request":
@@ -79,14 +80,17 @@ class ArchitectureRequest:
 
         try:
             f_read = open(path, "r", encoding="utf-8")
-            return {
+
+            data =  {
                 "is_valid": True,
                 "content": str(f_read.read())
             }
-        except:
+            f_read.close()
+            return data
+        except Exception as e:
             return {
                 "is_valid": False,
-                "content": ""
+                "content": str(e)
             }
 
     def clearRepoFolder(self):

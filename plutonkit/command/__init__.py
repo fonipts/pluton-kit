@@ -5,8 +5,8 @@ import sys
 import time
 
 from plutonkit.command.action.help import Help
-from plutonkit.config import INTRODUCTION
 from plutonkit.config.command import ACTIONS
+from plutonkit.config.message import INTRODUCTION
 
 # noqa: Our signal handler
 

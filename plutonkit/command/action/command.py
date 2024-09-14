@@ -71,8 +71,8 @@ class Command:
             print("Please select the command below.")
             for key, value in list_commands.items():
                 print("  ",
-                      " ".join(key.split(":.:")),
-                      " .... ",
-                      value.get("description", "[no comment]"),
-                      )
+                    " ".join(key.split(":.:")),
+                    " .... ",
+                    value.get("description", "[no comment]"),
+                    )
         sys.exit(0)

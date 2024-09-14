@@ -1,5 +1,6 @@
 import re
 
+from plutonkit.config.framework import VAR_SHORTCUT_TEMPLATE
 from plutonkit.helper.arguments import get_dict_value
 
 
@@ -10,19 +11,8 @@ class TheShortCutWord:
         self.data = self.__wragle_data(content)
 
     def __get_init_action(self, val, actions):
-        if actions[0]["name"] == "ucfirst":
-            val = val.capitalize()
-        if actions[0]["name"] == "lower":
-            val = val.lower()
-        if actions[0]["name"] == "upper":
-            val = val.upper()
-        if actions[0]["name"] == "join_space":
-            val = (actions[0]["arg"][0]).join(val.split(" "))
-        if actions[0]["name"] == "replace":
-            val = val.replace(actions[0]["arg"][0], actions[0]["arg"][1])
-        if actions[0]["name"] == "if":
-            if str(actions[0]["arg"][0]) == str(val):
-                val = actions[0]["arg"][1]
+        if actions[0]["name"] in VAR_SHORTCUT_TEMPLATE:
+            val = VAR_SHORTCUT_TEMPLATE[actions[0]["name"]](val,actions)
 
         actions.pop(0)
         if len(actions) > 0:
@@ -66,9 +56,6 @@ class TheShortCutWord:
                     }
                 )
         return list_template
-
-    def get_content(self):
-        return self.data
 
     def get_convert(self):
 

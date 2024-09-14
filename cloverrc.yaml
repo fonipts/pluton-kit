@@ -14,5 +14,5 @@ scans:
       - check_indent_per_line : 4   
       - string_literal: double_qoute
      include:
-      - 'src/plutonkit'
+      - 'plutonkit'
       - 'test'

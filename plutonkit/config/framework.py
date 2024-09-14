@@ -1,5 +1,9 @@
 """Module providing a function printing python version."""
 
+from plutonkit.config.func.shortcut import (
+    shortcut_if, shortcut_join_space, shortcut_lower, shortcut_replace,
+    shortcut_ucfirst, shortcut_upper,
+)
 from plutonkit.management.format import format_argument_input
 
 FRAMEWORK_WEB = [
@@ -44,3 +48,12 @@ DEFAULT_WEB_SOCKET = [
 ]
 
 STANDARD_LIBRARY = ["pylint==3.0.2", "pytest==7.4.3", "python-decouple==3.8"]
+
+VAR_SHORTCUT_TEMPLATE = {
+    "ucfirst": shortcut_ucfirst,
+    "lower": shortcut_lower,
+    "upper": shortcut_upper,
+    "join_space": shortcut_join_space,
+    "replace": shortcut_replace,
+    "if": shortcut_if,
+}

@@ -2,9 +2,6 @@
 
 DOCKER_FILE: str = "Dockerfile"
 DOCKER_COMPOSE_FILE: str = "docker-compose.yaml"
-INTRODUCTION: str = (
-    "Welcome to pluton-kit, this is your application builder in python woorld"
-)
 
 PROJECT_COMMAND_FILE: str = "command.yaml"
 PROJECT_DETAILS_FILE: str = "project.yaml"

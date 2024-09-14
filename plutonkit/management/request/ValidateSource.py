@@ -31,7 +31,11 @@ class ValidateSource:
                 self.repo_path_dir = "/".join(split_path[1::])
 
     def __validate_for_local(self):
-        # noqa: raw file github
+        # noqa: raw file in local
         match1 = re.search(r"^([.]{1,}|[\/]{1}[A-Za-z]{1,}|[A-Za-z]{1}\:[\/]{1})", self.path)
         if match1:
             self.arch_type = "local"
+        else:
+            match2 = re.search(r"([\/]{1,})", self.path)
+            if match2 and self.arch_type is None:
+                self.arch_type = "local"

@@ -1,0 +1,69 @@
+name: bottle
+settings:
+  install_type: pip
+choices:
+  - name: name
+    question: What is your name
+    type: input
+  - name: database
+    question: What is your Database choice?
+    type: single_choice
+    option:
+      - postgres
+      - mysql
+      - none
+  - name: redis
+    question: Do you want Redis?
+    type: single_choice
+    option:
+      - "yes"
+      - "no"
+  - name: docker
+    question: Do you want Dockerfile?
+    type: single_choice
+    option:
+      - "No plan"
+      - "python"
+      - "nginx"
+      - "apache2"
+dependencies:
+  default:
+  - bottle==0.12.25
+  optional:
+    - condition: database == "postgres"
+      dependent:
+      - SQLAlchemy==2.0.23
+      - psycopg[binary,pool]==3.1.14
+      - psycopg2-binary==2.9.9
+    - condition: database == "mysql"
+      dependent:
+      - SQLAlchemy==2.0.23
+      - PyMySQL==1.1.0
+    - condition: redis == "yes"
+      dependent:
+      - redis==5.0.4
+script:
+  pip_install:
+    description: Install package
+    command:
+    - pip install -r requirements.txt
+  start:
+    command:
+    - python main.py
+files:
+  default:
+    - file: main.tplpy
+    - file: __init__.tplpy
+    - file: README.md
+  optional:
+    - condition: database != "none"
+      dependent:
+      - file: db.tplpy
+      - file: .env
+    - condition: docker != "No plan"
+      dependent:
+      - file: Dockerfile.tpl
+
+bootscript:
+  - command: pip install -r requirements.txt
+    exec_position: start

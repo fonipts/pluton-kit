@@ -1,14 +1,6 @@
 name: CI/CD Tests
 
-on: 
-  push:
-    branches:
-      - main
-    tags:
-      - "*"
-  pull_request:
-    branches:
-      - "*"
+on: [push]
 
 jobs:
   build:

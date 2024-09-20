@@ -34,6 +34,7 @@ Currently we are in alpha phase had not reach 100% test coverage and some linter
 The commands must in this format  `plutonkit <Command type>` 
 |Command type | Description| Example |
 |------------- | ------------- | ------------- |
+|clone_project | Clone your project from project.yaml file  | `plutonkit clone_project source=<directory name>`|
 |create_achitecture | Start creating your own architecture from scratch  | `plutonkit create_achitecture`|
 |create_project | Start creating your project in our listed framework  | `plutonkit create_project`|
 |validate_blueprint | Validated your blueprint before shipping to production  | `plutonkit validate_blueprint <directory name>`|

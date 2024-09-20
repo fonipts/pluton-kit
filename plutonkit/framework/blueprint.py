@@ -119,7 +119,7 @@ class FrameworkBluePrint:
         default_item = values.get("default", [])
 
         for value in default_item:
-            files_check.append(BlueprintFileSchema(value, args))
+            files_check.append(BlueprintFileSchema(value, args,self.arch_req.validate.arch_type))
 
         optional_item = values.get("optional", [])
         for value in optional_item:
@@ -127,7 +127,7 @@ class FrameworkBluePrint:
 
             if "dependent" in value and cond_valid.validCond():
                 for s_value in value["dependent"]:
-                    files_check.append(BlueprintFileSchema(s_value, args))
+                    files_check.append(BlueprintFileSchema(s_value, args,self.arch_req.validate.arch_type))
 
         for value in files_check:
             if value.isObjFile():

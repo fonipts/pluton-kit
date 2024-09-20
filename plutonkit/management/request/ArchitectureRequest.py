@@ -37,6 +37,12 @@ class ArchitectureRequest:
                     cwd=self.dirs,
                     stderr=subprocess.STDOUT,
                 )
+                if "branch_name" in self.validate.repo_details:
+                    subprocess.check_output(
+                        ["git", "checkout", self.validate.repo_details["branch_name"]],
+                        cwd=self.dirs,
+                        stderr=subprocess.STDOUT,
+                    )
                 arch_file = self._read_file(self.details_file)
                 self.isValidReq = arch_file["is_valid"]
                 if self.isValidReq:

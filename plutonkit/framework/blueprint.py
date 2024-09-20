@@ -70,6 +70,7 @@ class FrameworkBluePrint:
         except Exception as e:
             print(e)
             print("Invalid details to proceed in creating new project")
+            self.arch_req.clearRepoFolder()
             sys.exit(0)
     def _bootloader_project(self, content, args):
         dependencies = content.get("dependencies", {})
@@ -97,19 +98,9 @@ class FrameworkBluePrint:
         print("Congrats!! your first project has been generated")
 
     def _packages(self, setting, values, args):
-        default_item = values.get("default", [])
-        library = []
-        for value in default_item:
-            library.append(value)
-
-        optional_item = values.get("optional", [])
-        for value in optional_item:
-            cond_valid = ConditionSplit(value.get("condition"), args)
-            if "dependent" in value and cond_valid.validCond():
-                library += value.get("dependent", [])
 
         if setting.get("install_type", "") in LANG_REQUIREMENT:
-            LANG_REQUIREMENT[setting.get("install_type", "")](self.folder_name, library)
+            LANG_REQUIREMENT[setting.get("install_type", "")](self.directory,self.folder_name, values,args)
         else:
             print("Invalid install_type `value`, please check")
 
@@ -119,7 +110,8 @@ class FrameworkBluePrint:
         default_item = values.get("default", [])
 
         for value in default_item:
-            files_check.append(BlueprintFileSchema(value, args,self.arch_req.validate.arch_type))
+            for file1 in self.arch_req.getBlob(value):
+                files_check.append(BlueprintFileSchema(file1, args))
 
         optional_item = values.get("optional", [])
         for value in optional_item:
@@ -127,7 +119,8 @@ class FrameworkBluePrint:
 
             if "dependent" in value and cond_valid.validCond():
                 for s_value in value["dependent"]:
-                    files_check.append(BlueprintFileSchema(s_value, args,self.arch_req.validate.arch_type))
+                    for file1 in self.arch_req.getBlob(file1):
+                        files_check.append(BlueprintFileSchema(s_value, args))
 
         for value in files_check:
             if value.isObjFile():

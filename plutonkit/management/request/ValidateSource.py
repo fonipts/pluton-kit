@@ -29,14 +29,14 @@ class ValidateSource:
             split_path = self.path.split(r".git")
             if len(split_path) > 1:
                 self.path = split_path[0] + ".git"
-                self.repo_path_dir = "/".join(split_path[1::])
-            match_branch = re.search(r"[\/]{0,1}\[\b([a-zA-Z0-9\_\-\/]{2,})\b\]", self.repo_path_dir)
+                self.repo_path_dir = re.sub(r"^[\/]","","/".join(split_path[1::]))
+            match_branch = re.search(r"[\/]{0,1}\[\b([a-zA-Z0-9\.\_\-\/]{2,})\b\]", self.repo_path_dir)
 
             if match_branch:
                 branch_name = re.sub(r"^[\/]","", match_branch[0])
                 branch_name = re.sub(r"[\[\]]","", branch_name)
                 self.repo_details["branch_name"] = branch_name
-                self.repo_path_dir = self.repo_path_dir.replace(match_branch[0],"")
+                self.repo_path_dir = re.sub(r"^[\/]","",self.repo_path_dir.replace(match_branch[0],""))
 
     def __validate_for_local(self):
         # noqa: raw file in local

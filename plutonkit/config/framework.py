@@ -37,7 +37,13 @@ DEFAULT_WEB3 = [
 
 DEFAULT_PACKAGE = [
     format_argument_input(
-        "framework", "default_packaging", "Start creating your new apps", "default", []
+        "framework", "default_starter_python", "Start creating your new python apps", "Python starter", []
+    ),
+    format_argument_input(
+        "framework", "default_starter_golang", "Start creating your new go apps", "Golang starter", []
+    ),
+    format_argument_input(
+        "framework", "default_starter_ruby", "Start creating your new ruby apps", "Ruby starter", []
     ),
 ]
 

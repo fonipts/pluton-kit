@@ -11,18 +11,19 @@ from .ValidateSource import ValidateSource
 
 
 class ArchitectureRequest:
-    def __init__(self, path, dirs) -> None:
+    def __init__(self, path, dirs,details_file=ARCHITECTURE_DETAILS_FILE) -> None:
         self.path = path
         self.dirs = dirs
         self.validate = ValidateSource(path)
         self.isValidReq = False
         self.getValidReq = None
         self.errorMessage = ARCHITECTURE_REQUEST_ERROR_MESSAGE
+        self.details_file = details_file
         self.__init_architecture()
 
     def __init_architecture(self):
         if self.validate.arch_type == "request":
-            data = self._curl(f"{self.path}/{ARCHITECTURE_DETAILS_FILE}")
+            data = self._curl(f"{self.path}/{self.details_file}")
             if data.status_code == 200:
                 self.isValidReq = True
                 self.getValidReq = str(data.text)
@@ -36,10 +37,12 @@ class ArchitectureRequest:
                     cwd=self.dirs,
                     stderr=subprocess.STDOUT,
                 )
-                arch_file = self._read_file(ARCHITECTURE_DETAILS_FILE)
-                if arch_file["is_valid"]:
-                    self.isValidReq = True
+                arch_file = self._read_file(self.details_file)
+                self.isValidReq = arch_file["is_valid"]
+                if self.isValidReq:
                     self.getValidReq = arch_file["content"]
+                else:
+                    self.errorMessage = arch_file["content"]
 
             except subprocess.CalledProcessError as clone_error:
                 output = clone_error.output.decode("utf-8")
@@ -47,12 +50,14 @@ class ArchitectureRequest:
 
         if self.validate.arch_type == "local":
 
-            arch_file = self._read_file(ARCHITECTURE_DETAILS_FILE)
+            arch_file = self._read_file(self.details_file)
             self.isValidReq = arch_file["is_valid"]
-            self.errorMessage = arch_file["content"]
-
+            if self.isValidReq:
+                self.getValidReq = arch_file["content"]
+            else:
+                self.errorMessage = arch_file["content"]
         if self.isValidReq is False and self.errorMessage != ARCHITECTURE_REQUEST_ERROR_MESSAGE:
-            self.errorMessage = f"No `{ARCHITECTURE_DETAILS_FILE}` was found in local directory"
+            self.errorMessage = f"No `{self.details_file}` was found in local directory"
 
 
     def getFiles(self, file):

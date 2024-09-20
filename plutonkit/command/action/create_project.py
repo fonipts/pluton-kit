@@ -1,12 +1,9 @@
-import os
 import sys
 
-from yaml import Loader, load
-
-from plutonkit.config import PROJECT_DETAILS_FILE, REMOTE_URL_RAW
+from plutonkit.config import REMOTE_URL_RAW
 from plutonkit.config.system import SERVICE_TYPE
 from plutonkit.framework.blueprint import FrameworkBluePrint
-from plutonkit.helper.config import get_config
+from plutonkit.helper.config import get_arg_cmd_value, get_config
 
 
 class CreateProject:
@@ -20,39 +17,20 @@ class CreateProject:
 
         option_cmd = self.argv[2::]
         if len(option_cmd) > 0:
-            view_extra_cmd = self._get_arg_value(option_cmd)
+            view_extra_cmd = get_arg_cmd_value(option_cmd)
             if "source" in view_extra_cmd:
                 self.project_details_execute(view_extra_cmd["source"])
             else:
                 print("Please use the source as default\n")
-                print("`plutonkit create_project source=<source of blueprint> ")
+                print("`plutonkit create_project source=<source of architecture.yaml> ")
                 sys.exit(0)
         else:
             self.acces_lobby_blueprint()
 
     def acces_lobby_blueprint(self):
 
-        directory = os.getcwd()
-        path = os.path.join(directory, PROJECT_DETAILS_FILE)
-        if os.path.exists(path):
-            is_file = os.path.isfile(path)
-            if is_file:
-
-                try:
-                    with open(path, "r", encoding="utf-8") as fi:
-                        read = fi.read()
-                        content = load(str(read), Loader=Loader)
-                        remote_blueprint = content.get("blueprint")
-                        self.project_details_execute(remote_blueprint)
-                except Exception as e:
-                    print(e)
-                    print("Invalid yaml file content")
-                    sys.exit(0)
-
-        else:
-
-            details_command = {"details": {}, "command": []}
-            self.callback_execute(
+        details_command = {"details": {}, "command": []}
+        self.callback_execute(
                 details_command, "What is your service type?", SERVICE_TYPE
             )
 
@@ -104,22 +82,8 @@ class CreateProject:
 
             framework_blueprint = FrameworkBluePrint(remote_blueprint)
             framework_blueprint.set_folder_name(project_name)
-            framework_blueprint.execute()
+            framework_blueprint.execute_create_project()
             sys.exit(0)
         else:
             print("Your confirmation say `No`")
             sys.exit(0)
-
-    def _get_arg_value(self, args):
-        local_obj = {}
-        local_obj["extra"] = []
-
-        for val in args:
-            word_split = val.split("=")
-
-            if len(word_split) > 0:
-                local_obj[word_split[0]] = "=".join(word_split[1::])
-            else:
-                local_obj["extra"].append(val)
-
-        return local_obj

@@ -60,12 +60,13 @@ class Command:
         command_list = self.argv[self.index::]
         command_value = ":.:".join(command_list)
         list_commands = structure_command_cls.get_list_commands()
+
         if command_value in list_commands:
             cmd_arg = list_commands[command_value]
             for val in cmd_arg["command"]:
                 os.chdir(cmd_arg["chdir"])
                 pip_run_command(clean_command_split(val))
-                sys.exit(0)
+            sys.exit(0)
         else:
             print("you are using an invalid command")
             print("Please select the command below.")

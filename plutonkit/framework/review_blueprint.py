@@ -18,7 +18,6 @@ class ReviewBlueprint:
         validate_data = {
             "error_message": [],
         }
-
         self.__check_invalid_value(validate_data, self.blueprint_content, VALID_MASTER_BLUEPRINT_KEY)
         arch_req = ArchitectureRequest(self.path, self.directory)
         if arch_req.isValidReq is False:
@@ -95,7 +94,7 @@ class ReviewBlueprint:
 
     def __check_invalid_value(self, validate_data, values, trained, main_key=""):
         words_distance = WordDistance(trained)
-        for key, _ in values.items():
+        for key,_ in values.items():
             distances = words_distance.get_ave_distance(key)
             max_distance = max(distances)
             if max_distance != 1.0:

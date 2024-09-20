@@ -30,7 +30,23 @@ class FrameworkBluePrint:
     def set_folder_name(self, name):
         self.folder_name = name
 
-    def execute(self):
+    def execute_clone_project(self,ans_ref):
+        self.arch_req = ArchitectureRequest(self.path, self.directory)
+        if self.arch_req.isValidReq is False:
+            print(self.arch_req.errorMessage)
+            self.arch_req.clearRepoFolder()
+            sys.exit(0)
+        try:
+            generate_project_folder_cwd(self.folder_name)
+            content = load(str(self.arch_req.getValidReq), Loader=Loader)
+            self._bootloader_project(content,ans_ref)
+
+        except Exception as e:
+            print(e)
+            print("Invalid details to proceed in creating new project")
+            sys.exit(0)
+
+    def execute_create_project(self):
         self.arch_req = ArchitectureRequest(self.path, self.directory)
         if self.arch_req.isValidReq is False:
             print(self.arch_req.errorMessage)
@@ -48,35 +64,37 @@ class FrameworkBluePrint:
             while inquiry_terminal.is_continue():
 
                 if inquiry_terminal.is_terminate():
-                    dependencies = content.get("dependencies", {})
-                    files = content.get("files", [])
-                    script = content.get("script", {})
-                    bootscript = content.get("bootscript", [])
-                    settings = content.get("settings")
-
-                    self._packages(settings, dependencies, inquiry_terminal.get_answer())
-                    terminal_answer = inquiry_terminal.get_answer()
-                    terminal_answer["folder_name"] = self.folder_name
-
-                    create_yaml_file(
-                        self.folder_name,
-                        PROJECT_DETAILS_FILE,
-                        {"name": self.folder_name, "blueprint": self.path, "default_choices": terminal_answer},
-                    )
-                    create_yaml_file(
-                        self.folder_name, PROJECT_COMMAND_FILE, {"script": script}
-                    )
-                    self._boot_command(bootscript, "start", terminal_answer)
-                    self._files(files, terminal_answer)
-                    self._boot_command(bootscript, "end", terminal_answer)
-                    self.arch_req.clearRepoFolder()
-                    print("Congrats!! your first project has been generated")
+                    self._bootloader_project(content,inquiry_terminal.get_answer())
                     break
 
         except Exception as e:
             print(e)
             print("Invalid details to proceed in creating new project")
             sys.exit(0)
+    def _bootloader_project(self, content, args):
+        dependencies = content.get("dependencies", {})
+        files = content.get("files", [])
+        script = content.get("script", {})
+        bootscript = content.get("bootscript", [])
+        settings = content.get("settings")
+
+        self._packages(settings, dependencies, args)
+        terminal_answer = args
+        terminal_answer["folder_name"] = self.folder_name
+
+        create_yaml_file(
+            self.folder_name,
+            PROJECT_DETAILS_FILE,
+            {"name": self.folder_name, "blueprint": self.path, "default_choices": terminal_answer},
+            )
+        create_yaml_file(
+            self.folder_name, PROJECT_COMMAND_FILE, {"script": script}
+            )
+        self._boot_command(bootscript, "start", terminal_answer)
+        self._files(files, terminal_answer)
+        self._boot_command(bootscript, "end", terminal_answer)
+        self.arch_req.clearRepoFolder()
+        print("Congrats!! your first project has been generated")
 
     def _packages(self, setting, values, args):
         default_item = values.get("default", [])

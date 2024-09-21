@@ -297,9 +297,9 @@ texinfo_documents = [
 
 # Bibliographic Dublin Core info.
 epub_title = 'plutonkit'
-epub_author = 'Audrey Roy'
+epub_author = 'Pein Freccs'
 epub_publisher = 'Pein Freccs and plutonkit community'
-epub_copyright = '2024, Audrey Roy and plutonkit community'
+epub_copyright = '2024, Pein Freccs and plutonkit community'
 
 # The language of the text. It defaults to the language option
 # or en if the language is not set.

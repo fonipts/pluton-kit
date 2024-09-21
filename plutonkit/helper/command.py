@@ -7,6 +7,8 @@ import subprocess
 from plutonkit.config import REQUIREMENT
 from plutonkit.helper.filesystem import default_project_name
 
+from .environment import convertVarToTemplate
+
 
 def pip_install_requirement(reference_value):
     directory = os.getcwd()
@@ -24,4 +26,4 @@ def pip_run_command(command):
 
 def clean_command_split(command: str):
     command = re.sub(r"\s{2,}", " ", command)
-    return command.split(" ")
+    return convertVarToTemplate(command).split(" ")

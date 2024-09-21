@@ -6,6 +6,7 @@ from yaml import Loader, load
 from plutonkit.config import PROJECT_COMMAND_FILE, PROJECT_DETAILS_FILE
 from plutonkit.config.system import LANG_REQUIREMENT
 from plutonkit.helper.command import clean_command_split, pip_run_command
+from plutonkit.helper.environment import setEnvironmentVariable
 from plutonkit.helper.filesystem import (
     create_yaml_file, generate_project_folder_cwd, write_file_content,
 )
@@ -78,6 +79,8 @@ class FrameworkBluePrint:
         script = content.get("script", {})
         bootscript = content.get("bootscript", [])
         settings = content.get("settings")
+        env = content.get("env",{})
+        setEnvironmentVariable(env)
 
         self._packages(settings, dependencies, args)
         terminal_answer = args
@@ -89,7 +92,7 @@ class FrameworkBluePrint:
             {"name": self.folder_name, "blueprint": self.path, "default_choices": terminal_answer},
             )
         create_yaml_file(
-            self.folder_name, PROJECT_COMMAND_FILE, {"script": script}
+            self.folder_name, PROJECT_COMMAND_FILE, {"script": script, "env": env}
             )
         self._boot_command(bootscript, "start", terminal_answer)
         self._files(files, terminal_answer)

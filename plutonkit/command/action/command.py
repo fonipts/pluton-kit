@@ -11,6 +11,9 @@ except ImportError:
 from plutonkit.config import PROJECT_COMMAND_FILE
 from plutonkit.framework.command.structure_command import StructureCommand
 from plutonkit.helper.command import clean_command_split, pip_run_command
+from plutonkit.helper.environment import (
+    convertVarToTemplate, setEnvironmentVariable,
+)
 
 
 class Command:
@@ -51,6 +54,7 @@ class Command:
 
     def command_start(self, content, directory):
         structure_command_cls = StructureCommand(content, directory)
+        setEnvironmentVariable(content.get("env",{}))
         get_errors = structure_command_cls.get_error()
         if len(get_errors) > 0:
             for err in get_errors:
@@ -74,6 +78,6 @@ class Command:
                 print("  ",
                     " ".join(key.split(":.:")),
                     " .... ",
-                    value.get("description", "[no comment]"),
+                    convertVarToTemplate(value.get("description", "[no comment]")),
                     )
         sys.exit(0)

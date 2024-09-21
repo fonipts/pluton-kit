@@ -24,7 +24,6 @@ class TestArchitectureRequest(unittest.TestCase):
 
     def test_valid_local(self):
         arch = ArchitectureRequest("tests/raw/yaml",os.getcwd())
-        print(arch.errorMessage)
         self.assertTrue(arch.isValidReq)
 
     def test_invalid_local(self):

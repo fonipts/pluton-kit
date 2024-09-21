@@ -5,7 +5,7 @@ from plutonkit.management.request.ArchitectureRequest import (
     ArchitectureRequest,
 )
 
-VALID_MASTER_BLUEPRINT_KEY = ["name", "bootscript","var", "settings", "choices", "dependencies", "script", "files"]
+VALID_MASTER_BLUEPRINT_KEY = ["name", "bootscript","env", "settings", "choices", "dependencies", "script", "files"]
 
 
 class ReviewBlueprint:

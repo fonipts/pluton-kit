@@ -2,7 +2,7 @@ from typing import List
 
 from plutonkit.framework.analysis.word_distance import WordDistance
 
-VALID_KEY: List[str] = ["environment", "script"]
+VALID_KEY: List[str] = ["env", "script"]
 COMMAND_VALID_KEY: List[str] = ["command", "description", "group", "chdir"]
 
 

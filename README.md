@@ -49,6 +49,7 @@ Structure of your command, should follow this format
 
 in `command.yaml` 
 ```
+env: {} 
 script: 
   {command_name}:
     command:

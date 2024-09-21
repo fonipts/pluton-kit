@@ -4,6 +4,7 @@ from plutonkit.config.func.shortcut import (
     shortcut_if, shortcut_join_space, shortcut_lower, shortcut_replace,
     shortcut_ucfirst, shortcut_upper,
 )
+from plutonkit.config.func.template import template_content, template_python
 from plutonkit.management.format import format_argument_input
 
 FRAMEWORK_WEB = [
@@ -62,4 +63,9 @@ VAR_SHORTCUT_TEMPLATE = {
     "join_space": shortcut_join_space,
     "replace": shortcut_replace,
     "if": shortcut_if,
+}
+
+VAR_TEMPLATE_EXEC = {
+    "content": template_content,
+    "script": template_python
 }

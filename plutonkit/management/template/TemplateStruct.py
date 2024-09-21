@@ -76,6 +76,7 @@ class TemplateStruct:
                             rows_input.append(row)
                         is_name = True
             templates.append({"template": content, "component": rows_capture_data})
+
         return templates
 
     def __convert_template(self, templates=None):

@@ -1,5 +1,7 @@
 import re
 
+from plutonkit.config.framework import VAR_TEMPLATE_EXEC
+
 from .TemplateStruct import TemplateStruct
 
 
@@ -22,22 +24,9 @@ class TheTemplate:
             regex = re.compile("^[\\s]{0,"+str(first_count_space)+"}")
             lst.append(regex.sub("", v))
 
-        if name == "content":
-            return "\n".join(lst)
-        if name == "script":
-            try:
-                local_ns = {}
-                local_ns["content"] = sub_content
-                # pylint: disable-next=exec-used
-                exec("\n".join(lst), None, local_ns)
+        if name in VAR_TEMPLATE_EXEC:
+            return VAR_TEMPLATE_EXEC[name]("\n".join(lst),sub_content)
 
-                return local_ns["content"]
-            except SyntaxError as e:  # [broad-exception-caught]
-                print(e, "(error)", "\n".join(lst))
-                return ""
-            except Exception as e:  # [broad-exception-caught]
-                print(e, "(error)", "\n".join(lst))
-                return ""
         return ""
 
     def __wragle_data(self, content: str):
@@ -47,6 +36,7 @@ class TheTemplate:
                 content = content.replace("".join(val), self.args.get(val[1], ""))
 
         template_struct = TemplateStruct(content, self.args)
+
         for mv in template_struct.convert_template:
             sub_content = ""
             for sv in mv["component"]:

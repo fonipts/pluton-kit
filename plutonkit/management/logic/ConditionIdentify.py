@@ -24,10 +24,9 @@ class ConditionIdentify:
 
             key_value_state = get_dict_value(self._key.split("."), self.arg) or self._key
             if self._cond == "!=":
-
-                return str(key_value_state) != str(_value)
+                return str(key_value_state).strip() != str(_value)
             if self._cond == "==":
-                return str(key_value_state) == str(_value)
+                return str(key_value_state).strip() == str(_value)
             if self._cond == "<=":
 
                 return int(key_value_state) <= int(_value)

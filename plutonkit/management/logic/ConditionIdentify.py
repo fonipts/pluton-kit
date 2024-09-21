@@ -20,32 +20,30 @@ class ConditionIdentify:
     def validCond(self) -> bool:  # [too-many-return-statements]
 
         if self.valid:
+            _value = get_dict_value(self._value.strip().split("."),self.arg) or self._value.strip()
 
-            key_value_state = get_dict_value(self._key.split("."), self.arg)
+            key_value_state = get_dict_value(self._key.split("."), self.arg) or self._key
             if self._cond == "!=":
-
-                return str(key_value_state) != str(self._value.strip())
+                return str(key_value_state).strip() != str(_value)
             if self._cond == "==":
-
-                return str(key_value_state) == str(self._value.strip())
+                return str(key_value_state).strip() == str(_value)
             if self._cond == "<=":
 
-                return key_value_state <= self._value.strip()
+                return int(key_value_state) <= int(_value)
             if self._cond == ">=":
 
-                return key_value_state >= self._value.strip()
+                return int(key_value_state) >= int(_value)
 
             if self._cond == "<":
-
-                return key_value_state < self._value.strip()
+                return int(key_value_state) < int(_value)
             if self._cond == ">":
 
-                return key_value_state > self._value.strip()
+                return int(key_value_state) > int(_value)
         return False
 
     def __bootload(self):
 
-        find_value = re.findall(r"(.*?)\s{0,}([=]{2}|!\=|<|>|<\=|>\=)", self.cond)
+        find_value = re.findall(r"(.*?)\s{0,}([=]{2}|!\=|<\=|>\=|<|>)", self.cond)
         self.valid = len(find_value) == 1
 
         if len(find_value) == 1:

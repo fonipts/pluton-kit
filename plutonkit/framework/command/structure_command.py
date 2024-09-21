@@ -1,4 +1,5 @@
 import re
+from copy import copy
 from os import path
 from typing import List
 
@@ -38,10 +39,12 @@ class StructureCommand:
         glob = {}
         for key, value in values.items():
             if key == "group":
+                list_commands_copy = copy(list_commands)
                 for key1, value1 in value.items():
-                    list_commands.append(key1)
+                    list_commands_copy.append(key1)
                     self.__add_sub_command(value1)
-                    self.__get_sub_command(obj_commands, list_commands, value1)
+                    self.__get_sub_command(obj_commands, list_commands_copy, value1)
+                    list_commands_copy.pop()
             else:
                 glob[key] = self.__get_format_str(value)
                 obj_commands[":.:".join(list_commands)] = glob

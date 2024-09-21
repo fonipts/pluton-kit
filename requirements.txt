@@ -7,3 +7,4 @@ PyYAML
 requests
 isort
 trio
+pytest-cov

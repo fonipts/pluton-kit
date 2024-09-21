@@ -5,18 +5,21 @@ import sys
 import time
 
 from plutonkit.command.action.help import Help
-from plutonkit.config import INTRODUCTION
 from plutonkit.config.command import ACTIONS
+from plutonkit.config.message import INTRODUCTION
 
 # noqa: Our signal handler
+
 
 def signal_handler():
     print("\nInvalid control +key or press control+z to exit")
     print("\nPlease try to select appropriate key selection")
 
+
 def exit_handler():
     print("\nExiting....")
     sys.exit(0)
+
 
 def autoload():
 
@@ -28,11 +31,13 @@ def autoload():
     print(f"{INTRODUCTION}\n")
     try:
         while 1:
-            ACTIONS["help"] = Help()
+            ACTIONS["help"] = Help(sys.argv)
             ACTIONS[str(sys.argv[1])].execute()
             time.sleep(30)
-    except Exception:
-        print("Invalid argument, please type `help` to see available command")
+
+    except Exception as E:
+        print(E, "Invalid argument, please type `help` to see available command")
+
 
 def load_command():
 

@@ -1,5 +1,3 @@
-"""Module providing a function printing python version."""
-
 import os
 import sys
 
@@ -8,6 +6,7 @@ from yaml import Loader, load
 from plutonkit.config import PROJECT_COMMAND_FILE, PROJECT_DETAILS_FILE
 from plutonkit.config.system import LANG_REQUIREMENT
 from plutonkit.helper.command import clean_command_split, pip_run_command
+from plutonkit.helper.environment import setEnvironmentVariable
 from plutonkit.helper.filesystem import (
     create_yaml_file, generate_project_folder_cwd, write_file_content,
 )
@@ -19,8 +18,7 @@ from plutonkit.management.logic.ConditionSplit import ConditionSplit
 from plutonkit.management.request.ArchitectureRequest import (
     ArchitectureRequest,
 )
-
-from .inquiry_terminal import InquiryTerminal
+from plutonkit.management.terminal.inquiry_terminal import InquiryTerminal
 
 
 class FrameworkBluePrint:
@@ -33,7 +31,23 @@ class FrameworkBluePrint:
     def set_folder_name(self, name):
         self.folder_name = name
 
-    def execute(self):
+    def execute_clone_project(self,ans_ref):
+        self.arch_req = ArchitectureRequest(self.path, self.directory)
+        if self.arch_req.isValidReq is False:
+            print(self.arch_req.errorMessage)
+            self.arch_req.clearRepoFolder()
+            sys.exit(0)
+        try:
+            generate_project_folder_cwd(self.folder_name)
+            content = load(str(self.arch_req.getValidReq), Loader=Loader)
+            self._bootloader_project(content,ans_ref)
+
+        except Exception as e:
+            print(e)
+            print("Invalid details to proceed in creating new project")
+            sys.exit(0)
+
+    def execute_create_project(self):
         self.arch_req = ArchitectureRequest(self.path, self.directory)
         if self.arch_req.isValidReq is False:
             print(self.arch_req.errorMessage)
@@ -51,60 +65,56 @@ class FrameworkBluePrint:
             while inquiry_terminal.is_continue():
 
                 if inquiry_terminal.is_terminate():
-                    dependencies = content.get("dependencies", [])
-                    files = content.get("files", [])
-                    script = content.get("script", {})
-                    bootscript = content.get("bootscript", [])
-                    settings = content.get("settings")
-
-                    self._packages(settings,dependencies, inquiry_terminal.get_answer())
-                    terminal_answer = inquiry_terminal.get_answer()
-                    terminal_answer["folder_name"] = self.folder_name
-
-                    create_yaml_file(
-                        self.folder_name,
-                        PROJECT_DETAILS_FILE,
-                        {"name": self.folder_name, "blueprint": self.path,"default_choices":terminal_answer},
-                    )
-                    create_yaml_file(
-                        self.folder_name, PROJECT_COMMAND_FILE, {"script": script}
-                    )
-                    self._boot_command(bootscript, "start",terminal_answer)
-                    self._files(files, terminal_answer)
-                    self._boot_command(bootscript, "end",terminal_answer)
-                    self.arch_req.clearRepoFolder()
-                    print("Congrats!! your first project has been generated")
+                    self._bootloader_project(content,inquiry_terminal.get_answer())
                     break
 
         except Exception as e:
             print(e)
             print("Invalid details to proceed in creating new project")
+            self.arch_req.clearRepoFolder()
             sys.exit(0)
+    def _bootloader_project(self, content, args):
+        dependencies = content.get("dependencies", {})
+        files = content.get("files", [])
+        script = content.get("script", {})
+        bootscript = content.get("bootscript", [])
+        settings = content.get("settings")
+        env = content.get("env",{})
+        setEnvironmentVariable(env)
 
-    def _packages(self, setting,values, args):
-        default_item = values.get("default", [])
-        library = []
-        for value in default_item:
-            library.append(value)
+        self._packages(settings, dependencies, args)
+        terminal_answer = args
+        terminal_answer["folder_name"] = self.folder_name
 
-        optional_item = values.get("optional", [])
-        for value in optional_item:
-            cond_valid = ConditionSplit(value.get("condition"), args)
-            if "dependent" in value and cond_valid.validCond():
-                library += value.get("dependent", [])
+        create_yaml_file(
+            self.folder_name,
+            PROJECT_DETAILS_FILE,
+            {"name": self.folder_name, "blueprint": self.path, "default_choices": terminal_answer},
+            )
+        create_yaml_file(
+            self.folder_name, PROJECT_COMMAND_FILE, {"script": script, "env": env}
+            )
+        self._boot_command(bootscript, "start", terminal_answer)
+        self._files(files, terminal_answer)
+        self._boot_command(bootscript, "end", terminal_answer)
+        self.arch_req.clearRepoFolder()
+        print("Congrats!! your first project has been generated")
 
-        if setting.get("install_type","") in LANG_REQUIREMENT:
-            LANG_REQUIREMENT[setting.get("install_type","")](self.folder_name, library)
+    def _packages(self, setting, values, args):
+
+        if setting.get("install_type", "") in LANG_REQUIREMENT:
+            LANG_REQUIREMENT[setting.get("install_type", "")](self.directory,self.folder_name, values,args)
         else:
             print("Invalid install_type `value`, please check")
 
     def _files(self, values, args):
 
-        files_check:list[BlueprintFileSchema] = []
+        files_check: list[BlueprintFileSchema] = []
         default_item = values.get("default", [])
 
         for value in default_item:
-            files_check.append(BlueprintFileSchema(value,args))
+            for file1 in self.arch_req.getBlob(value):
+                files_check.append(BlueprintFileSchema(file1, args))
 
         optional_item = values.get("optional", [])
         for value in optional_item:
@@ -112,7 +122,8 @@ class FrameworkBluePrint:
 
             if "dependent" in value and cond_valid.validCond():
                 for s_value in value["dependent"]:
-                    files_check.append(BlueprintFileSchema(s_value,args))
+                    for file1 in self.arch_req.getBlob(file1):
+                        files_check.append(BlueprintFileSchema(s_value, args))
 
         for value in files_check:
             if value.isObjFile():
@@ -125,7 +136,7 @@ class FrameworkBluePrint:
                 else:
                     print(f"error in downloading the file {value.value['file']}")
 
-    def _boot_command(self, values,post_exec, args):
+    def _boot_command(self, values, post_exec, args):
 
         path = os.path.join(self.directory, self.folder_name)
         os.chdir(path)

@@ -1,5 +1,10 @@
 """Module providing a function printing python version."""
 
+from plutonkit.config.func.shortcut import (
+    shortcut_if, shortcut_join_space, shortcut_lower, shortcut_replace,
+    shortcut_ucfirst, shortcut_upper,
+)
+from plutonkit.config.func.template import template_content, template_python
 from plutonkit.management.format import format_argument_input
 
 FRAMEWORK_WEB = [
@@ -33,7 +38,13 @@ DEFAULT_WEB3 = [
 
 DEFAULT_PACKAGE = [
     format_argument_input(
-        "framework", "default_packaging", "Start creating your new apps", "default", []
+        "framework", "default_starter_python", "Start creating your new python apps", "Python starter", []
+    ),
+    format_argument_input(
+        "framework", "default_starter_golang", "Start creating your new go apps", "Golang starter", []
+    ),
+    format_argument_input(
+        "framework", "default_starter_ruby", "Start creating your new ruby apps", "Ruby starter", []
     ),
 ]
 
@@ -44,3 +55,17 @@ DEFAULT_WEB_SOCKET = [
 ]
 
 STANDARD_LIBRARY = ["pylint==3.0.2", "pytest==7.4.3", "python-decouple==3.8"]
+
+VAR_SHORTCUT_TEMPLATE = {
+    "ucfirst": shortcut_ucfirst,
+    "lower": shortcut_lower,
+    "upper": shortcut_upper,
+    "join_space": shortcut_join_space,
+    "replace": shortcut_replace,
+    "if": shortcut_if,
+}
+
+VAR_TEMPLATE_EXEC = {
+    "content": template_content,
+    "script": template_python
+}

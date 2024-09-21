@@ -41,7 +41,7 @@ class TemplateStruct:
         templates = []
         for content in contents:
             raw_content = content[1:]
-            raw_content = raw_content[0 : len(raw_content) - 1]
+            raw_content = raw_content[0: len(raw_content) - 1]
             row_name = ""
             rows_capture_data = []
             rows_input = []
@@ -76,6 +76,7 @@ class TemplateStruct:
                             rows_input.append(row)
                         is_name = True
             templates.append({"template": content, "component": rows_capture_data})
+
         return templates
 
     def __convert_template(self, templates=None):

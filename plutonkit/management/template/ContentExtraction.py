@@ -22,8 +22,10 @@ class ContentExtraction:
                         is_valid_value = True
                         count_cond += 1
                 elif row["name"] == "end":
+                    count_cond = 0
                     is_valid_value = False
                     if count_cond == 0:
+                        count_cond = 0
                         is_valid_value = True
                 else:
                     if is_valid_value:

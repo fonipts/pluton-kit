@@ -5,7 +5,9 @@ from plutonkit.config.framework import (
     FRAMEWORK_GRAPHQL, FRAMEWORK_WEB,
 )
 from plutonkit.management.format import format_argument_input
+from plutonkit.system.requirement.go_lang import go_generate_requirement
 from plutonkit.system.requirement.py_lang import pip_generate_requirement
+from plutonkit.system.requirement.rb_lang import gem_generate_requirement
 
 SERVICE_TYPE = [
     format_argument_input(
@@ -33,13 +35,15 @@ SERVICE_TYPE = [
     ),
     format_argument_input(
         "service_type",
-        "packaging_app",
-        "Your New packaging apps",
-        "packaging_app",
+        "language_starter",
+        "Your New Language starter",
+        "language_starter",
         DEFAULT_PACKAGE,
     ),
 ]
 
 LANG_REQUIREMENT = {
-    "pip": pip_generate_requirement
+    "pip": pip_generate_requirement,
+    "gem": gem_generate_requirement,
+    "go": go_generate_requirement,
 }

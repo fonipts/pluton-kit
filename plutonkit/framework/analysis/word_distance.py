@@ -11,10 +11,10 @@ class WordDistance:
         for lookup in self.valid_words:
             list_ave_word.append(
                 (
-                    self.__word_distance(lookup, word) / len(word)
-                    + self.__word_distance(lookup, word) / len(lookup)
-                )
-                / 2
+                    self.__word_distance(lookup, word) / len(word) +
+                    self.__word_distance(lookup, word) / len(lookup)
+                ) /
+                2
             )
         return list_ave_word
 
@@ -25,7 +25,7 @@ class WordDistance:
 
         split_ref_word = [*ref_word]
         split_verify_word = [
-            *(verify_word * math.ceil(repeate_count))[0 : len(ref_word)]
+            *(verify_word * math.ceil(repeate_count))[0: len(ref_word)]
         ]
 
         for vw in split_ref_word:

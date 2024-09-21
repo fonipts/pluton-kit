@@ -198,7 +198,7 @@ html_static_path = []
 # html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'plutonkitdoc'
+htmlhelp_basename = 'cookiecutterdoc'
 
 
 # -- Options for LaTeX output -------------------------------------------------

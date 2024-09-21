@@ -70,7 +70,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'plutonkit'
-copyright = '2024, Pein freecs and plutonkit community'
+copyright = '2024, Codehyouka and plutonkit community'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -219,7 +219,7 @@ latex_documents = [
         'index',
         'plutonkit.tex',
         'plutonkit Documentation',
-        'Pein Freecs and plutonkit community',
+        'Codehyouka and plutonkit community',
         'manual',
     ),
 ]
@@ -254,7 +254,7 @@ man_pages = [
         'index',
         'plutonkit',
         'plutonkit Documentation',
-        ['Pein Freecs and plutonkit community'],
+        ['Codehyouka and plutonkit community'],
         1,
     )
 ]
@@ -273,7 +273,7 @@ texinfo_documents = [
         'index',
         'plutonkit',
         'plutonkit Documentation',
-        'Pein Freecs and plutonkit community',
+        'Codehyouka and plutonkit community',
         'plutonkit',
         'Creates projects from project templates',
         'Miscellaneous',

@@ -53,7 +53,7 @@ extensions = [
     'sphinx_click.ext',
     'myst_parser',
     'sphinxcontrib.apidoc',
-    'sphinx_autodoc_typehints',
+    'sphinx_autodoc_typehints'
 ]
 
 # Add any paths that contain templates here, relative to this directory.

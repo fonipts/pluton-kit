@@ -38,7 +38,7 @@ class Command:
             sys.exit(0)
 
         if os.path.isfile(path) is False:
-            print(f"This  file `{PROJECT_COMMAND_FILE}` is invalid")
+            print(f"This file `{PROJECT_COMMAND_FILE}` is invalid")
             sys.exit(0)
 
         with open(path, "r", encoding="utf-8") as fi:

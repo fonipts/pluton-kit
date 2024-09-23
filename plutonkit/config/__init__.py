@@ -1,5 +1,3 @@
-"""Module providing a function printing python version."""
-
 DOCKER_FILE: str = "Dockerfile"
 DOCKER_COMPOSE_FILE: str = "docker-compose.yaml"
 

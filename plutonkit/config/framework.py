@@ -69,3 +69,20 @@ VAR_TEMPLATE_EXEC = {
     "content": template_content,
     "script": template_python
 }
+
+
+VAR_DEFAULT_BLUEPRINT = [
+    "django",
+    "bottle",
+    "fastapi",
+    "flask",
+    "graphene",
+    "ariadne",
+    "tartiflette",
+    "default_grpc",
+    "default_web3",
+    "default_starter_python",
+    "default_starter_golang",
+    "default_starter_ruby",
+    "default_websocket"
+]

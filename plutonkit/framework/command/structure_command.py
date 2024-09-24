@@ -1,3 +1,4 @@
+import platform
 import re
 from copy import copy
 from os import path
@@ -20,6 +21,9 @@ class StructureCommand:
 
     def get_list_commands(self):
         scripts = self.reference_value.get("script", {})
+        if platform.system() == "Windows":
+            if "win_script" in self.reference_value:
+                scripts = self.reference_value.get("win_script", {})
         obj_commands = {}
         for key, value in scripts.items():
             sub_list = [key]

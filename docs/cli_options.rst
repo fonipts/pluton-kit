@@ -4,7 +4,7 @@ Command line
 
 plutonkit
 -------------
-In starting your journey, you should explore start exploring our cli option
+In starting your journey, you should start exploring our cli option
 
 
 .. code-block:: bash

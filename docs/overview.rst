@@ -94,7 +94,7 @@ or
    plutonkit cmd   pip_install
  
 
-Code structure in ``plutonkit cmd`` in this file ``command.yaml``
+Code structure in ``plutonkit cmd`` then you can the file ``command.yaml``
 
  .. code-block:: yaml
 
@@ -121,66 +121,36 @@ In file ``architecture.yaml``
  .. code-block:: yaml
 
 
-   name: bottle
+   name: hello
     settings:
-    install_type: pip
+      install_type: pip
     choices:
-    - name: name
-        question: What is your name
-        type: input
-    - name: database
-        question: What is your Database choice?
-        type: single_choice
-        option:
-        - postgres
-        - mysql
-        - none
-    - name: redis
-        question: Do you want Redis?
-        type: single_choice
-        option:
-        - "yes"
-        - "no"
-    dependencies:
-    default:
-    - bottle==0.12.25
-    optional:
-        - condition: database == "postgres"
-         dependent:
-         - SQLAlchemy==2.0.23
-         - psycopg[binary,pool]==3.1.14
-         - psycopg2-binary==2.9.9
-        - condition: database == "mysql"
-         dependent:
-         - SQLAlchemy==2.0.23
-         - PyMySQL==1.1.0
-        - condition: redis == "yes"
-        dependent:
-        - redis==5.0.4
-    script:
-    pip_install:
-        description: Install package
-        command:
-        - pip install -r requirements.txt
-    start:
-        command:
-        - python main.py
+        - name: name
+            question: What is your name
+            type: input
+        - name: database
+            question: What is your Database choice?
+            type: single_choice
+            option:
+            - postgres
+            - mysql
+            - none
+        - name: redis
+            question: Do you want Redis?
+            type: single_choice
+            option:
+            - "yes"
+            - "no"
     files:
-    default:
-        - file: main.tplpy
-        - file: README.md
-    optional:
-        - condition: database != "none"
-        dependent:
-        - file: db.tplpy
-        - file: .env
-        - condition: docker != "No plan"
-        dependent:
-        - file: Dockerfile.tpl
+        default:
+            - file: main.tplpy
+            - file: README.md
+        optional:
+            - condition: database != "none"
+                dependent:
+                - file: db.tplpy
+                - file: .env
 
-    bootscript:
-    - command: pip install -r requirements.txt
-        exec_position: start
 
 If sample was to long for you, then you can use this simple command to be use as starting guide
 

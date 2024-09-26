@@ -22,7 +22,7 @@ You can visit at `Python org <https://www.python.org/>` for more details on the 
 Python virtualenv
 ^^^^^^^^^^^^^^^^^^
 
-It optional to use virtualenv in your project you are working on. But it as ideal to apply this in every application you are working on. to avoid conflict in version of package you are working in python.
+It is optional to use virtualenv in your project you are working on. But it as ideal to apply this in every application you are working on, To avoid conflict in version of package you are working in python.
 
 
 Packaging tools

@@ -14,6 +14,7 @@ Basics
    installation
    usage
    cli_options
+   template
    tutorials/index
    advanced/index
    troubleshooting
@@ -26,7 +27,7 @@ API Reference
 .. toctree::
    :maxdepth: 2
 
-   cookiecutter
+   plutonkit
 
 Project Info
 ------------

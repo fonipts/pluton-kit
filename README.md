@@ -7,6 +7,7 @@ Create your project from the current selection we had on the lobby, But in the f
 [Site](https://plutonkit.codehyouka.xyz/) |
 [Docs](https://plutonkit.codehyouka.xyz/api) |
 [Architecture lobby](https://github.com/fonipts/pluton-lobby) |
+[Readthedocs sources](https://pluton-kit.readthedocs.io/en/latest/) |
 
 ## Introduction
 Building from scratch is quite a dauting task. Constructing your thought, looking for feature and research it will take alot of your time in figuring what will you do next. Therefore I decided to create application where you can choose in different framework, either zero or hero it will help you alot visualize what framework will you choose.

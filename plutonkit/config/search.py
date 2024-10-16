@@ -14,10 +14,5 @@ SEARCH_CHAR_ENCLOSE = [
         "name":"back_qoute",
         "regex":r"\`",
         "value":"`"
-    },
-   # {
-   #     "name":"space",
-   #     "regex":r"\s",
-   #     "value":" "
-   # },
+    }
 ]

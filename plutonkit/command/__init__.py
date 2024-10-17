@@ -51,5 +51,5 @@ def load_command():
         while 1:
             ACTIONS["cmd"].modify_argv_index(1).execute()
             time.sleep(30)
-    except Exception as e:
-        print("Invalid command request",e)
+    except Exception:
+        print("Invalid command request")

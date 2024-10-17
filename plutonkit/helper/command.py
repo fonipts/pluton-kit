@@ -5,6 +5,7 @@ import re
 import subprocess
 
 from plutonkit.config import REQUIREMENT
+from plutonkit.config.search import SEARCH_CHAR_ENCLOSE
 from plutonkit.helper.filesystem import default_project_name
 
 from .environment import convertVarToTemplate
@@ -25,15 +26,15 @@ def pip_run_command(command):
 
 def clean_command_split(command: str):
     command = re.sub(r"\s{2,}", " ", command)
-    command = spilt_char(command)
+    command = spilt_char(command,SEARCH_CHAR_ENCLOSE)
 
-    arg_split = get_enclose_str(convertVarToTemplate(command),[])
+    arg_split = get_enclose_str(convertVarToTemplate(command),[],SEARCH_CHAR_ENCLOSE)
     arg_split_replace_ant  = arg_split["replace_ant"]
     arg_split_content  = arg_split["content"].split(" ")
     for key,val in enumerate(arg_split_content):
         arg_split_content[key] = replace_index_to_enclose({
             "content": val,
             "replace_ant":arg_split_replace_ant
-        })
+        },SEARCH_CHAR_ENCLOSE)
 
     return arg_split_content

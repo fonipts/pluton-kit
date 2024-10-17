@@ -13,6 +13,14 @@ RAW_TEMPLATE1 = """
 })
 {$See}
 """
+
+RAW_TEMPLATE2 = """
+({ 
+    @load{
+    ./tests/raw/tpl/test_temp.tplpy
+    }
+})
+"""
 class TestTemplate(unittest.TestCase):
     def test_convert_template_valid(self):
         TEST_RAW = """
@@ -25,3 +33,11 @@ from urllib.parse import quote_plus
 """     
 
         self.assertEqual(convert_template(RAW_TEMPLATE1,{"See":"1"}), TEST_RAW)
+
+    def test_convert_load_valid(self):
+        TEST_RAW = """
+if __name__ == "__main__":
+    main()
+
+"""
+        self.assertEqual(convert_template(RAW_TEMPLATE2,{}), TEST_RAW)

@@ -28,8 +28,15 @@ class TheTemplate:
                 lst.append(regex.sub("", v))
 
         if name in VAR_TEMPLATE_EXEC:
-            return VAR_TEMPLATE_EXEC[name]("\n".join(lst),sub_content)
+            row_content =  VAR_TEMPLATE_EXEC[name]("\n".join(lst),sub_content)
 
+            if name == "load":
+                if row_content["is_valid_teplate"]:
+                    temp_cls = TheTemplate(row_content["content"],self.args)
+                    row_content = temp_cls.get_content()
+                else:
+                    row_content = row_content["content"]
+            return row_content
         return ""
 
     def __wragle_data(self, content: str):

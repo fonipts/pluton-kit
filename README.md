@@ -10,7 +10,7 @@ Create your project from the current selection we had on the lobby, But in the f
 [Readthedocs sources](https://pluton-kit.readthedocs.io/en/latest/) |
 
 ## Introduction
-Building from scratch is quite a dauting task. Constructing your thought, looking for feature and research it will take alot of your time in figuring what will you do next. Therefore I decided to create application where you can choose in different framework, either zero or hero it will help you alot visualize what framework will you choose.
+Building from scratch is quite a daunting task. Constructing your thought, looking for feature and research it will take alot of your time in figuring what will you do next. Therefore I decided to create application where you can choose in different framework, either zero or hero it will help you alot to visualize what framework will you choose.
 
 ## Installation
 In your local machine

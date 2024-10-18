@@ -158,4 +158,6 @@ In this example we are replacing some value given in your choices and env to rep
    * - if
      - If statement string	
      - {{name|if(dev,1)}}
- 
+   * - join_space
+     - Replace the space character to your preferred delimiter	
+     - {{name|join_space(-)}}   

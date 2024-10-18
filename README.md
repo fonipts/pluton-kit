@@ -42,7 +42,7 @@ The commands must in this format  `plutonkit <Command type>`
 |cmd | Executing command using plutonkit. the details of your command can be found at `command.yaml` | `plutonkit cmd start` or `plkcmd start`|
 |help | See available command for plutonkit | `plutonkit help` |
 
-![Alt text](resources/pluton-kit-terminal-design.gif?raw=true "terminal")
+![Alt text](https://github.com/fonipts/pluton-kit/blob/pre/document-1.0.2a0/resources/pluton-kit-terminal-design.gif?raw=true "terminal")
 
 
 ## How to use the command

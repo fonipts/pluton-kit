@@ -31,7 +31,7 @@ class TheTemplate:
             row_content =  VAR_TEMPLATE_EXEC[name]("\n".join(lst),sub_content)
 
             if name == "load":
-                if row_content["is_valid_teplate"]:
+                if row_content["is_valid_template"]:
                     temp_cls = TheTemplate(row_content["content"],self.args)
                     row_content = temp_cls.get_content()
                 else:

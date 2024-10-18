@@ -14,14 +14,10 @@ def get_config(reference_value):
 
 def get_arg_cmd_value(args):
     local_obj = {}
-    local_obj["extra"] = []
 
     for val in args:
         word_split = val.split("=")
 
-        if len(word_split) > 0:
-            local_obj[word_split[0]] = "=".join(word_split[1::])
-        else:
-            local_obj["extra"].append(val)
+        local_obj[word_split[0]] = "=".join(word_split[1::])
 
     return local_obj

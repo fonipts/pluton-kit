@@ -5,7 +5,7 @@ from yaml import Loader, load
 
 from plutonkit.config import PROJECT_DETAILS_FILE
 from plutonkit.framework.blueprint import FrameworkBluePrint
-from plutonkit.helper.config import get_arg_cmd_value
+from plutonkit.helper.arguments import get_arg_cmd_value
 from plutonkit.management.request.ArchitectureRequest import (
     ArchitectureRequest,
 )

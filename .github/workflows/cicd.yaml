@@ -37,7 +37,7 @@ jobs:
           isort plutonkit/* --check-only
       - name: Check with pylint
         run: |
-           pylint ./plutonkit/ --disable=missing-docstring   
+          pylint ./plutonkit/ --disable=missing-docstring
       - name: Test with pytest
         run: |
           pytest    

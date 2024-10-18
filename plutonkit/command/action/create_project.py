@@ -1,9 +1,11 @@
 import sys
 
 from plutonkit.config import REMOTE_URL_RAW
+from plutonkit.config.framework import VAR_DEFAULT_BLUEPRINT
 from plutonkit.config.system import SERVICE_TYPE
 from plutonkit.framework.blueprint import FrameworkBluePrint
-from plutonkit.helper.config import get_arg_cmd_value, get_config
+from plutonkit.helper.arguments import get_arg_cmd_value, get_config
+from plutonkit.helper.format import git_name
 
 
 class CreateProject:
@@ -20,6 +22,8 @@ class CreateProject:
             view_extra_cmd = get_arg_cmd_value(option_cmd)
             if "source" in view_extra_cmd:
                 self.project_details_execute(view_extra_cmd["source"])
+            elif "name" in view_extra_cmd:
+                self.git_lobby_bluprint(view_extra_cmd["name"])
             else:
                 print("Please use the source as default\n")
                 print("`plutonkit create_project source=<source of architecture.yaml> ")
@@ -33,6 +37,16 @@ class CreateProject:
         self.callback_execute(
                 details_command, "What is your service type?", SERVICE_TYPE
             )
+
+    def git_lobby_bluprint(self, name):
+        clean_name = git_name(name)
+        try:
+            details_value = VAR_DEFAULT_BLUEPRINT[VAR_DEFAULT_BLUEPRINT.index(clean_name)]
+            self.project_details_execute(f"https://github.com/fonipts/pluton-lobby.git/blueprint/{details_value}")
+        except ValueError:
+            self.project_details_execute(f"https://github.com/{clean_name}.git")
+        except KeyError:
+            self.project_details_execute(f"https://github.com/{clean_name}.git")
 
     def callback_execute(self, reference_value, name, step):
 

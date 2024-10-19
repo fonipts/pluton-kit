@@ -35,8 +35,8 @@ def autoload():
             ACTIONS[str(sys.argv[1])].execute()
             time.sleep(30)
 
-    except Exception as E:
-        print(E, "Invalid argument, please type `help` to see available command")
+    except Exception:
+        print("Invalid argument, please type `help` to see available command")
 
 
 def load_command():

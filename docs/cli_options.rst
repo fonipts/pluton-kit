@@ -2,8 +2,8 @@
 Command line
 ============
 
-plutonkit
--------------
+plutonkit Default CLI
+-----------------------
 In starting your journey, you should start exploring our cli option
 
 
@@ -11,7 +11,7 @@ In starting your journey, you should start exploring our cli option
 
     plutonkit [OPTIONS]
 
-OPTIONS
+options
 -------
 
 .. option:: clone_project
@@ -37,3 +37,20 @@ OPTIONS
 .. rubric:: Check your blueprint before issue before deploying
 :arguments: [location of architecture.yaml]
 
+
+In using `cmd` argument
+------------------------
+Below is sample for command you can use at your `command.yaml`
+-   
+
+    In our build `cmd` command given the name was `name`
+
+    ::
+
+        plutonkit cmd name
+
+    Or short command using `plkcmd`
+
+    ::
+
+        plkcmd name

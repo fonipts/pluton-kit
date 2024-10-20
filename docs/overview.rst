@@ -157,3 +157,11 @@ If sample was to long for you, then you can use this simple command to be use as
 .. code-block:: bash
 
     pip install create_achitecture
+
+Execution cycle in generate your project from blueprint
+-------------------------------------------------------
+Below representation of how the cycle works in creating your project from the architecture.yaml that was specified above. 
+
+.. image:: ../resources/diagram_architecture_lifecycle.png
+  :width: 400
+  :alt: Alternative text

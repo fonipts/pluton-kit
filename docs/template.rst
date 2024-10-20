@@ -28,6 +28,8 @@ This function syntax will work on *.tpl{ext file} format otherwise it will be ig
         helloworld.py
 
 The reason why we choose this format execution was to give the developer a declarative in separating their code from actual language to teplate extension.
+
+
 ----------------------------------
 Using variable format in filename
 ----------------------------------
@@ -97,7 +99,7 @@ This feature was offered, to support the concept
      - Content of template function that you want to render	
      - @content{ Hi }
    * - load
-     - If use *.tpl{file extension} then it will render the template function or else render of the text content	 
+     - If you use *.tpl{file extension} then it will render the template function or else render to normal content	 
      - @load{ ./tests/raw/tpl/test_temp.tplpy }
    * - script
      - Execute python script in your template, please note ``content`` was used to render the output string in template

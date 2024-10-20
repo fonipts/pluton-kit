@@ -12,6 +12,7 @@ Filename format
 Template extension name
 ------------------------
 This function syntax will work on *.tpl{ext file} format otherwise it will be ignore in converting your template to your desired file.
+
 -   
 
     Given your filename was format like this

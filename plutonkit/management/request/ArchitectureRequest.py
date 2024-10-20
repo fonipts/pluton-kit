@@ -56,7 +56,6 @@ class ArchitectureRequest:
                 self.errorMessage = output
 
         if self.validate.arch_type == "local":
-            print("locall")
             arch_file = self._read_file(self.details_file)
             self.isValidReq = arch_file["is_valid"]
             if self.isValidReq:

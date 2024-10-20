@@ -1,6 +1,9 @@
 import re
 
 from plutonkit.config.framework import VAR_TEMPLATE_EXEC
+from plutonkit.helper.format import (
+    get_first_line_string_space, get_first_strings, get_str_if_empty,
+)
 
 from .TemplateStruct import TemplateStruct
 
@@ -13,20 +16,27 @@ class TheTemplate:
     def __command_details(self, name, contents, sub_content):
 
         lst = []
-        first_count_space = 0
-        for k, v in enumerate(contents):
 
-            check_space = re.findall(r"^[\s]{0,}", v)
-            space_count = len(check_space[0].split(" "))
+        get_init_string = get_first_strings(contents)
+        get_str_count = get_first_line_string_space(get_init_string["content"])
 
-            if k == 0:
-                first_count_space = space_count
-            regex = re.compile("^[\\s]{0,"+str(first_count_space)+"}")
-            lst.append(regex.sub("", v))
+        for v in contents:
+            if get_str_if_empty(v):
+                lst.append("")
+            else:
+                regex = re.compile("^[\\s]{0,"+str(get_str_count)+"}")
+                lst.append(regex.sub("", v))
 
         if name in VAR_TEMPLATE_EXEC:
-            return VAR_TEMPLATE_EXEC[name]("\n".join(lst),sub_content)
+            row_content =  VAR_TEMPLATE_EXEC[name]("\n".join(lst),sub_content)
 
+            if name == "load":
+                if row_content["is_valid_template"]:
+                    temp_cls = TheTemplate(row_content["content"],self.args)
+                    row_content = temp_cls.get_content()
+                else:
+                    row_content = row_content["content"]
+            return row_content
         return ""
 
     def __wragle_data(self, content: str):

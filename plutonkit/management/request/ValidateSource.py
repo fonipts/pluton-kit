@@ -9,17 +9,18 @@ class ValidateSource:
         self.repo_name = None
         self.repo_path_dir = ""
         self.repo_details = {}
-        self.__validate_for_request()
         self.__validate_for_git()
+        self.__validate_for_request()
         self.__validate_for_local()
 
     def __validate_for_request(self):
         # noqa: raw file github
-        match1 = re.search(r"^(http[s]{0,1})\://(raw.githubusercontent.com)", self.path)
-        # noqa: raw file gitlab
-        match2 = re.search(r"^(http[s]{0,1})\://(gitlab.com).*?(\/\-\/raw\/)", self.path)
-        if match1 or match2:
-            self.arch_type = "request"
+
+        if self.arch_type is None:
+            match2 = re.search(r"^(http[s]{0,1})\://", self.path)
+            if match2:
+                self.arch_type = "request"
+
 
     def __validate_for_git(self):
         match1 = re.search(r"(\/[a-zA-Z0-9\_\-]{2,}\.git[\/]{0,}\b)", self.path)

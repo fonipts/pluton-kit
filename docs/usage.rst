@@ -68,3 +68,6 @@ If you like our option at `pluton-lobby`
      - Your starter kit for Ruby language 
    * - default_websocket
      - Your starkit websocket in python        
+
+If you plan to build you own custom blueprint, then it requires that in each directory it must have a file `architecture.yaml` as it set all the details of your project.
+ 

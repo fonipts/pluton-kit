@@ -3,6 +3,7 @@ Create your project from the current selection we had on the lobby, But in the f
 
 [![PIP version][pip-image]][pip-url] 
 [![Build Status](https://github.com/fonipts/pluton-kit/actions/workflows/cicd.yaml/badge.svg?branch=main)](https://github.com/fonipts/pluton-kit/actions)
+[![Downloads](https://static.pepy.tech/badge/plutonkit)](https://pepy.tech/project/plutonkit)
 
 [Site](https://plutonkit.codehyouka.xyz/) |
 [Docs](https://plutonkit.codehyouka.xyz/api) |

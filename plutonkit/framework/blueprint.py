@@ -89,26 +89,31 @@ class FrameworkBluePrint:
         create_yaml_file(
             self.folder_name, PROJECT_COMMAND_FILE, {"script": script, "env": env}
             )
+        self._files(files, terminal_answer,"start")
         self._boot_command(bootscript, "start", terminal_answer)
-        self._files(files, terminal_answer)
+        self._files(files, terminal_answer,"end")
         self._boot_command(bootscript, "end", terminal_answer)
         self.arch_req.clearRepoFolder()
         print("Congrats!! your first project has been generated")
 
-    def _files(self, values, args):
+    def _files(self, values, args,post_exec):
 
         files_check: list[BlueprintFileSchema] = []
         default_item = values.get("default", [])
 
         for value in default_item:
-            for file1 in self.arch_req.getBlob(value):
-                files_check.append(BlueprintFileSchema(file1, args))
+            value_exec_position = value.get("exec_position", "end")
+            if post_exec == value_exec_position:
+                for file1 in self.arch_req.getBlob(value):
+                    files_check.append(BlueprintFileSchema(file1, args))
 
         optional_item = values.get("optional", [])
         for value in optional_item:
+            value_exec_position = value.get("exec_position", "end")
+
             cond_valid = ConditionSplit(value.get("condition"), args)
 
-            if "dependent" in value and cond_valid.validCond():
+            if "dependent" in value and cond_valid.validCond() and post_exec == value_exec_position:
                 for s_value in value["dependent"]:
                     for file1 in self.arch_req.getBlob(file1):
                         files_check.append(BlueprintFileSchema(s_value, args))

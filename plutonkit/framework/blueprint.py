@@ -4,7 +4,6 @@ import sys
 from yaml import Loader, load
 
 from plutonkit.config import PROJECT_COMMAND_FILE, PROJECT_DETAILS_FILE
-from plutonkit.config.system import LANG_REQUIREMENT
 from plutonkit.helper.command import clean_command_split, pip_run_command
 from plutonkit.helper.environment import setEnvironmentVariable
 from plutonkit.helper.filesystem import (
@@ -74,15 +73,11 @@ class FrameworkBluePrint:
             self.arch_req.clearRepoFolder()
             sys.exit(0)
     def _bootloader_project(self, content, args):
-        dependencies = content.get("dependencies", {})
         files = content.get("files", [])
         script = content.get("script", {})
         bootscript = content.get("bootscript", [])
-        settings = content.get("settings")
         env = content.get("env",{})
         setEnvironmentVariable(env)
-
-        self._packages(settings, dependencies, args)
         terminal_answer = args
         terminal_answer["folder_name"] = self.folder_name
 
@@ -99,13 +94,6 @@ class FrameworkBluePrint:
         self._boot_command(bootscript, "end", terminal_answer)
         self.arch_req.clearRepoFolder()
         print("Congrats!! your first project has been generated")
-
-    def _packages(self, setting, values, args):
-
-        if setting.get("install_type", "") in LANG_REQUIREMENT:
-            LANG_REQUIREMENT[setting.get("install_type", "")](self.directory,self.folder_name, values,args)
-        else:
-            print("Invalid install_type `value`, please check")
 
     def _files(self, values, args):
 

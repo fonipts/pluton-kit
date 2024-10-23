@@ -5,7 +5,7 @@ from plutonkit.management.request.ArchitectureRequest import (
     ArchitectureRequest,
 )
 
-VALID_MASTER_BLUEPRINT_KEY = ["name", "bootscript","env", "settings", "choices", "dependencies", "script", "files"]
+VALID_MASTER_BLUEPRINT_KEY = ["name", "bootscript","env", "choices", "script", "files"]
 
 
 class ReviewBlueprint:
@@ -29,19 +29,9 @@ class ReviewBlueprint:
                 validate_data["error_message"].append(
                     "`name` is missing in architecture.yaml, please provide"
                 )
-            if "settings" not in self.blueprint_content:
-                validate_data["error_message"].append(
-                    "`settings` is missing in architecture.yaml, please provide"
-                )
-            else:
-                if "install_type" not in self.blueprint_content["settings"]:
-                    validate_data["error_message"].append(
-                        "`settings -> install_type` is missing in architecture.yaml, please provide"
-                    )
 
             self.__verify_files(validate_data,arch_req)
             self.__verify_choices(validate_data)
-            self.__verify_dependencies(validate_data)
             self.__verify_script(validate_data)
             self.__verify_bootsript(validate_data)
         return validate_data
@@ -65,16 +55,6 @@ class ReviewBlueprint:
             for val in self.blueprint_content["choices"]:
                 self.__check_invalid_value(validate_data,  val, [
                     "name", "question", "type", "option"], "choices[] -> ")
-
-    def __verify_dependencies(self,validate_data):
-        if "dependencies" in self.blueprint_content:
-            self.__check_invalid_value(validate_data,  self.blueprint_content["dependencies"], [
-                "default", "optional"], "dependencies -> ")
-
-            if "optional" in self.blueprint_content["dependencies"]:
-                for val in self.blueprint_content["dependencies"]["optional"]:
-                    self.__check_invalid_value(validate_data,  val, [
-                        "condition", "dependent"], "dependencies ->optional -> ")
 
     def __verify_script(self,validate_data):
         if "script" in self.blueprint_content:

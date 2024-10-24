@@ -1,5 +1,3 @@
-"""Module providing a function printing python version."""
-
 import sys
 
 from plutonkit.command.action.clone_project import CloneProject

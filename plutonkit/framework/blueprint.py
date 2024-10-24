@@ -72,6 +72,7 @@ class FrameworkBluePrint:
             print("Invalid details to proceed in creating new project")
             self.arch_req.clearRepoFolder()
             sys.exit(0)
+
     def _bootloader_project(self, content, args):
         files = content.get("files", [])
         script = content.get("script", {})
@@ -89,34 +90,31 @@ class FrameworkBluePrint:
         create_yaml_file(
             self.folder_name, PROJECT_COMMAND_FILE, {"script": script, "env": env}
             )
-        self._files(files, terminal_answer,"start")
-        self._boot_command(bootscript, "start", terminal_answer)
-        self._files(files, terminal_answer,"end")
-        self._boot_command(bootscript, "end", terminal_answer)
+        self._files(files, terminal_answer)
+        self._boot_command(bootscript, terminal_answer)
         self.arch_req.clearRepoFolder()
         print("Congrats!! your first project has been generated")
 
-    def _files(self, values, args,post_exec):
+    def _files(self, values, args):
 
         files_check: list[BlueprintFileSchema] = []
         default_item = values.get("default", [])
 
         for value in default_item:
-            value_exec_position = value.get("exec_position", "end")
-            if post_exec == value_exec_position:
-                for file1 in self.arch_req.getBlob(value):
-                    files_check.append(BlueprintFileSchema(file1, args))
+
+            for file1 in self.arch_req.getBlob(value):
+                files_check.append(BlueprintFileSchema(file1, args))
 
         optional_item = values.get("optional", [])
         for value in optional_item:
-            value_exec_position = value.get("exec_position", "end")
 
             cond_valid = ConditionSplit(value.get("condition"), args)
 
-            if "dependent" in value and cond_valid.validCond() and post_exec == value_exec_position:
+            if "dependent" in value and cond_valid.validCond():
                 for s_value in value["dependent"]:
-                    for file1 in self.arch_req.getBlob(file1):
-                        files_check.append(BlueprintFileSchema(s_value, args))
+                    for file1 in self.arch_req.getBlob(s_value):
+
+                        files_check.append(BlueprintFileSchema(file1, args))
 
         for value in files_check:
             if value.isObjFile():
@@ -129,14 +127,16 @@ class FrameworkBluePrint:
                 else:
                     print(f"error in downloading the file {value.value['file']}")
 
-    def _boot_command(self, values, post_exec, args):
+    def _boot_command(self, values, args):
 
         path = os.path.join(self.directory, self.folder_name)
         os.chdir(path)
-        for value in values:
-            command = value.get("command", "")
-            condition = value.get("condition", "")
-            value_exec_position = value.get("exec_position", "end")
+        is_exec_running = len(values)>0
+        while is_exec_running:
+            command = values[0].get("command", "")
+            condition = values[0].get("condition", "")
+            str_convert = convert_shortcode(command, args)
+
             is_valid = False
             if condition == "":
                 is_valid = True
@@ -144,6 +144,10 @@ class FrameworkBluePrint:
                 cond_valid = ConditionSplit(condition, args)
                 is_valid = cond_valid.validCond()
 
-            if is_valid and post_exec == value_exec_position:
-                str_convert = convert_shortcode(command, args)
-                pip_run_command(clean_command_split(str_convert))
+            if is_valid:
+                try:
+                    pip_run_command(clean_command_split(str_convert))
+                except Exception as E:
+                    print(E)
+            values.pop(0)
+            is_exec_running = len(values)>0

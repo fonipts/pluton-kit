@@ -50,6 +50,7 @@ class ReviewBlueprint:
                         "condition", "dependent","mv_file", "mv_folder_name"], "files ->optional -> ")
 
             self._check_files(validate_data, self.blueprint_content["files"], arch_req)
+
     def __verify_choices(self,validate_data):
         if "choices" in self.blueprint_content:
             for val in self.blueprint_content["choices"]:
@@ -61,16 +62,12 @@ class ReviewBlueprint:
             for _, val in self.blueprint_content["script"].items():
                 self.__check_invalid_value(validate_data,  val, [
                     "command", "description"], "script[] -> ")
+
     def __verify_bootsript(self,validate_data):
         if "bootscript" in self.blueprint_content:
             for val in self.blueprint_content["bootscript"]:
                 self.__check_invalid_value(validate_data, val, [
                     "command", "exec_position", "condition"], "bootscript[] -> ")
-                if "exec_position" in val:
-                    if val["exec_position"] != "start" and val["exec_position"] != "end":
-                        validate_data["error_message"].append(
-                            "the `bootscript[] -> exec_position` is invalid, choose either start or end"
-                        )
 
     def __check_invalid_value(self, validate_data, values, trained, main_key=""):
         words_distance = WordDistance(trained)
@@ -85,7 +82,6 @@ class ReviewBlueprint:
     def _check_files(self, validate_data, value_files, arch_req):
         default_item = value_files.get("default", [])
 
-        #
         for val in value_files.get("optional", []):
             for val2 in val["dependent"]:
                 default_item.append(val2)

@@ -9,7 +9,7 @@ from .format import get_enclose_str, replace_index_to_enclose, spilt_char
 
 
 def pip_run_command(command):
-    subprocess.call(command)
+    return subprocess.call(command,shell=True)
 
 def clean_command_split(command: str):
     command = re.sub(r"\s{2,}", " ", command)
@@ -24,4 +24,4 @@ def clean_command_split(command: str):
             "replace_ant":arg_split_replace_ant
         },SEARCH_CHAR_ENCLOSE)
 
-    return arg_split_content
+    return " ".join(arg_split_content)

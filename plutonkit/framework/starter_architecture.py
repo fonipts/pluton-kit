@@ -11,8 +11,10 @@ class StarterArchitecture:
         self.directory = directory
         self.project_name = project_name
         self.folder_name = ""
+
     def set_folder_name(self, name):
         self.folder_name = name
+
     def execute(self):
         try:
             generate_project_folder_cwd(self.folder_name)

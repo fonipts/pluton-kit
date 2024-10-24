@@ -6,6 +6,9 @@ import yaml
 from .template import convert_shortcode, convert_template
 
 
+def is_glob(name):
+    return re.match(r"[\[\*\?]{1,}", name) is not None
+
 def default_project_name(name):
     return f"{name}"
 
@@ -24,7 +27,6 @@ def create_yaml_file(project_name, filename, library=None):
     ) as fw:
         fw.write(yaml.dump(library, default_flow_style=False))
         fw.close()
-
 
 def write_file_content(
     directory: str, folder_name: str, file: str, content: str, args=None

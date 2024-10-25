@@ -19,11 +19,11 @@ class StarterArchitecture:
         try:
             generate_project_folder_cwd(self.folder_name)
             write_file_content(
-                            self.directory, self.folder_name, "README.md", "", {"project_name":self.project_name}
-                        )
+                self.directory, self.folder_name, "README.md", "# Hello", {"project_name":self.project_name}
+            )
             write_file_content(
-                            self.directory, self.folder_name, ARCHITECTURE_DETAILS_FILE, self._get_architecture_content(), {"project_name":self.project_name}
-                        )
+                self.directory, self.folder_name, ARCHITECTURE_DETAILS_FILE, self._get_architecture_content(), {"project_name":self.project_name}
+            )
 
         except Exception as e:
             print(e)
@@ -34,8 +34,6 @@ class StarterArchitecture:
     def _get_architecture_content(self):
         return """
 name: {{project_name}}
-settings:
-  install_type: pip
 files:
   default:
     - file: README.md

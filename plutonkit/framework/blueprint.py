@@ -88,12 +88,20 @@ class FrameworkBluePrint:
             {"name": self.folder_name, "blueprint": self.path, "default_choices": terminal_answer},
             )
         create_yaml_file(
-            self.folder_name, PROJECT_COMMAND_FILE, {"script": script, "env": env}
+            self.folder_name, PROJECT_COMMAND_FILE, {"script": self._script_template(script,terminal_answer), "env": env}
             )
         self._files(files, terminal_answer)
         self._boot_command(bootscript, terminal_answer)
         self.arch_req.clearRepoFolder()
         print("Congrats!! your first project has been generated")
+
+    def _script_template(self,configs,args):
+        for value in configs:
+            #print(value_config,":config")
+            commands = configs[value]['command']
+            for key_com,val_com in enumerate(commands):
+                commands[key_com] = convert_shortcode(val_com, args)
+        return configs
 
     def _files(self, values, args):
 

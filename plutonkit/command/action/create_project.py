@@ -42,7 +42,7 @@ class CreateProject:
         clean_name = git_name(name)
         try:
             details_value = VAR_DEFAULT_BLUEPRINT[VAR_DEFAULT_BLUEPRINT.index(clean_name)]
-            self.project_details_execute(f"https://github.com/fonipts/pluton-lobby.git/blueprint/{details_value}")
+            self.project_details_execute(f"{REMOTE_URL_RAW}/{details_value}")
         except ValueError:
             self.project_details_execute(f"https://github.com/{clean_name}.git")
         except KeyError:

@@ -82,6 +82,9 @@ class FrameworkBluePrint:
         terminal_answer = args
         terminal_answer["folder_name"] = self.folder_name
 
+        self._files(files, terminal_answer)
+        self._boot_command(bootscript, terminal_answer)
+        os.chdir(self.directory)
         create_yaml_file(
             self.folder_name,
             PROJECT_DETAILS_FILE,
@@ -90,8 +93,6 @@ class FrameworkBluePrint:
         create_yaml_file(
             self.folder_name, PROJECT_COMMAND_FILE, {"script": self._script_template(script,terminal_answer), "env": env}
             )
-        self._files(files, terminal_answer)
-        self._boot_command(bootscript, terminal_answer)
         self.arch_req.clearRepoFolder()
         print("Congrats!! your first project has been generated")
 
@@ -138,9 +139,10 @@ class FrameworkBluePrint:
     def _boot_command(self, values, args):
 
         path = os.path.join(self.directory, self.folder_name)
-        os.chdir(path)
+
         is_exec_running = len(values)>0
         while is_exec_running:
+            chdir = os.path.join(path,convert_shortcode(values[0].get("chdir",""), args))
             command = values[0].get("command", "")
             condition = values[0].get("condition", "")
             str_convert = convert_shortcode(command, args)
@@ -153,6 +155,7 @@ class FrameworkBluePrint:
                 is_valid = cond_valid.validCond()
 
             if is_valid:
+                os.chdir(chdir)
                 try:
                     pip_run_command(clean_command_split(str_convert))
                 except Exception as E:

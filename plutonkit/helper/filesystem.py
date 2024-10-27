@@ -46,6 +46,8 @@ def write_file_content(
     content = convert_shortcode(content, args)
     if len(base_name) > 1:
         is_valid_template = False
+        raw_filename=""
+        raw_fileext=""
         if re.match(r"^(.tpl)", base_name[1]):
 
             raw_filename = base_name[0]

@@ -98,7 +98,6 @@ class FrameworkBluePrint:
 
     def _script_template(self,configs,args):
         for value in configs:
-            #print(value_config,":config")
             commands = configs[value]['command']
             for key_com,val_com in enumerate(commands):
                 commands[key_com] = convert_shortcode(val_com, args)

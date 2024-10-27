@@ -83,9 +83,9 @@ class ArchitectureRequest:
             data_glob =  glob( os.path.join(self.dirs, self.validate.repo_name,self.validate.repo_path_dir,file.get("file","")) )
         for val in data_glob:
             raw_jsn = {"file":val.replace(f"{main_dir}/","")}
-            if "mv_file" in file:
-                for val2 in glob(os.path.join(self.dirs, self.path, file.get("mv_file",""))):
-                    raw_jsn["mv_file"] = val2.replace(f"{main_dir}/","")
+            if "mv" in file:
+                for val2 in glob(os.path.join(self.dirs, self.path, file.get("mv",""))):
+                    raw_jsn["mv"] = val2.replace(f"{main_dir}/","")
                     raw_data.append(raw_jsn)
             else:
                 raw_data.append(raw_jsn)

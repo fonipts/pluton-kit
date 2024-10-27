@@ -43,11 +43,11 @@ class ReviewBlueprint:
                 )
         else:
             self.__check_invalid_value(validate_data, self.blueprint_content["files"], [
-                "mv_file", "default", "optional"], "files -> ")
+                "mv", "default", "optional"], "files -> ")
             if "optional" in self.blueprint_content["files"]:
                 for val in self.blueprint_content["files"]["optional"]:
                     self.__check_invalid_value(validate_data,  val, [
-                        "condition", "dependent","mv_file", "mv_folder_name"], "files ->optional -> ")
+                        "condition", "dependent","mv", "mv_folder_name"], "files ->optional -> ")
 
             self._check_files(validate_data, self.blueprint_content["files"], arch_req)
 

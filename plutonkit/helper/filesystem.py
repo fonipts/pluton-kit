@@ -51,8 +51,8 @@ def write_file_content(
             raw_filename = base_name[0]
             raw_fileext = re.sub(r"(.tpl)", ".", base_name[1]).strip()
             is_valid_template = True
-        if base_name[1] =="":
-            if re.search(r"(.tpl)", base_name[0]):
+        else:
+            if base_name[1] =="" and re.search(r"(.tpl)", base_name[0]):
 
                 raw_filename = re.sub(r"(.tpl)", ".", base_name[0]).strip()
                 raw_fileext = ""

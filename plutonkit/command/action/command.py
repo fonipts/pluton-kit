@@ -67,9 +67,15 @@ class Command:
 
         if command_value in list_commands:
             cmd_arg = list_commands[command_value]
-            for val in cmd_arg["command"]:
-                os.chdir(cmd_arg["chdir"])
-                pip_run_command(clean_command_split(val))
+            is_exec_running = len(cmd_arg["command"])>0
+            while is_exec_running:
+                try:
+                    os.chdir(cmd_arg["chdir"])
+                    pip_run_command(clean_command_split(cmd_arg["command"][0]))
+                except Exception as E:
+                    print(E)
+                cmd_arg["command"].pop()
+                is_exec_running = len(cmd_arg["command"])>0
             sys.exit(0)
         else:
             print("you are using an invalid command")

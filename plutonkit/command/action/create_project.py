@@ -4,7 +4,9 @@ from plutonkit.config import REMOTE_URL_RAW
 from plutonkit.config.framework import VAR_DEFAULT_BLUEPRINT
 from plutonkit.config.system import SERVICE_TYPE
 from plutonkit.framework.blueprint import FrameworkBluePrint
-from plutonkit.helper.arguments import get_arg_cmd_value, get_config
+from plutonkit.helper.arguments import (
+    answer_yes, get_arg_cmd_value, get_config,
+)
 from plutonkit.helper.format import git_name
 
 
@@ -92,7 +94,7 @@ class CreateProject:
         project_name = input("Name of folder project?")
         folder_name = f"Project name: {project_name}"
         answer = input(f"\n{folder_name}\nDo you want to proceed installation process?(y/n) > ")
-        if answer == "y":
+        if answer_yes(answer):
 
             framework_blueprint = FrameworkBluePrint(remote_blueprint)
             framework_blueprint.set_folder_name(project_name)

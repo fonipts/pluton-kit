@@ -1,5 +1,6 @@
 import re
 
+
 def get_dict_value(key, obj):
     raw_key = key[0].strip()
     key.pop(0)

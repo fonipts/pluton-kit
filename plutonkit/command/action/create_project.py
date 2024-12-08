@@ -5,7 +5,7 @@ from plutonkit.config.framework import VAR_DEFAULT_BLUEPRINT
 from plutonkit.config.system import SERVICE_TYPE
 from plutonkit.framework.blueprint import FrameworkBluePrint
 from plutonkit.helper.arguments import (
-    answer_yes, check_if_default_name, get_arg_cmd_value, get_config
+    answer_yes, check_if_default_name, get_arg_cmd_value, get_config,
 )
 from plutonkit.helper.format import git_name
 

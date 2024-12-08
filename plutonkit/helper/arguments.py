@@ -1,3 +1,5 @@
+import re
+
 def get_dict_value(key, obj):
     raw_key = key[0].strip()
     key.pop(0)
@@ -25,3 +27,13 @@ def get_arg_cmd_value(args):
 def answer_yes(ans):
     list_yes = {"y":"","Y":"","yes":"","Yes":""}
     return ans in list_yes
+
+def check_if_default_name(name):
+    valid = False
+    if re.search(r'^([\/\.])', name):
+        valid = True
+
+    if re.search(r'^([a-zA-z\-\+]{3,}\:\//)', name):
+        valid = True
+
+    return valid

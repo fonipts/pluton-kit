@@ -32,7 +32,7 @@ or
 .. code-block:: shell
 
 
-   plutonkit create_project name=ariadne
+   plutonkit create_project source=ariadne
 
 If you like our option at `pluton-lobby`
 

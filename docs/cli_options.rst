@@ -25,7 +25,7 @@ options
 
 .. option:: create_project
 .. rubric:: Start creating your project in our listed framework
-:arguments: source=[location of architecture.yaml] or name=[location of architecture.yaml]
+:arguments: source=[location of architecture.yaml]
 
 
 .. option:: cmd

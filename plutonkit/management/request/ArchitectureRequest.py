@@ -7,6 +7,7 @@ import requests
 
 from plutonkit.config import ARCHITECTURE_DETAILS_FILE
 from plutonkit.config.message import ARCHITECTURE_REQUEST_ERROR_MESSAGE
+from plutonkit.helper.filesystem import is_glob
 
 from .ValidateSource import ValidateSource
 
@@ -69,9 +70,12 @@ class ArchitectureRequest:
         data_glob = []
         raw_data = []
         main_dir = ""
+        if is_glob(file.get("file","")) is False:
+            return [file]
         if self.validate.arch_type == "request":
             return [file]
         if self.validate.arch_type == "local":
+
             main_dir = os.path.join(self.dirs, self.path)
             data_glob =   glob(os.path.join(self.dirs, self.path, file.get("file","")))
         if self.validate.arch_type == "git":
@@ -79,9 +83,9 @@ class ArchitectureRequest:
             data_glob =  glob( os.path.join(self.dirs, self.validate.repo_name,self.validate.repo_path_dir,file.get("file","")) )
         for val in data_glob:
             raw_jsn = {"file":val.replace(f"{main_dir}/","")}
-            if "mv_file" in file:
-                for val2 in glob(os.path.join(self.dirs, self.path, file.get("mv_file",""))):
-                    raw_jsn["mv_file"] = val2.replace(f"{main_dir}/","")
+            if "mv" in file:
+                for val2 in glob(os.path.join(self.dirs, self.path, file.get("mv",""))):
+                    raw_jsn["mv"] = val2.replace(f"{main_dir}/","")
                     raw_data.append(raw_jsn)
             else:
                 raw_data.append(raw_jsn)

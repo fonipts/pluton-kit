@@ -3,6 +3,7 @@ Create your project from the current selection we had on the lobby, But in the f
 
 [![PIP version][pip-image]][pip-url] 
 [![Build Status](https://github.com/fonipts/pluton-kit/actions/workflows/cicd.yaml/badge.svg?branch=main)](https://github.com/fonipts/pluton-kit/actions)
+[![Downloads](https://static.pepy.tech/badge/plutonkit)](https://pepy.tech/project/plutonkit)
 
 [Site](https://plutonkit.codehyouka.xyz/) |
 [Docs](https://plutonkit.codehyouka.xyz/api) |
@@ -62,4 +63,4 @@ For quick command execution, we had a new abbrevation that called
 `plkcmd` instead of `plutonkit cmd`. 
 
 [pip-url]: https://pypi.org/project/plutonkit/
-[pip-image]: https://img.shields.io/badge/plutonkit-1.0.25alpha2-brightgreen
+[pip-image]: https://img.shields.io/badge/plutonkit-1.0.31a1-brightgreen

@@ -4,7 +4,9 @@ from plutonkit.config import REMOTE_URL_RAW
 from plutonkit.config.framework import VAR_DEFAULT_BLUEPRINT
 from plutonkit.config.system import SERVICE_TYPE
 from plutonkit.framework.blueprint import FrameworkBluePrint
-from plutonkit.helper.arguments import get_arg_cmd_value, get_config
+from plutonkit.helper.arguments import (
+    answer_yes, check_if_default_name, get_arg_cmd_value, get_config,
+)
 from plutonkit.helper.format import git_name
 
 
@@ -21,9 +23,11 @@ class CreateProject:
         if len(option_cmd) > 0:
             view_extra_cmd = get_arg_cmd_value(option_cmd)
             if "source" in view_extra_cmd:
-                self.project_details_execute(view_extra_cmd["source"])
-            elif "name" in view_extra_cmd:
-                self.git_lobby_bluprint(view_extra_cmd["name"])
+                source_name = view_extra_cmd["source"]
+                if check_if_default_name(source_name):
+                    self.project_details_execute(source_name)
+                else:
+                    self.git_lobby_bluprint(source_name)
             else:
                 print("Please use the source as default\n")
                 print("`plutonkit create_project source=<source of architecture.yaml> ")
@@ -42,7 +46,7 @@ class CreateProject:
         clean_name = git_name(name)
         try:
             details_value = VAR_DEFAULT_BLUEPRINT[VAR_DEFAULT_BLUEPRINT.index(clean_name)]
-            self.project_details_execute(f"https://github.com/fonipts/pluton-lobby.git/blueprint/{details_value}")
+            self.project_details_execute(f"{REMOTE_URL_RAW}/{details_value}")
         except ValueError:
             self.project_details_execute(f"https://github.com/{clean_name}.git")
         except KeyError:
@@ -92,7 +96,7 @@ class CreateProject:
         project_name = input("Name of folder project?")
         folder_name = f"Project name: {project_name}"
         answer = input(f"\n{folder_name}\nDo you want to proceed installation process?(y/n) > ")
-        if answer == "y":
+        if answer_yes(answer):
 
             framework_blueprint = FrameworkBluePrint(remote_blueprint)
             framework_blueprint.set_folder_name(project_name)

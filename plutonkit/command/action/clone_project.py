@@ -5,7 +5,7 @@ from yaml import Loader, load
 
 from plutonkit.config import PROJECT_DETAILS_FILE
 from plutonkit.framework.blueprint import FrameworkBluePrint
-from plutonkit.helper.arguments import get_arg_cmd_value
+from plutonkit.helper.arguments import answer_yes, get_arg_cmd_value
 from plutonkit.management.request.ArchitectureRequest import (
     ArchitectureRequest,
 )
@@ -53,7 +53,7 @@ class CloneProject:
         project_name = input("Name of folder project?")
         folder_name = f"Project name: {project_name}"
         answer = input(f"\n{folder_name}\nDo you want to proceed installation process?(y/n) > ")
-        if answer == "y":
+        if answer_yes(answer):
             inquiry_val["folder_name"] = project_name
             framework_blueprint = FrameworkBluePrint(remote_blueprint)
             framework_blueprint.set_folder_name(project_name)

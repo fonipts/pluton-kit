@@ -6,6 +6,9 @@ import yaml
 from .template import convert_shortcode, convert_template
 
 
+def is_glob(name):
+    return re.match(r"[\[\*\?]{1,}", name) is not None
+
 def default_project_name(name):
     return f"{name}"
 
@@ -25,7 +28,6 @@ def create_yaml_file(project_name, filename, library=None):
         fw.write(yaml.dump(library, default_flow_style=False))
         fw.close()
 
-
 def write_file_content(
     directory: str, folder_name: str, file: str, content: str, args=None
 ):
@@ -43,9 +45,22 @@ def write_file_content(
 
     content = convert_shortcode(content, args)
     if len(base_name) > 1:
+        is_valid_template = False
+        raw_filename=""
+        raw_fileext=""
         if re.match(r"^(.tpl)", base_name[1]):
+
             raw_filename = base_name[0]
             raw_fileext = re.sub(r"(.tpl)", ".", base_name[1]).strip()
+            is_valid_template = True
+        else:
+            if base_name[1] =="" and re.search(r"(.tpl)", base_name[0]):
+
+                raw_filename = re.sub(r"(.tpl)", ".", base_name[0]).strip()
+                raw_fileext = ""
+                is_valid_template = True
+
+        if is_valid_template:
             if raw_fileext == ".":
                 raw_fileext = ""
             name = os.path.join(

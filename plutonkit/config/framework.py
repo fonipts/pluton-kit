@@ -1,5 +1,3 @@
-"""Module providing a function printing python version."""
-
 from plutonkit.config.func.shortcut import (
     shortcut_if, shortcut_join_space, shortcut_lower, shortcut_replace,
     shortcut_ucfirst, shortcut_upper,

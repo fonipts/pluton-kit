@@ -4,7 +4,6 @@ import sys
 from yaml import Loader, load
 
 from plutonkit.config import PROJECT_COMMAND_FILE, PROJECT_DETAILS_FILE
-from plutonkit.config.system import LANG_REQUIREMENT
 from plutonkit.helper.command import clean_command_split, pip_run_command
 from plutonkit.helper.environment import setEnvironmentVariable
 from plutonkit.helper.filesystem import (
@@ -73,39 +72,36 @@ class FrameworkBluePrint:
             print("Invalid details to proceed in creating new project")
             self.arch_req.clearRepoFolder()
             sys.exit(0)
+
     def _bootloader_project(self, content, args):
-        dependencies = content.get("dependencies", {})
         files = content.get("files", [])
         script = content.get("script", {})
         bootscript = content.get("bootscript", [])
-        settings = content.get("settings")
         env = content.get("env",{})
         setEnvironmentVariable(env)
-
-        self._packages(settings, dependencies, args)
         terminal_answer = args
         terminal_answer["folder_name"] = self.folder_name
 
+        self._files(files, terminal_answer)
+        self._boot_command(bootscript, terminal_answer)
+        os.chdir(self.directory)
         create_yaml_file(
             self.folder_name,
             PROJECT_DETAILS_FILE,
             {"name": self.folder_name, "blueprint": self.path, "default_choices": terminal_answer},
             )
         create_yaml_file(
-            self.folder_name, PROJECT_COMMAND_FILE, {"script": script, "env": env}
+            self.folder_name, PROJECT_COMMAND_FILE, {"script": self._script_template(script,terminal_answer), "env": env}
             )
-        self._boot_command(bootscript, "start", terminal_answer)
-        self._files(files, terminal_answer)
-        self._boot_command(bootscript, "end", terminal_answer)
         self.arch_req.clearRepoFolder()
         print("Congrats!! your first project has been generated")
 
-    def _packages(self, setting, values, args):
-
-        if setting.get("install_type", "") in LANG_REQUIREMENT:
-            LANG_REQUIREMENT[setting.get("install_type", "")](self.directory,self.folder_name, values,args)
-        else:
-            print("Invalid install_type `value`, please check")
+    def _script_template(self,configs,args):
+        for value in configs:
+            commands = configs[value]['command']
+            for key_com,val_com in enumerate(commands):
+                commands[key_com] = convert_shortcode(val_com, args)
+        return configs
 
     def _files(self, values, args):
 
@@ -113,17 +109,20 @@ class FrameworkBluePrint:
         default_item = values.get("default", [])
 
         for value in default_item:
+
             for file1 in self.arch_req.getBlob(value):
                 files_check.append(BlueprintFileSchema(file1, args))
 
         optional_item = values.get("optional", [])
         for value in optional_item:
+
             cond_valid = ConditionSplit(value.get("condition"), args)
 
             if "dependent" in value and cond_valid.validCond():
                 for s_value in value["dependent"]:
-                    for file1 in self.arch_req.getBlob(file1):
-                        files_check.append(BlueprintFileSchema(s_value, args))
+                    for file1 in self.arch_req.getBlob(s_value):
+
+                        files_check.append(BlueprintFileSchema(file1, args))
 
         for value in files_check:
             if value.isObjFile():
@@ -136,14 +135,17 @@ class FrameworkBluePrint:
                 else:
                     print(f"error in downloading the file {value.value['file']}")
 
-    def _boot_command(self, values, post_exec, args):
+    def _boot_command(self, values, args):
 
         path = os.path.join(self.directory, self.folder_name)
-        os.chdir(path)
-        for value in values:
-            command = value.get("command", "")
-            condition = value.get("condition", "")
-            value_exec_position = value.get("exec_position", "end")
+
+        is_exec_running = len(values)>0
+        while is_exec_running:
+            chdir = os.path.join(path,convert_shortcode(values[0].get("chdir",""), args))
+            command = values[0].get("command", "")
+            condition = values[0].get("condition", "")
+            str_convert = convert_shortcode(command, args)
+
             is_valid = False
             if condition == "":
                 is_valid = True
@@ -151,6 +153,11 @@ class FrameworkBluePrint:
                 cond_valid = ConditionSplit(condition, args)
                 is_valid = cond_valid.validCond()
 
-            if is_valid and post_exec == value_exec_position:
-                str_convert = convert_shortcode(command, args)
-                pip_run_command(clean_command_split(str_convert))
+            if is_valid:
+                os.chdir(chdir)
+                try:
+                    pip_run_command(clean_command_split(str_convert))
+                except Exception as E:
+                    print(E)
+            values.pop(0)
+            is_exec_running = len(values)>0

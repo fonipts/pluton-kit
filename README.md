@@ -63,4 +63,4 @@ For quick command execution, we had a new abbrevation that called
 `plkcmd` instead of `plutonkit cmd`. 
 
 [pip-url]: https://pypi.org/project/plutonkit/
-[pip-image]: https://img.shields.io/badge/plutonkit-1.0.31a1-brightgreen
+[pip-image]: https://img.shields.io/badge/plutonkit-1.0.31a2-brightgreen

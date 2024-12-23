@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "plutonkit"
-version = "1.0.31a1"
+version = "1.0.31a2"
 description = "Startkit for template project, for your desired structure of framework"
 long_description_content_type = "text/markdown"
 requires-python = ">=3.8"

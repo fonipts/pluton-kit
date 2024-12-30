@@ -16,5 +16,5 @@ scans:
      directory:
          include:
          - 'plutonkit/**'
-         #- 'test'
+         - 'tests/**'
          exclude: [] 

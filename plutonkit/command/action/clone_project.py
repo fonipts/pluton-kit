@@ -4,7 +4,7 @@ import sys
 from yaml import Loader, load
 
 from plutonkit.config import PROJECT_DETAILS_FILE
-from plutonkit.framework.blueprint import FrameworkBluePrint
+from plutonkit.framework.blueprint.generate_blueprint import FrameworkBluePrint
 from plutonkit.helper.arguments import answer_yes, get_arg_cmd_value
 from plutonkit.management.request.ArchitectureRequest import (
     ArchitectureRequest,

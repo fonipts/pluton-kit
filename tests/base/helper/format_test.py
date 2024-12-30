@@ -7,7 +7,7 @@ class TestFormat(unittest.TestCase):
 
     def test_name_fist_slash_end(self):
         self.assertEqual(git_name("name/"), 'name')
- 
+
     def test_name_fist_slash_both(self):
         self.assertEqual(git_name("/name/"), 'name')
 

@@ -36,7 +36,7 @@ class TestConditionIdentify(unittest.TestCase):
     def test_condition_valid_less(self):
         cond = ConditionIdentify('num.two > num.one', {'num': {'one': 1, 'two': 2}})
 
-        self.assertTrue(cond.validCond())    
+        self.assertTrue(cond.validCond())
 
     def test_condition_valid_greater_than(self):
         cond = ConditionIdentify('num.one <= num.two', {'num': {'one': 1, 'two': 2}})
@@ -46,4 +46,4 @@ class TestConditionIdentify(unittest.TestCase):
     def test_condition_valid_less_than(self):
         cond = ConditionIdentify('num.two >= num.one', {'num': {'one': 1, 'two': 2}})
 
-        self.assertTrue(cond.validCond())    
+        self.assertTrue(cond.validCond())

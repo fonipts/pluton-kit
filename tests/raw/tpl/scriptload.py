@@ -35,7 +35,7 @@ DATABASES = {
 '''
 
 def main():
-    
+
     types = sys.argv[1]
     package_name = sys.argv[2]
     arguments = sys.argv[3]

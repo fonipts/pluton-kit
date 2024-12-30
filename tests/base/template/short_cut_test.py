@@ -17,7 +17,7 @@ class TestShortCut(unittest.TestCase):
 
     def test_valid_upper(self):
         templt = TheShortCutWord("{{name|upper}}", {"name": "test"})
-        self.assertEqual(templt.get_convert(), "TEST")        
+        self.assertEqual(templt.get_convert(), "TEST")
 
     def test_valid_replace(self):
         templt = TheShortCutWord("{{name|replace(@,1)}}", {"name": "TEST@"})

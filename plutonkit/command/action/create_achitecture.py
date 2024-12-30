@@ -1,7 +1,9 @@
 import os
 import sys
 
-from plutonkit.framework.starter_architecture import StarterArchitecture
+from plutonkit.framework.architecture.starter_architecture import (
+    StarterArchitecture,
+)
 from plutonkit.helper.arguments import answer_yes
 
 

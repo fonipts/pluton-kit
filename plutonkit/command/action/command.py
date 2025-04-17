@@ -9,6 +9,7 @@ try:
 except ImportError:
     from yaml import Loader
 
+from plutonkit.framework.command.py_validate_content import PyValidateContent
 from plutonkit.config import PROJECT_COMMAND_FILE, PYTHON_CMD
 from plutonkit.framework.command.structure_command import StructureCommand
 from plutonkit.helper.command import clean_command_split, pip_run_command
@@ -84,7 +85,12 @@ class Command:
             path = os.path.join(directory, cmd_file)
 
             if os.path.isfile(path):
-                print(f"We are accessing `{cmd_file}`, in your local project.")
+                py_file_class = PyValidateContent(path)
+                print(f"We are accessing `{cmd_file}`, in your local project.\n")
+
+                if py_file_class.is_run_func_available() is False:
+                    print("In your `{cmd_file}`, please add  `run` function name in order to execute the cmd command")
+                    sys.exit(0)
                 sys.path.append( directory )
                 mod = importlib.import_module(PYTHON_CMD)
                 mod.run()

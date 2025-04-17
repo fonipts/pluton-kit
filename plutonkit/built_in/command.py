@@ -14,7 +14,8 @@ class PLCommand:
             def wrapper(*args,**kwargs):
 
                 return function(*args,**kwargs)
-            self.local_cli[name] = {
+            final_name = name is None and function.__name__ or name
+            self.local_cli[final_name] = {
                 "description":description,
                 "func":function
                 }

@@ -7,8 +7,9 @@ try:
     from yaml import CLoader as Loader
 except ImportError:
     from yaml import Loader
+import importlib 
 
-from plutonkit.config import PROJECT_COMMAND_FILE
+from plutonkit.config import PROJECT_COMMAND_FILE,PYTHON_CMD
 from plutonkit.framework.command.structure_command import StructureCommand
 from plutonkit.helper.command import clean_command_split, pip_run_command
 from plutonkit.helper.environment import (
@@ -78,12 +79,22 @@ class Command:
                 is_exec_running = len(cmd_arg["command"])>0
             sys.exit(0)
         else:
-            print("you are using an invalid command")
-            print("Please select the command below.")
-            for key, value in list_commands.items():
-                print("  ",
-                    " ".join(key.split(":.:")),
-                    " .... ",
-                    convertVarToTemplate(value.get("description", "[no comment]")),
-                    )
+            cmd_file = f"{PYTHON_CMD}.py"
+
+            path = os.path.join(directory, cmd_file)
+
+            if os.path.isfile(path):
+                print(f"We are accessing `{cmd_file}`, in your local project.")
+                sys.path.append( directory )
+                mod = importlib.import_module(PYTHON_CMD) 
+                mod.run()
+            else:
+                print("you are using an invalid command")
+                print("Please select the command below.")
+                for key, value in list_commands.items():
+                    print("  ",
+                        " ".join(key.split(":.:")),
+                        " .... ",
+                        convertVarToTemplate(value.get("description", "[no comment]")),
+                        )
         sys.exit(0)

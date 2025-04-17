@@ -1,4 +1,6 @@
 import re
+
+
 class PyValidateContent:
     def __init__(self,cmd_file):
         self.cmd_file = cmd_file

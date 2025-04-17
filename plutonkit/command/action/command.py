@@ -9,8 +9,8 @@ try:
 except ImportError:
     from yaml import Loader
 
-from plutonkit.framework.command.py_validate_content import PyValidateContent
 from plutonkit.config import PROJECT_COMMAND_FILE, PYTHON_CMD
+from plutonkit.framework.command.py_validate_content import PyValidateContent
 from plutonkit.framework.command.structure_command import StructureCommand
 from plutonkit.helper.command import clean_command_split, pip_run_command
 from plutonkit.helper.environment import (

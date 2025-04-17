@@ -1,3 +1,4 @@
+import importlib
 import os
 import sys
 
@@ -7,9 +8,8 @@ try:
     from yaml import CLoader as Loader
 except ImportError:
     from yaml import Loader
-import importlib 
 
-from plutonkit.config import PROJECT_COMMAND_FILE,PYTHON_CMD
+from plutonkit.config import PROJECT_COMMAND_FILE, PYTHON_CMD
 from plutonkit.framework.command.structure_command import StructureCommand
 from plutonkit.helper.command import clean_command_split, pip_run_command
 from plutonkit.helper.environment import (
@@ -86,7 +86,7 @@ class Command:
             if os.path.isfile(path):
                 print(f"We are accessing `{cmd_file}`, in your local project.")
                 sys.path.append( directory )
-                mod = importlib.import_module(PYTHON_CMD) 
+                mod = importlib.import_module(PYTHON_CMD)
                 mod.run()
             else:
                 print("you are using an invalid command")

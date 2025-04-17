@@ -46,4 +46,4 @@ class TestArchitectureRequest(unittest.TestCase):
 
     #def test_invalid_git_branch(self):
     #    arch = ArchitectureRequest("https://github.com/fonipts/pluton-lobby.git[test]/blueprint/bottle",os.getcwd())
-    #    self.assertFalse(arch.isValidReq)    
+    #    self.assertFalse(arch.isValidReq)

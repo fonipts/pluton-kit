@@ -2,6 +2,9 @@ import os
 import sys
 
 from plutonkit.config import PYTHON_CMD
+# from plutonkit.framework.command.py_validate_arguments import (
+#     PyValidateArguments,
+# )
 
 
 class PLCommand:
@@ -37,4 +40,18 @@ class PLCommand:
             name_cli = sys.argv[1]
             print(f"Your command name `{name_cli}` does not exist your `{PYTHON_CMD}.py`")
             sys.exit(0)
-        self.local_cli[sys.argv[1]]["func"](13,2)
+        # validate_arg = PyValidateArguments(sys.argv,self.local_cli)
+        #signature = inspect.signature(self.local_cli[sys.argv[1]]["func"])
+        #for name, param in signature.parameters.items():
+        #    print(f"Name: {name}")
+        #    print(f"Kind: {param.kind}")
+        #    print(f"Default: {param.default}")
+        #    print("-" * 20)
+        #    print(f"  Type annotation: {param.annotation}")
+        #    if param.annotation is inspect._empty:
+        #        print("  No type hint provided")
+        args = ()
+        ar_lst = tuple([2,4])
+        args = ar_lst
+        kwargs = {}
+        self.local_cli[sys.argv[1]]["func"](*args,**kwargs)

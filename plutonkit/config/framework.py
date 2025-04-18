@@ -5,7 +5,7 @@ from plutonkit.config.func.shortcut import (
 from plutonkit.config.func.template import (
     template_content, template_load, template_python,
 )
-from plutonkit.management.format import format_argument_input
+from plutonkit.framework.format import format_argument_input
 
 FRAMEWORK_WEB = [
     format_argument_input("framework", "django", "Do you need docker", "django", []),

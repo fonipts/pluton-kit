@@ -1,4 +1,4 @@
-from plutonkit.management.request.ArchitectureRequest import ArchitectureRequest
+from plutonkit.framework.request.ArchitectureRequest import ArchitectureRequest
 import unittest
 import os
 from plutonkit.config import ARCHITECTURE_DETAILS_FILE

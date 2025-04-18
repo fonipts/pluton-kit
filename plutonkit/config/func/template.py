@@ -1,7 +1,7 @@
 import os
 import re
 
-from plutonkit.management.request.ValidateSource import ValidateSource
+from plutonkit.framework.request.ValidateSource import ValidateSource
 
 
 def template_load(content,sub_content): # pylint: disable=unused-argument

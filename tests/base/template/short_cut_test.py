@@ -1,4 +1,4 @@
-from plutonkit.management.template.TheShortCutWord import TheShortCutWord
+from plutonkit.framework.template.TheShortCutWord import TheShortCutWord
 
 import unittest
 

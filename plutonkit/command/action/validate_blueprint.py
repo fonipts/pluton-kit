@@ -5,9 +5,7 @@ from yaml import Loader, load
 
 from plutonkit.config import ARCHITECTURE_DETAILS_FILE
 from plutonkit.framework.blueprint.review_blueprint import ReviewBlueprint
-from plutonkit.management.request.ArchitectureRequest import (
-    ArchitectureRequest,
-)
+from plutonkit.framework.request.ArchitectureRequest import ArchitectureRequest
 
 
 class ValidateBlueprint:

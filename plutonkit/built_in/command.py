@@ -2,9 +2,9 @@ import os
 import sys
 
 from plutonkit.config import PYTHON_CMD
-# from plutonkit.framework.command.py_validate_arguments import (
-#     PyValidateArguments,
-# )
+from plutonkit.framework.command.py_validate_arguments import (
+    PyValidateArguments,
+)
 
 
 class PLCommand:
@@ -30,17 +30,24 @@ class PLCommand:
         directory = os.getcwd()
         path = os.path.join(directory, f"{PYTHON_CMD}.py")
 
+        validate_arg = PyValidateArguments(sys.argv,self.local_cli)
+        getcmd_name = validate_arg.getcmd_name()
+
+        if validate_arg.get_python_name_script():
+            print("You are running in python script")
+
         if os.path.exists(path) is False:
             print(f"This file `{PYTHON_CMD}` must use in python cmd")
             sys.exit(0)
         if len(sys.argv) == 1:
             print("Please specify your command name")
             sys.exit(0)
-        if sys.argv[1] not in self.local_cli:
+        if getcmd_name not in self.local_cli:
+
             name_cli = sys.argv[1]
             print(f"Your command name `{name_cli}` does not exist your `{PYTHON_CMD}.py`")
             sys.exit(0)
-        # validate_arg = PyValidateArguments(sys.argv,self.local_cli)
+        #
         #signature = inspect.signature(self.local_cli[sys.argv[1]]["func"])
         #for name, param in signature.parameters.items():
         #    print(f"Name: {name}")
@@ -50,8 +57,9 @@ class PLCommand:
         #    print(f"  Type annotation: {param.annotation}")
         #    if param.annotation is inspect._empty:
         #        print("  No type hint provided")
+        validate_arg.get_argument_details()
         args = ()
         ar_lst = tuple([2,4])
         args = ar_lst
         kwargs = {}
-        self.local_cli[sys.argv[1]]["func"](*args,**kwargs)
+        self.local_cli[getcmd_name]["func"](*args,**kwargs)

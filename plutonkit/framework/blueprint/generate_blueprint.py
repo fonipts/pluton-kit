@@ -4,20 +4,18 @@ import sys
 from yaml import Loader, load
 
 from plutonkit.config import PROJECT_COMMAND_FILE, PROJECT_DETAILS_FILE
+from plutonkit.framework.filesystem.BlueprintFileSchema import (
+    BlueprintFileSchema,
+)
+from plutonkit.framework.logic.ConditionSplit import ConditionSplit
+from plutonkit.framework.request.ArchitectureRequest import ArchitectureRequest
+from plutonkit.framework.terminal.inquiry_terminal import InquiryTerminal
 from plutonkit.helper.command import clean_command_split, pip_run_command
 from plutonkit.helper.environment import setEnvironmentVariable
 from plutonkit.helper.filesystem import (
     create_yaml_file, generate_project_folder_cwd, write_file_content,
 )
 from plutonkit.helper.template import convert_shortcode
-from plutonkit.management.filesystem.BlueprintFileSchema import (
-    BlueprintFileSchema,
-)
-from plutonkit.management.logic.ConditionSplit import ConditionSplit
-from plutonkit.management.request.ArchitectureRequest import (
-    ArchitectureRequest,
-)
-from plutonkit.management.terminal.inquiry_terminal import InquiryTerminal
 
 
 class FrameworkBluePrint:

@@ -1,4 +1,4 @@
-from plutonkit.management.logic.ConditionSplit import ConditionSplit
+from plutonkit.framework.logic.ConditionSplit import ConditionSplit
 import unittest
 
 class TestConditionSplit(unittest.TestCase):

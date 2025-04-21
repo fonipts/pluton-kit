@@ -1,5 +1,6 @@
 from plutonkit.config import bcolors
 
+
 class InquiryTerminal:
     def __init__(self, choices) -> None:
         self.ref_answer = {}

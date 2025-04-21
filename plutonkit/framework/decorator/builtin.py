@@ -3,7 +3,9 @@ import sys
 
 from plutonkit.config import PYTHON_CMD, bcolors
 from plutonkit.framework.exception.help_exception import HelpException
-from plutonkit.framework.exception.validation_exception import ValidationException
+from plutonkit.framework.exception.validation_exception import (
+    ValidationException,
+)
 from plutonkit.framework.exception.warning_exception import WarningException
 
 

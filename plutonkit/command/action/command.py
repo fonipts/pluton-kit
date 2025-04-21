@@ -12,12 +12,14 @@ except ImportError:
 from plutonkit.config import PROJECT_COMMAND_FILE, PYTHON_CMD
 from plutonkit.framework.command.py_validate_content import PyValidateContent
 from plutonkit.framework.command.structure_command import StructureCommand
+from plutonkit.framework.exception.validation_exception import (
+    ValidationException,
+)
+from plutonkit.framework.exception.warning_exception import WarningException
 from plutonkit.helper.command import clean_command_split, pip_run_command
 from plutonkit.helper.environment import (
     convertVarToTemplate, setEnvironmentVariable,
 )
-from plutonkit.framework.exception.validation_exception import ValidationException
-from plutonkit.framework.exception.warning_exception import WarningException
 
 
 class Command:
@@ -44,12 +46,12 @@ class Command:
             raise ValidationException(f"This file `{PROJECT_COMMAND_FILE}` is invalid")
 
         with open(path, "r", encoding="utf-8") as fi:
-            try:
-                read = fi.read()
-                content = load(str(read), Loader=Loader)
+            #try:
+            read = fi.read()
+            content = load(str(read), Loader=Loader)
 
-            except Exception as e:
-                raise ValidationException("Invalid yaml file content",errors=[e])
+            #except Exception as e:
+            #    raise ValidationException("Invalid yaml file content",errors=[e])
         self.command_start(content, directory)
 
     def command_start(self, content, directory):
@@ -57,7 +59,7 @@ class Command:
         setEnvironmentVariable(content.get("env",{}))
         get_errors = structure_command_cls.get_error()
         if len(get_errors) > 0:
-            raise ValidationException(f"Invalid yaml file content",errors=[get_errors])
+            raise ValidationException("Invalid yaml file content",errors=[get_errors])
 
         command_list = self.argv[self.index::]
         command_value = ":.:".join(command_list)

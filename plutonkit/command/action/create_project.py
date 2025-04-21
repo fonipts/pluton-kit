@@ -4,12 +4,15 @@ from plutonkit.config import REMOTE_URL_RAW
 from plutonkit.config.framework import VAR_DEFAULT_BLUEPRINT
 from plutonkit.config.system import SERVICE_TYPE
 from plutonkit.framework.blueprint.generate_blueprint import FrameworkBluePrint
+from plutonkit.framework.exception.validation_exception import (
+    ValidationException,
+)
+from plutonkit.framework.exception.warning_exception import WarningException
 from plutonkit.helper.arguments import (
     answer_yes, check_if_default_name, get_arg_cmd_value, get_config,
 )
 from plutonkit.helper.format import git_name
-from plutonkit.framework.exception.validation_exception import ValidationException
-from plutonkit.framework.exception.warning_exception import WarningException
+
 
 class CreateProject:
     def __init__(self, argv) -> None:
@@ -53,18 +56,18 @@ class CreateProject:
 
     def callback_execute(self, reference_value, name, step):
 
-        try:
-            enum_action = [
-                f"{key + 1}  {val.get('option_name')}"
-                for key, val in enumerate(step)
-            ]
-            join_enum_action = "\n".join(enum_action)
-            print(f"\n{name}\n{join_enum_action} ")
-            answer_step = "1" if len(step) == 1 else f"1-{str(len(step))}"
-            answer = input(f"choose only at [{answer_step}]")
-            int_answer = int(answer)
-            available_step = step[int_answer - 1]
-            reference_value["command"].append(
+        #try:
+        enum_action = [
+            f"{key + 1}  {val.get('option_name')}"
+            for key, val in enumerate(step)
+        ]
+        join_enum_action = "\n".join(enum_action)
+        print(f"\n{name}\n{join_enum_action} ")
+        answer_step = "1" if len(step) == 1 else f"1-{str(len(step))}"
+        answer = input(f"choose only at [{answer_step}]")
+        int_answer = int(answer)
+        available_step = step[int_answer - 1]
+        reference_value["command"].append(
                 {
                     "name": available_step["name"],
                     "type": available_step["type"],
@@ -72,16 +75,16 @@ class CreateProject:
                 }
             )
 
-            if len(available_step["config"]) > 0:
-                self.callback_execute(
-                    reference_value,
-                    available_step["question"],
-                    available_step["config"],
-                )
-            else:
-                self.query_execute(reference_value)
-        except Exception:
-            raise ValidationException(f"Invalid argument please select in the available command `{answer}`\n")
+        if len(available_step["config"]) > 0:
+            self.callback_execute(
+                reference_value,
+                available_step["question"],
+                available_step["config"],
+            )
+        else:
+            self.query_execute(reference_value)
+        #except Exception:
+        #    raise ValidationException(f"Invalid argument please select in the available command `{answer}`\n")
 
     def query_execute(self, reference_value):
 

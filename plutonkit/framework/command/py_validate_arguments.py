@@ -1,6 +1,6 @@
 import inspect
-import re
 import os
+import re
 
 from plutonkit.config import PYTHON_CMD
 
@@ -41,7 +41,7 @@ class PyValidateArguments:
         if index+1>0:
             return self.argv[index+1::]
         return []
-    def getcmd_arg_validated(self):    
+    def getcmd_arg_validated(self):
         arg_data = self.getcmd_arg()
         arg_list, _, ord_list = self.get_argument_details()
         if len(arg_data)>0:
@@ -59,24 +59,24 @@ class PyValidateArguments:
                 if re.match(r"^[0-9]+$",val):
                     #raw_list.append(int(val))
                     raw_value = int(val)
-                
-                    #raw_list.append(float(val))    
+
+                    #raw_list.append(float(val))
                 #else:
-                #    raw_list.append(val)   
+                #    raw_list.append(val)
 
                 if is_arg:
-                    raw_list.append(raw_value)  
+                    raw_list.append(raw_value)
                 else:
 
                     if len(ord_list)-1 >= key:
-                        raw_dist[ord_list[key]] = raw_value   
-                    counter +=1 
+                        raw_dist[ord_list[key]] = raw_value
+                    counter +=1
 
             return raw_list, raw_dist
 
         return [],{}
     def validated_cmd_arg(self):
-        arg_list, arg_dict, ord_list = self.get_argument_details()
+        arg_list, _ , ord_list = self.get_argument_details()
         cmd_arguments = self.getcmd_arg()
 
         if len(cmd_arguments) > len(ord_list):
@@ -89,7 +89,7 @@ class PyValidateArguments:
         #    if len(arg_list) > key:
         #        print(val,":val")
         #    else:
-        #        print(val,":val2")    
+        #        print(val,":val2")
         return True, ""
 
     def get_argument_details(self):
@@ -113,7 +113,7 @@ class PyValidateArguments:
                # print(f"Default: {param.default}")
                # print("-" * 20)
                # print(f"  Type annotation: {param.annotation}")
-                if param.default is not inspect._empty:
+                if param.default is not inspect.Signature.empty:
                     row_arg["default"] = param.default
                     is_object = True
                # if param.annotation is inspect._empty:
@@ -121,6 +121,6 @@ class PyValidateArguments:
                 if is_object:
                     arg_dict.append(row_arg)
                 else:
-                    arg_list.append(row_arg)    
+                    arg_list.append(row_arg)
                 #arg_list.append(row_arg)
         return arg_list, arg_dict, ord_list

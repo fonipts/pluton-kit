@@ -2,11 +2,13 @@ import os
 import sys
 
 from plutonkit.config import PYTHON_CMD
-from plutonkit.framework.decorator.builtin import callback_scipt
 from plutonkit.framework.command.py_validate_arguments import (
     PyValidateArguments,
 )
-from plutonkit.framework.exception.validation_exception import ValidationException
+from plutonkit.framework.decorator.builtin import callback_scipt
+from plutonkit.framework.exception.validation_exception import (
+    ValidationException,
+)
 
 
 class PLCommand:
@@ -57,7 +59,7 @@ class PLCommand:
         #        print("  No type hint provided")
 
         #    arg_list, arg_dict, ord_list = validate_arg.get_argument_details()
-            
+
         #    print(cmd_arg_list,":cmd_arguments")
         #    print(arg_list,":arg_list")
         #    print(arg_dict,":arg_dict")
@@ -66,7 +68,7 @@ class PLCommand:
         if valid_cmd is False:
             raise ValidationException(mes_cmd)
 
-        cmd_arg_list, cmd_arg_dict = validate_arg.getcmd_arg_validated()   
+        cmd_arg_list, cmd_arg_dict = validate_arg.getcmd_arg_validated()
         args = tuple(cmd_arg_list)
         kwargs = cmd_arg_dict
         self.local_cli[getcmd_name]["func"](*args,**kwargs)

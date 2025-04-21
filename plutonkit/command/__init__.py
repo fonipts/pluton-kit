@@ -1,15 +1,17 @@
 """Module providing a function printing python version."""
 
+import os
 import signal
 import sys
 import time
-import os
 
 from plutonkit.command.action.help import Help
 from plutonkit.config import INTRODUCTION, bcolors
 from plutonkit.config.command import ACTIONS
 from plutonkit.framework.exception.help_exception import HelpException
-from plutonkit.framework.exception.validation_exception import ValidationException
+from plutonkit.framework.exception.validation_exception import (
+    ValidationException,
+)
 from plutonkit.framework.exception.warning_exception import WarningException
 
 # noqa: Our signal handler
@@ -25,7 +27,7 @@ def exit_handler():
     sys.exit(0)
 
 
-def autoload(type=None):
+def autoload(type_cmd=None):
 
     signal.signal(signal.SIGINT, signal_handler)
     os.system('color')
@@ -39,7 +41,7 @@ def autoload(type=None):
     print(f"{bcolors.HEADER}{INTRODUCTION}{bcolors.ENDC}\n")
     try:
         while 1:
-            if type == "cmd":
+            if type_cmd == "cmd":
                 ACTIONS["cmd"].modify_argv_index(1).execute()
             else:
                 if len(sys.argv)<2:
@@ -47,7 +49,7 @@ def autoload(type=None):
                 if sys.argv[1] not in tuple(ACTIONS):
                     raise HelpException()
                 basename = os.path.basename(sys.argv[1])
-            
+
                 ACTIONS["help"] = Help(sys.argv)
                 ACTIONS[str(basename)].execute()
 
@@ -64,4 +66,4 @@ def autoload(type=None):
         print(f"{bcolors.FAIL}Error:{E}{bcolors.ENDC}")
 
 def load_command():
-    autoload(type="cmd")
+    autoload(type_cmd="cmd")

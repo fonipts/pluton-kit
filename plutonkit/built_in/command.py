@@ -2,9 +2,11 @@ import os
 import sys
 
 from plutonkit.config import PYTHON_CMD
+from plutonkit.framework.decorator.builtin import callback_scipt
 from plutonkit.framework.command.py_validate_arguments import (
     PyValidateArguments,
 )
+from plutonkit.framework.exception.validation_exception import ValidationException
 
 
 class PLCommand:
@@ -25,6 +27,7 @@ class PLCommand:
             return wrapper
         return cli_real_decorator
 
+    @callback_scipt
     def run(self):
 
         directory = os.getcwd()
@@ -34,19 +37,14 @@ class PLCommand:
         getcmd_name = validate_arg.getcmd_name()
 
         if validate_arg.get_python_name_script():
-            print("You are running in python script")
+            print("You are running a python script")
 
         if os.path.exists(path) is False:
-            print(f"This file `{PYTHON_CMD}` must use in python cmd")
-            sys.exit(0)
+            raise ValidationException("This file `{PYTHON_CMD}` must use in python cmd")
         if len(sys.argv) == 1:
-            print("Please specify your command name")
-            sys.exit(0)
+            raise ValidationException("Please specify your command name")
         if getcmd_name not in self.local_cli:
-
-            name_cli = sys.argv[1]
-            print(f"Your command name `{name_cli}` does not exist your `{PYTHON_CMD}.py`")
-            sys.exit(0)
+            raise ValidationException(f"Your command name `{getcmd_name}` does not exist your `{PYTHON_CMD}.py`")
         #
         #signature = inspect.signature(self.local_cli[sys.argv[1]]["func"])
         #for name, param in signature.parameters.items():
@@ -57,9 +55,18 @@ class PLCommand:
         #    print(f"  Type annotation: {param.annotation}")
         #    if param.annotation is inspect._empty:
         #        print("  No type hint provided")
-        validate_arg.get_argument_details()
-        args = ()
-        ar_lst = tuple([2,4])
-        args = ar_lst
-        kwargs = {}
+
+        #    arg_list, arg_dict, ord_list = validate_arg.get_argument_details()
+            
+        #    print(cmd_arg_list,":cmd_arguments")
+        #    print(arg_list,":arg_list")
+        #    print(arg_dict,":arg_dict")
+        #    print(ord_list,":ord_list")
+        valid_cmd,mes_cmd=validate_arg.validated_cmd_arg()
+        if valid_cmd is False:
+            raise ValidationException(mes_cmd)
+
+        cmd_arg_list, cmd_arg_dict = validate_arg.getcmd_arg_validated()   
+        args = tuple(cmd_arg_list)
+        kwargs = cmd_arg_dict
         self.local_cli[getcmd_name]["func"](*args,**kwargs)

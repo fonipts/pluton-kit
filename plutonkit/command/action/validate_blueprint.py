@@ -6,6 +6,7 @@ from yaml import Loader, load
 from plutonkit.config import ARCHITECTURE_DETAILS_FILE
 from plutonkit.framework.blueprint.review_blueprint import ReviewBlueprint
 from plutonkit.framework.request.ArchitectureRequest import ArchitectureRequest
+from plutonkit.framework.exception.validation_exception import ValidationException
 
 
 class ValidateBlueprint:
@@ -29,13 +30,12 @@ class ValidateBlueprint:
                     if len(verify_blueprint["error_message"]) == 0:
                         print("No error found")
                     else:
-                        for val in verify_blueprint["error_message"]:
-                            print(val)
+                        raise ValidationException("List error found in validating your `blueprint.yaml`",errors=verify_blueprint["error_message"])
+
                 except Exception as e:
-                    print(e, f"Invalid {ARCHITECTURE_DETAILS_FILE}, please use proper yaml format")
-                    sys.exit(0)
+                    raise ValidationException(e, f"Invalid {ARCHITECTURE_DETAILS_FILE}, please use proper yaml format")
             else:
-                print(arch_req.errorMessage)
+                raise ValidationException(arch_req.errorMessage)
         else:
-            print("Please specify director , url or git location")
+            raise ValidationException("Please specify director , url or git location")
         sys.exit(0)

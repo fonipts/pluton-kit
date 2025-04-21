@@ -5,8 +5,7 @@ from http.client import responses
 
 import requests
 
-from plutonkit.config import ARCHITECTURE_DETAILS_FILE
-from plutonkit.config.message import ARCHITECTURE_REQUEST_ERROR_MESSAGE
+from plutonkit.config import ARCHITECTURE_DETAILS_FILE, ARCHITECTURE_REQUEST_ERROR_MESSAGE
 from plutonkit.helper.filesystem import is_glob
 
 from .ValidateSource import ValidateSource

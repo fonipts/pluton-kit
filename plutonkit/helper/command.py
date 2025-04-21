@@ -2,7 +2,7 @@
 import re
 import subprocess
 
-from plutonkit.config.search import SEARCH_CHAR_ENCLOSE
+from plutonkit.config import SEARCH_CHAR_ENCLOSE
 
 from .environment import convertVarToTemplate
 from .format import get_enclose_str, replace_index_to_enclose, spilt_char

@@ -8,7 +8,8 @@ from plutonkit.helper.arguments import (
     answer_yes, check_if_default_name, get_arg_cmd_value, get_config,
 )
 from plutonkit.helper.format import git_name
-
+from plutonkit.framework.exception.validation_exception import ValidationException
+from plutonkit.framework.exception.warning_exception import WarningException
 
 class CreateProject:
     def __init__(self, argv) -> None:
@@ -29,9 +30,7 @@ class CreateProject:
                 else:
                     self.git_lobby_bluprint(source_name)
             else:
-                print("Please use the source as default\n")
-                print("`plutonkit create_project source=<source of architecture.yaml> ")
-                sys.exit(0)
+                raise ValidationException("Please use the source as default\n`plutonkit create_project source=<source of architecture.yaml>")
         else:
             self.acces_lobby_blueprint()
 
@@ -82,7 +81,7 @@ class CreateProject:
             else:
                 self.query_execute(reference_value)
         except Exception:
-            print(f"Invalid argument please select in the available command `{answer}`\n")
+            raise ValidationException(f"Invalid argument please select in the available command `{answer}`\n")
 
     def query_execute(self, reference_value):
 
@@ -103,5 +102,4 @@ class CreateProject:
             framework_blueprint.execute_create_project()
             sys.exit(0)
         else:
-            print("Your confirmation say `No`")
-            sys.exit(0)
+            raise WarningException("Your confirmation say `No`")

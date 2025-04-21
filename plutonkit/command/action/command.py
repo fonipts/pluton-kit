@@ -16,6 +16,8 @@ from plutonkit.helper.command import clean_command_split, pip_run_command
 from plutonkit.helper.environment import (
     convertVarToTemplate, setEnvironmentVariable,
 )
+from plutonkit.framework.exception.validation_exception import ValidationException
+from plutonkit.framework.exception.warning_exception import WarningException
 
 
 class Command:
@@ -36,12 +38,10 @@ class Command:
         path = os.path.join(directory, PROJECT_COMMAND_FILE)
 
         if os.path.exists(path) is False:
-            print(f"This command file `{PROJECT_COMMAND_FILE}` is missing in the directory project")
-            sys.exit(0)
+            raise ValidationException(f"This command file `{PROJECT_COMMAND_FILE}` is missing in the directory project")
 
         if os.path.isfile(path) is False:
-            print(f"This file `{PROJECT_COMMAND_FILE}` is invalid")
-            sys.exit(0)
+            raise ValidationException(f"This file `{PROJECT_COMMAND_FILE}` is invalid")
 
         with open(path, "r", encoding="utf-8") as fi:
             try:
@@ -49,9 +49,7 @@ class Command:
                 content = load(str(read), Loader=Loader)
 
             except Exception as e:
-                print(e)
-                print("Invalid yaml file content")
-                sys.exit(0)
+                raise ValidationException("Invalid yaml file content",errors=[e])
         self.command_start(content, directory)
 
     def command_start(self, content, directory):
@@ -59,9 +57,7 @@ class Command:
         setEnvironmentVariable(content.get("env",{}))
         get_errors = structure_command_cls.get_error()
         if len(get_errors) > 0:
-            for err in get_errors:
-                print(err)
-            sys.exit(0)
+            raise ValidationException(f"Invalid yaml file content",errors=[get_errors])
 
         command_list = self.argv[self.index::]
         command_value = ":.:".join(command_list)
@@ -86,11 +82,10 @@ class Command:
 
             if os.path.isfile(path):
                 py_file_class = PyValidateContent(path)
-                print(f"We are accessing `{cmd_file}`, in your local project.\n")
 
                 if py_file_class.is_run_func_available() is False:
-                    print("In your `{cmd_file}`, please add  `run` function name in order to execute the cmd command")
-                    sys.exit(0)
+                    raise WarningException("In your `{cmd_file}`, please add  `run` function name in order to execute the cmd command")
+
                 sys.path.append( directory )
                 mod = importlib.import_module(PYTHON_CMD)
                 mod.run()

@@ -29,9 +29,9 @@ def create_yaml_file(project_name, filename, library=None):
         fw.close()
 
 
-def write_file_content(
+def write_file_content(  # pylint: disable=too-many-arguments
     directory: str, folder_name: str, file: str, content: str, args=None,block=None
-): # pylint: disable=too-many-arguments
+):
     file_path = os.path.dirname(file)
     if file_path != "":
         new_folder = os.path.join(

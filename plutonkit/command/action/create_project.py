@@ -56,7 +56,6 @@ class CreateProject:
 
     def callback_execute(self, reference_value, name, step):
 
-        #try:
         enum_action = [
             f"{key + 1}  {val.get('option_name')}"
             for key, val in enumerate(step)
@@ -83,8 +82,6 @@ class CreateProject:
             )
         else:
             self.query_execute(reference_value)
-        #except Exception:
-        #    raise ValidationException(f"Invalid argument please select in the available command `{answer}`\n")
 
     def query_execute(self, reference_value):
 

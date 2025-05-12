@@ -45,24 +45,16 @@ class PyValidateArguments:
         arg_data = self.getcmd_arg()
         arg_list, _, ord_list = self.get_argument_details()
         if len(arg_data)>0:
-          #  arg_data = self.argv[index+1::]
             raw_list = []
             raw_dist = {}
             counter = 0
             for key,val in enumerate(arg_data):
-                #if re.match(r"",)
-                #print(re.match(r"^[0-9]+$",val),val,":val")
                 is_arg = len(arg_list)>key
                 raw_value:any = val
                 if re.match(r"^[0-9]\.+$",val):
                     raw_value = float(val)
                 if re.match(r"^[0-9]+$",val):
-                    #raw_list.append(int(val))
                     raw_value = int(val)
-
-                    #raw_list.append(float(val))
-                #else:
-                #    raw_list.append(val)
 
                 if is_arg:
                     raw_list.append(raw_value)
@@ -81,15 +73,10 @@ class PyValidateArguments:
 
         if len(cmd_arguments) > len(ord_list):
             return False, "cmd arguments exceed in define value"
-        # print(len(arg_list) ,"+++", len(ord_list) ,"@322111")
+
         if len(cmd_arguments) < len(arg_list):
             return False, "cmd arguments is lesser expected value"
 
-        # for key, val in enumerate(ord_list):
-        #    if len(arg_list) > key:
-        #        print(val,":val")
-        #    else:
-        #        print(val,":val2")
         return True, ""
 
     def get_argument_details(self):
@@ -116,11 +103,10 @@ class PyValidateArguments:
                 if param.default is not inspect.Signature.empty:
                     row_arg["default"] = param.default
                     is_object = True
-               # if param.annotation is inspect._empty:
-               #     print("  No type hint provided")
+
                 if is_object:
                     arg_dict.append(row_arg)
                 else:
                     arg_list.append(row_arg)
-                #arg_list.append(row_arg)
+
         return arg_list, arg_dict, ord_list

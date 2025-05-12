@@ -33,8 +33,6 @@ class ValidateBlueprint:
                 else:
                     raise ValidationException("List error found in validating your `blueprint.yaml`",errors=verify_blueprint["error_message"])
 
-                #except Exception as e:
-                #    raise ValidationException(e, f"Invalid {ARCHITECTURE_DETAILS_FILE}, please use proper yaml format")
             else:
                 raise ValidationException(arch_req.errorMessage)
         else:

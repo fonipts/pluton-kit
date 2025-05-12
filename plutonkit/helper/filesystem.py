@@ -28,7 +28,7 @@ def create_yaml_file(project_name, filename, library=None):
         fw.write(yaml.dump(library, default_flow_style=False))
         fw.close()
 
-def write_file_content(
+def write_file_content( # pylint: disable=too-many-arguments
     directory: str, folder_name: str, file: str, content: str, args=None,block=None
 ):
     file_path = os.path.dirname(file)

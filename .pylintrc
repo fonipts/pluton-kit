@@ -276,14 +276,6 @@ valid-metaclass-classmethod-first-arg=mcs
 
 [DESIGN]
 
-# List of regular expressions of class ancestor names to ignore when counting
-# public methods (see R0903)
-exclude-too-few-public-methods=
-
-# List of qualified class names to ignore when counting class parents (see
-# R0901)
-ignored-parents=
-
 # Maximum number of arguments for function / method.
 max-args=10
 
@@ -314,7 +306,13 @@ max-statements=50
 # Minimum number of public methods for a class (see R0903).
 min-public-methods=2
 
+# List of regular expressions of class ancestor names to ignore when counting
+# public methods (see R0903)
+exclude-too-few-public-methods=
 
+# List of qualified class names to ignore when counting class parents (see
+# R0901)
+ignored-parents=
 
 [EXCEPTIONS]
 

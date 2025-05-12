@@ -1,5 +1,5 @@
 class ValidationException(Exception):
-    def __init__(self, message, errors=list[str]):
+    def __init__(self, message, errors:list[str]=None):
         # Call the base class constructor with the parameters it needs
         super().__init__(message)
 

@@ -5,7 +5,7 @@ from plutonkit.config import PYTHON_CMD
 from plutonkit.framework.command.py_validate_arguments import (
     PyValidateArguments,
 )
-from plutonkit.framework.decorator.builtin import callback_scipt
+from plutonkit.framework.decorator.builtin_cmd import callback_scipt
 from plutonkit.framework.exception.validation_exception import (
     ValidationException,
 )

@@ -44,7 +44,7 @@ class CloneProject:
                 print(e, f"Invalid {PROJECT_DETAILS_FILE}, please use proper yaml format")
                 sys.exit(0)
         else:
-            print(arch_req.errorMessage)
+            raise ValidationException(arch_req.errorMessage)
 
     def project_details_execute(self, remote_blueprint,inquiry_val):
 

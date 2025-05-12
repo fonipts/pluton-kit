@@ -29,7 +29,7 @@ def create_yaml_file(project_name, filename, library=None):
         fw.close()
 
 def write_file_content(
-    directory: str, folder_name: str, file: str, content: str, args=None
+    directory: str, folder_name: str, file: str, content: str, args=None,block=None
 ):
     file_path = os.path.dirname(file)
     if file_path != "":
@@ -66,7 +66,7 @@ def write_file_content(
             name = os.path.join(
                 directory, default_project_name(folder_name), f"{raw_filename}{raw_fileext}"
             )
-            content = convert_template(content, args)
+            content = convert_template(content, args,block)
     with open(name, "w", encoding="utf-8") as f_write:
         f_write.write(content)
         f_write.close()

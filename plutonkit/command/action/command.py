@@ -46,12 +46,10 @@ class Command:
             raise ValidationException(f"This file `{PROJECT_COMMAND_FILE}` is invalid")
 
         with open(path, "r", encoding="utf-8") as fi:
-            #try:
+
             read = fi.read()
             content = load(str(read), Loader=Loader)
 
-            #except Exception as e:
-            #    raise ValidationException("Invalid yaml file content",errors=[e])
         self.command_start(content, directory)
 
     def command_start(self, content, directory):
@@ -86,7 +84,7 @@ class Command:
                 py_file_class = PyValidateContent(path)
 
                 if py_file_class.is_run_func_available() is False:
-                    raise WarningException("In your `{cmd_file}`, please add  `run` function name in order to execute the cmd command")
+                    raise WarningException("In your `{cmd_file}`, please add `run` function name in order to execute the cmd command")
 
                 sys.path.append( directory )
                 mod = importlib.import_module(PYTHON_CMD)

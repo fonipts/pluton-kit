@@ -6,12 +6,29 @@ from plutonkit.helper.format import (
 )
 
 from .TemplateStruct import TemplateStruct
+from .TemplateStructTags import TemplateStructTags
 
 
 class TheTemplate:
-    def __init__(self, content: str, args=None):
+    def __init__(self, content: str, args=None,block=None):
+        self.block = block
         self.args = args
         self.content = self.__wragle_data(content)
+
+    def __set_value_in_tags(self,param):
+        raw_bool = False
+        if param["type"] == "block":
+            raw_bool = True
+            if param["name"] in self.block:
+                call_func= self.block[ param["name"] ]["func"](self.args)
+                return call_func, True
+
+
+        if param["type"] == "condition":
+
+            return "", True
+
+        return "",raw_bool
 
     def __command_details(self, name, contents, sub_content):
 
@@ -44,6 +61,13 @@ class TheTemplate:
         if len(find_value) > 0:
             for val in find_value:
                 content = content.replace("".join(val), self.args.get(val[1], ""))
+
+        template_struct_block = TemplateStructTags(content, self.args)
+        content = template_struct_block.get_content()
+        for mv in template_struct_block.template:
+            raw_content,raw_bool = self.__set_value_in_tags(mv)
+            if raw_bool:
+                content = content.replace(mv["template"], raw_content)
 
         template_struct = TemplateStruct(content, self.args)
 

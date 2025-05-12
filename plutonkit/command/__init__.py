@@ -13,6 +13,8 @@ from plutonkit.framework.exception.validation_exception import (
     ValidationException,
 )
 from plutonkit.framework.exception.warning_exception import WarningException
+from plutonkit.helper.command import output_validation_exception_list
+from plutonkit.helper.operating_sys import is_windows
 
 # noqa: Our signal handler
 
@@ -30,9 +32,8 @@ def exit_handler():
 def autoload(type_cmd=None):
 
     signal.signal(signal.SIGINT, signal_handler)
-    os.system('color')
-
-
+    if is_windows():
+        os.system('color')
     # noqa: Register the exit handler with `SIGTSTP` (Ctrl + Z)
     # windows does not support SIGTSTP
     if hasattr(signal, "SIGTSTP"):
@@ -46,24 +47,24 @@ def autoload(type_cmd=None):
             else:
                 if len(sys.argv)<2:
                     raise HelpException()
+
+                ACTIONS["help"] = Help(sys.argv)
                 if sys.argv[1] not in tuple(ACTIONS):
                     raise HelpException()
                 basename = os.path.basename(sys.argv[1])
 
-                ACTIONS["help"] = Help(sys.argv)
                 ACTIONS[str(basename)].execute()
 
             time.sleep(30)
     except ValidationException as E:
-        print(f"{bcolors.FAIL}Error: {E}{bcolors.ENDC}")
-        for val in E.errors:
-            print(f"    * {bcolors.FAIL}Error: {val}{bcolors.ENDC}")
+        output_validation_exception_list(E)
     except WarningException as E:
         print(f"{bcolors.WARNING}Warning: {E}{bcolors.ENDC}")
     except HelpException:
         print(f"{bcolors.WARNING}Invalid argument, please type `help` to see available command{bcolors.ENDC}")
     except Exception as E:
         print(f"{bcolors.FAIL}Error:{E}{bcolors.ENDC}")
+
 
 def load_command():
     autoload(type_cmd="cmd")

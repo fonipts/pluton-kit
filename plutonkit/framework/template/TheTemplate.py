@@ -7,6 +7,7 @@ from plutonkit.helper.format import (
 
 from .TemplateStruct import TemplateStruct
 from .TemplateStructTags import TemplateStructTags
+from .TemplateCommentOut import TemplateCommentOut
 
 
 class TheTemplate:
@@ -57,6 +58,10 @@ class TheTemplate:
         return ""
 
     def __wragle_data(self, content: str):
+
+        template_comment_out = TemplateCommentOut(content)
+        content = template_comment_out.get_remove_comment_content()
+
         find_value = re.findall(r"(\{\$)([a-zA-Z0-9_]{1,})(\})", content)
         if len(find_value) > 0:
             for val in find_value:

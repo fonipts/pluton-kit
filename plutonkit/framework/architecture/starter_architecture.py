@@ -28,8 +28,7 @@ class StarterArchitecture:
         except Exception as e:
             print(e)
             print("Invalid details to proceed in creating new project")
-            sys.exit(0)
-
+            sys.exit(1)
 
     def _get_architecture_content(self):
         return """

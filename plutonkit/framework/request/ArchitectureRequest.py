@@ -1,4 +1,5 @@
 import os
+import shutil
 import subprocess
 from glob import glob
 from http.client import responses
@@ -133,12 +134,20 @@ class ArchitectureRequest:
     def clearRepoFolder(self):
         if self.validate.arch_type == "git":
             self.isValidReq = True
+            is_folder_delete = False
             try:
-                subprocess.check_output(
-                    ["rm", "-rf", self.validate.repo_name],
-                    cwd=self.dirs,
-                    stderr=subprocess.STDOUT,
-                )
+                if os.path.isdir(self.validate.repo_name):
+                    shutil.rmtree(self.validate.repo_name)
+                    is_folder_delete = True
+
+                if is_folder_delete is not True:
+                    subprocess.check_output(
+                        ["rm", "-rf", self.validate.repo_name],
+                        cwd=self.dirs,
+                        stderr=subprocess.STDOUT,
+                    )
             except subprocess.CalledProcessError as clone_error:
                 output = clone_error.output.decode("utf-8")
                 print(output)
+            except Exception as e:
+                print(f"Failed to delete {self.validate.repo_name}. Reason: {str(e)}")

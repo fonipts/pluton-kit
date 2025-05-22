@@ -39,7 +39,7 @@ class TestArchitectureRequest(unittest.TestCase):
         self.assertEqual(arch.getBlob({"file":ARCHITECTURE_DETAILS_FILE}),[{"file":ARCHITECTURE_DETAILS_FILE}])
 
     def test_valid_git(self):
-        arch = ArchitectureRequest("https://github.com/fonipts/pluton-lobby.git/blueprint/bottle",os.getcwd())
+        arch = ArchitectureRequest("https://github.com/fonipts/pluton-lobby/tree/main/blueprint/bottle",os.getcwd())
         print(arch.errorMessage)
         self.assertTrue(arch.isValidReq)
         arch.clearRepoFolder()

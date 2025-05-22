@@ -42,7 +42,7 @@ class CloneProject:
                 self.project_details_execute(content.get("blueprint",""), content.get("default_choices",{}))
             except Exception as e:
                 print(e, f"Invalid {PROJECT_DETAILS_FILE}, please use proper yaml format")
-                sys.exit(0)
+                sys.exit(1)
         else:
             raise ValidationException(arch_req.errorMessage)
 

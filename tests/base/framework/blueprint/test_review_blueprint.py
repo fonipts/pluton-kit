@@ -3,7 +3,7 @@ from plutonkit.framework.blueprint.review_blueprint import ReviewBlueprint
 
 class TestReviewBlueprint(unittest.TestCase):
     def setUp(self):
-        self.path = "../../../raw/py"
+        self.path = "tests/raw/py"
         self.blueprint_content = {
             "name": "foo",
             "files": {"default": [{"file": "bar"}]},

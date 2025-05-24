@@ -4,9 +4,9 @@ from plutonkit.framework.blueprint.generate_blueprint import FrameworkBluePrint
 
 class TestFrameworkBluePrint(unittest.TestCase):
     def setUp(self):
-        self.bp = FrameworkBluePrint("../../../raw/test")
+        self.bp = FrameworkBluePrint("tests/raw/test")
         self.bp.folder_name = "test_folder"
-        self.bp.directory = "../../../raw/py"
+        self.bp.directory = "tests/raw/py"
 
     def test_set_folder_name(self):
         self.bp.set_folder_name("abc")
@@ -45,7 +45,7 @@ class TestFrameworkBluePrint(unittest.TestCase):
         mock_validate.return_value.is_run_func_available.return_value = False
         mock_mod = MagicMock()
         mock_import.return_value = mock_mod
-        self.bp.path = "../../../raw/py"
+        self.bp.path = "tests/raw/py"
         self.assertIsNone(self.bp._review_blueprint_script())
 
     def test_files_handles_empty(self):

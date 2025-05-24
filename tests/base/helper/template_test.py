@@ -36,6 +36,16 @@ RAW_TEMPLATE2_TEXT = """
     }
 })
 """
+
+RAW_COMMENT1_TEXT = """
+(#) Test 1
+(# Test 2 #)
+(#
+
+ Test 3
+
+#)1
+"""
 class TestTemplate(unittest.TestCase):
     def test_convert_template_valid(self):
         TEST_RAW = """
@@ -68,3 +78,8 @@ if __name__ == "__main__":
 
 """
         self.assertEqual(convert_template(RAW_TEMPLATE_NONE,{},{}), TEST_RAW)
+    def test_valid_comment(self):
+        TEST_RAW = """
+1
+"""
+        self.assertEqual(convert_template(RAW_COMMENT1_TEXT,{},{}), TEST_RAW)

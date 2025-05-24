@@ -5,9 +5,9 @@ from plutonkit.helper.format import (
     get_first_line_string_space, get_first_strings, get_str_if_empty,
 )
 
+from .TemplateCommentOut import TemplateCommentOut
 from .TemplateStruct import TemplateStruct
 from .TemplateStructTags import TemplateStructTags
-from .TemplateCommentOut import TemplateCommentOut
 
 
 class TheTemplate:

@@ -7,7 +7,7 @@ PYTHON_BLUEPRINT:str="blueprint"
 REMOTE_URL_RAW: str = "https://raw.githubusercontent.com/fonipts/pluton-lobby/refs/heads/dev/1.0.32a1/blueprint"
 
 INTRODUCTION: str = (
-    "Welcome to pluton-kit, this is your application builder in python woorld"
+    "Welcome to pluton-kit, this is your application builder"
 )
 
 ARCHITECTURE_REQUEST_ERROR_MESSAGE = "`source` in blueprint was invalid, please check and try again later"

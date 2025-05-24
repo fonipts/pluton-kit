@@ -11,10 +11,6 @@ class TemplateCommentOut:
         self.join_contents = ""
         self.templates: list[dict[str, Any]] = self.__find_template(self.contents)
 
-
-    def _clean_content(self,raw):
-        return re.sub(r"^\{","",raw)
-
     def __find_template(self, contents: list[str]) -> list[dict[str, Any]]:
         templates: list[dict[str, Any]] = []
         rows_content: list[str] = []

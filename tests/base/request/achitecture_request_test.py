@@ -1,4 +1,4 @@
-from plutonkit.management.request.ArchitectureRequest import ArchitectureRequest
+from plutonkit.framework.request.ArchitectureRequest import ArchitectureRequest
 import unittest
 import os
 from plutonkit.config import ARCHITECTURE_DETAILS_FILE
@@ -39,11 +39,11 @@ class TestArchitectureRequest(unittest.TestCase):
         self.assertEqual(arch.getBlob({"file":ARCHITECTURE_DETAILS_FILE}),[{"file":ARCHITECTURE_DETAILS_FILE}])
 
     def test_valid_git(self):
-        arch = ArchitectureRequest("https://github.com/fonipts/pluton-lobby.git/blueprint/bottle",os.getcwd())
+        arch = ArchitectureRequest("https://github.com/fonipts/pluton-lobby/tree/main/blueprint/bottle",os.getcwd())
         print(arch.errorMessage)
         self.assertTrue(arch.isValidReq)
         arch.clearRepoFolder()
 
     #def test_invalid_git_branch(self):
     #    arch = ArchitectureRequest("https://github.com/fonipts/pluton-lobby.git[test]/blueprint/bottle",os.getcwd())
-    #    self.assertFalse(arch.isValidReq)    
+    #    self.assertFalse(arch.isValidReq)

@@ -1,3 +1,6 @@
+from plutonkit.config import bcolors
+
+
 class InquiryTerminal:
     def __init__(self, choices) -> None:
         self.ref_answer = {}
@@ -48,7 +51,7 @@ class InquiryTerminal:
                 self.ref_answer[name] = available_step
                 choices.pop(0)
             except:
-                print("Invalid option, try again")
+                print(f"{bcolors.WARNING}Invalid option, try again{bcolors.ENDC}")
                 self._selection(choices)
 
         if type_choice == "multiple_choice":
@@ -69,7 +72,7 @@ class InquiryTerminal:
                 self.ref_answer[name] = answer
                 choices.pop(0)
             except:
-                print("Invalid option, try again")
+                print(f"{bcolors.WARNING}Invalid option, try again{bcolors.ENDC}")
                 self._selection(choices)
 
         if len(choices) > 0:

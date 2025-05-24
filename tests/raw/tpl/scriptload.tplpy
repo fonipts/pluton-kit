@@ -20,7 +20,7 @@ app_setting_var = {
 
 }
 
-
+(#) This is the database configuration
 DATABASE_RAW = '''
 ({   
     @condition{

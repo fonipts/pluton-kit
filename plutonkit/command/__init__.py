@@ -1,12 +1,20 @@
 """Module providing a function printing python version."""
 
+import os
 import signal
 import sys
 import time
 
 from plutonkit.command.action.help import Help
+from plutonkit.config import INTRODUCTION, bcolors
 from plutonkit.config.command import ACTIONS
-from plutonkit.config.message import INTRODUCTION
+from plutonkit.framework.exception.help_exception import HelpException
+from plutonkit.framework.exception.validation_exception import (
+    ValidationException,
+)
+from plutonkit.framework.exception.warning_exception import WarningException
+from plutonkit.helper.command import output_validation_exception_list
+from plutonkit.helper.operating_sys import is_windows
 
 # noqa: Our signal handler
 
@@ -21,35 +29,42 @@ def exit_handler():
     sys.exit(0)
 
 
-def autoload():
+def autoload(type_cmd=None):
 
     signal.signal(signal.SIGINT, signal_handler)
-
+    if is_windows():
+        os.system('color')
     # noqa: Register the exit handler with `SIGTSTP` (Ctrl + Z)
-    signal.signal(signal.SIGTSTP, exit_handler)
+    # windows does not support SIGTSTP
+    if hasattr(signal, "SIGTSTP"):
+        signal.signal(signal.SIGTSTP, exit_handler)
 
-    print(f"{INTRODUCTION}\n")
+    print(f"{bcolors.HEADER}{INTRODUCTION}{bcolors.ENDC}\n")
     try:
         while 1:
-            ACTIONS["help"] = Help(sys.argv)
-            ACTIONS[str(sys.argv[1])].execute()
-            time.sleep(30)
+            if type_cmd == "cmd":
+                ACTIONS["cmd"].modify_argv_index(1).execute()
+            else:
+                if len(sys.argv)<2:
+                    raise HelpException()
 
-    except Exception:
-        print("Invalid argument, please type `help` to see available command")
+                ACTIONS["help"] = Help(sys.argv)
+                if sys.argv[1] not in tuple(ACTIONS):
+                    raise HelpException()
+                basename = os.path.basename(sys.argv[1])
+
+                ACTIONS[str(basename)].execute()
+
+            time.sleep(30)
+    except ValidationException as E:
+        output_validation_exception_list(E)
+    except WarningException as E:
+        print(f"{bcolors.WARNING}Warning: {E}{bcolors.ENDC}")
+    except HelpException:
+        print(f"{bcolors.WARNING}Invalid argument, please type `help` to see available command{bcolors.ENDC}")
+    except Exception as E:
+        print(f"{bcolors.FAIL}Error:{E}{bcolors.ENDC}")
 
 
 def load_command():
-
-    signal.signal(signal.SIGINT, signal_handler)
-
-    # noqa: Register the exit handler with `SIGTSTP` (Ctrl + Z)
-    signal.signal(signal.SIGTSTP, exit_handler)
-
-    print(f"{INTRODUCTION}\n")
-    try:
-        while 1:
-            ACTIONS["cmd"].modify_argv_index(1).execute()
-            time.sleep(30)
-    except Exception:
-        print("Invalid command request")
+    autoload(type_cmd="cmd")

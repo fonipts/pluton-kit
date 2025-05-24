@@ -3,11 +3,11 @@ import sys
 
 from yaml import Loader, load
 
-from plutonkit.config import ARCHITECTURE_DETAILS_FILE
 from plutonkit.framework.blueprint.review_blueprint import ReviewBlueprint
-from plutonkit.management.request.ArchitectureRequest import (
-    ArchitectureRequest,
+from plutonkit.framework.exception.validation_exception import (
+    ValidationException,
 )
+from plutonkit.framework.request.ArchitectureRequest import ArchitectureRequest
 
 
 class ValidateBlueprint:
@@ -24,20 +24,17 @@ class ValidateBlueprint:
             directory = os.getcwd()
             arch_req = ArchitectureRequest(path, directory)
             if arch_req.isValidReq:
-                try:
-                    content = load(str(arch_req.getValidReq), Loader=Loader)
-                    cls = ReviewBlueprint(content, path)
-                    verify_blueprint = cls.verify_blueprint()
-                    if len(verify_blueprint["error_message"]) == 0:
-                        print("No error found")
-                    else:
-                        for val in verify_blueprint["error_message"]:
-                            print(val)
-                except Exception as e:
-                    print(e, f"Invalid {ARCHITECTURE_DETAILS_FILE}, please use proper yaml format")
-                    sys.exit(0)
+                #try:
+                content = load(str(arch_req.getValidReq), Loader=Loader)
+                cls = ReviewBlueprint(content, path)
+                verify_blueprint = cls.verify_blueprint()
+                if len(verify_blueprint["error_message"]) == 0:
+                    print("No error found")
+                else:
+                    raise ValidationException("List error found in validating your `blueprint.yaml`",errors=verify_blueprint["error_message"])
+
             else:
-                print(arch_req.errorMessage)
+                raise ValidationException(arch_req.errorMessage)
         else:
-            print("Please specify director , url or git location")
+            raise ValidationException("Please specify director , url or git location")
         sys.exit(0)

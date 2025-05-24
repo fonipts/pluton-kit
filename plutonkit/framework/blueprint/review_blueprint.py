@@ -1,9 +1,7 @@
 import os
 
 from plutonkit.framework.analysis.word_distance import WordDistance
-from plutonkit.management.request.ArchitectureRequest import (
-    ArchitectureRequest,
-)
+from plutonkit.framework.request.ArchitectureRequest import ArchitectureRequest
 
 VALID_MASTER_BLUEPRINT_KEY = ["name", "bootscript","env", "choices", "script", "files"]
 

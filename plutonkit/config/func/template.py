@@ -1,7 +1,7 @@
 import os
 import re
 
-from plutonkit.management.request.ValidateSource import ValidateSource
+from plutonkit.framework.request.ValidateSource import ValidateSource
 
 
 def template_load(content,sub_content): # pylint: disable=unused-argument
@@ -30,18 +30,3 @@ def template_load(content,sub_content): # pylint: disable=unused-argument
 
 def template_content(content,sub_content): # pylint: disable=unused-argument
     return content
-
-def template_python(content,sub_content): # pylint: disable=unused-argument
-    try:
-        local_ns = {}
-        local_ns["content"] = sub_content
-        # pylint: disable-next=exec-used
-        exec(content, None, local_ns)
-
-        return local_ns["content"]
-    except SyntaxError as e:  # [broad-exception-caught]
-        print(e, "(error)", content)
-        return ""
-    except Exception as e:  # [broad-exception-caught]
-        print(e, "(error)", content)
-        return ""

@@ -1,4 +1,4 @@
-from plutonkit.management.logic.ConditionIdentify import ConditionIdentify
+from plutonkit.framework.logic.ConditionIdentify import ConditionIdentify
 import unittest
 
 class TestConditionIdentify(unittest.TestCase):

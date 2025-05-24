@@ -36,6 +36,16 @@ RAW_TEMPLATE2_TEXT = """
     }
 })
 """
+
+RAW_COMMENT1_TEXT = """
+(#) Test 1
+(# Test 2 #)
+(#
+
+ Test 3
+
+#)1
+"""
 class TestTemplate(unittest.TestCase):
     def test_convert_template_valid(self):
         TEST_RAW = """
@@ -47,7 +57,7 @@ from urllib.parse import quote_plus
 1
 """
 
-        self.assertEqual(convert_template(RAW_TEMPLATE1,{"See":"1"}), TEST_RAW)
+        self.assertEqual(convert_template(RAW_TEMPLATE1,{"See":"1"},{}), TEST_RAW)
 
     def test_convert_load_valid(self):
         TEST_RAW = """
@@ -55,16 +65,21 @@ if __name__ == "__main__":
     main()
 
 """
-        self.assertEqual(convert_template(RAW_TEMPLATE2,{}), TEST_RAW)
+        self.assertEqual(convert_template(RAW_TEMPLATE2,{},{}), TEST_RAW)
 
     def test_convert_load_in_text_valid(self):
         TEST_RAW = """
 
 """
-        self.assertEqual(convert_template(RAW_TEMPLATE2_TEXT,{}), TEST_RAW)
+        self.assertEqual(convert_template(RAW_TEMPLATE2_TEXT,{},{}), TEST_RAW)
 
     def test_invalid_text(self):
         TEST_RAW = """
 
 """
-        self.assertEqual(convert_template(RAW_TEMPLATE_NONE,{}), TEST_RAW)
+        self.assertEqual(convert_template(RAW_TEMPLATE_NONE,{},{}), TEST_RAW)
+    def test_valid_comment(self):
+        TEST_RAW = """
+1
+"""
+        self.assertEqual(convert_template(RAW_COMMENT1_TEXT,{},{}), TEST_RAW)

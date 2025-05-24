@@ -5,10 +5,11 @@ from yaml import Loader, load
 
 from plutonkit.config import PROJECT_DETAILS_FILE
 from plutonkit.framework.blueprint.generate_blueprint import FrameworkBluePrint
-from plutonkit.helper.arguments import answer_yes, get_arg_cmd_value
-from plutonkit.management.request.ArchitectureRequest import (
-    ArchitectureRequest,
+from plutonkit.framework.exception.validation_exception import (
+    ValidationException,
 )
+from plutonkit.framework.request.ArchitectureRequest import ArchitectureRequest
+from plutonkit.helper.arguments import answer_yes, get_arg_cmd_value
 
 
 class CloneProject:
@@ -26,12 +27,9 @@ class CloneProject:
             if "source" in view_extra_cmd:
                 self.acces_lobby_blueprint(view_extra_cmd["source"])
             else:
-                print("Please use the source as default\n")
-                print("`plutonkit clone_project source=<source of project.yaml> ")
-                sys.exit(0)
+                raise ValidationException("Please use the source as default\n`plutonkit clone_project source=<source of project.yaml>")
         else:
-            print("`plutonkit clone_project source=<source of project.yaml> ")
-            sys.exit(0)
+            raise ValidationException("`plutonkit clone_project source=<source of project.yaml> ")
 
     def acces_lobby_blueprint(self,path):
 
@@ -44,9 +42,9 @@ class CloneProject:
                 self.project_details_execute(content.get("blueprint",""), content.get("default_choices",{}))
             except Exception as e:
                 print(e, f"Invalid {PROJECT_DETAILS_FILE}, please use proper yaml format")
-                sys.exit(0)
+                sys.exit(1)
         else:
-            print(arch_req.errorMessage)
+            raise ValidationException(arch_req.errorMessage)
 
     def project_details_execute(self, remote_blueprint,inquiry_val):
 

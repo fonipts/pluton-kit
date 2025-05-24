@@ -35,7 +35,7 @@ class ContentExtraction:
         return self.components
 
     def __get_key_component(self):
-        keys: str = []
+        keys: list[str] = []
         for component in self.components:
             keys.append(component["name"])
         return keys

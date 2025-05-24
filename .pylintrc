@@ -276,22 +276,15 @@ valid-metaclass-classmethod-first-arg=mcs
 
 [DESIGN]
 
-# List of regular expressions of class ancestor names to ignore when counting
-# public methods (see R0903)
-exclude-too-few-public-methods=
-
-# List of qualified class names to ignore when counting class parents (see
-# R0901)
-ignored-parents=
-
+max-positional-arguments=10
 # Maximum number of arguments for function / method.
-max-args=5
+max-args=10
 
 # Maximum number of attributes for a class (see R0902).
 max-attributes=7
 
 # Maximum number of boolean expressions in an if statement (see R0916).
-max-bool-expr=5
+max-bool-expr=10
 
 # Maximum number of branch for function / method body.
 max-branches=12
@@ -314,6 +307,13 @@ max-statements=50
 # Minimum number of public methods for a class (see R0903).
 min-public-methods=2
 
+# List of regular expressions of class ancestor names to ignore when counting
+# public methods (see R0903)
+exclude-too-few-public-methods=
+
+# List of qualified class names to ignore when counting class parents (see
+# R0901)
+ignored-parents=
 
 [EXCEPTIONS]
 
@@ -470,7 +470,7 @@ notes-rgx=
 [REFACTORING]
 
 # Maximum number of nested blocks for function / method body
-max-nested-blocks=5
+max-nested-blocks=10
 
 # Complete name of functions that never returns. When checking for
 # inconsistent-return-statements if a never returning function is called then

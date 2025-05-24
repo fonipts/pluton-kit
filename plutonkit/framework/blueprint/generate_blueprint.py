@@ -1,23 +1,26 @@
+import importlib
 import os
 import sys
 
 from yaml import Loader, load
 
-from plutonkit.config import PROJECT_COMMAND_FILE, PROJECT_DETAILS_FILE
+from plutonkit.config import (
+    PROJECT_COMMAND_FILE, PROJECT_DETAILS_FILE, PYTHON_BLUEPRINT, bcolors,
+)
+from plutonkit.framework.command.py_validate_content import PyValidateContent
+from plutonkit.framework.exception.warning_exception import WarningException
+from plutonkit.framework.filesystem.BlueprintFileSchema import (
+    BlueprintFileSchema,
+)
+from plutonkit.framework.logic.ConditionSplit import ConditionSplit
+from plutonkit.framework.request.ArchitectureRequest import ArchitectureRequest
+from plutonkit.framework.terminal.inquiry_terminal import InquiryTerminal
 from plutonkit.helper.command import clean_command_split, pip_run_command
 from plutonkit.helper.environment import setEnvironmentVariable
 from plutonkit.helper.filesystem import (
     create_yaml_file, generate_project_folder_cwd, write_file_content,
 )
 from plutonkit.helper.template import convert_shortcode
-from plutonkit.management.filesystem.BlueprintFileSchema import (
-    BlueprintFileSchema,
-)
-from plutonkit.management.logic.ConditionSplit import ConditionSplit
-from plutonkit.management.request.ArchitectureRequest import (
-    ArchitectureRequest,
-)
-from plutonkit.management.terminal.inquiry_terminal import InquiryTerminal
 
 
 class FrameworkBluePrint:
@@ -26,6 +29,10 @@ class FrameworkBluePrint:
         self.folder_name = ""
         self.directory = os.getcwd()
         self.arch_req = None
+
+        self.local_block = {}
+        self.local_bootscript = []
+        self.bootscript_run = None
 
     def set_folder_name(self, name):
         self.folder_name = name
@@ -43,13 +50,13 @@ class FrameworkBluePrint:
 
         except Exception as e:
             print(e)
-            print("Invalid details to proceed in creating new project")
+            print(f"{bcolors.FAIL}Invalid details to proceed in creating new project{bcolors.ENDC}")
             sys.exit(0)
 
     def execute_create_project(self):
         self.arch_req = ArchitectureRequest(self.path, self.directory)
         if self.arch_req.isValidReq is False:
-            print(self.arch_req.errorMessage)
+            print(f"{bcolors.FAIL}{self.arch_req.errorMessage}{bcolors.ENDC}")
             self.arch_req.clearRepoFolder()
             sys.exit(0)
         try:
@@ -66,12 +73,46 @@ class FrameworkBluePrint:
                 if inquiry_terminal.is_terminate():
                     self._bootloader_project(content,inquiry_terminal.get_answer())
                     break
+        except WarningException as e:
+            raise WarningException(e.message) from e
 
         except Exception as e:
-            print(e)
-            print("Invalid details to proceed in creating new project")
+            print(f"{bcolors.FAIL}{e}{bcolors.ENDC}")
+            print(f"{bcolors.FAIL}Invalid details to proceed in creating new project{bcolors.ENDC}")
             self.arch_req.clearRepoFolder()
             sys.exit(0)
+
+    def _review_blueprint_script(self):
+        cmd_file = f"{PYTHON_BLUEPRINT}.py"
+
+        path = os.path.join(self.path, cmd_file)
+        if os.path.isfile(path):
+            py_file_class = PyValidateContent(path)
+            var_class_import = py_file_class.get_class_import()
+
+            if "Blueprint" not in var_class_import:
+                raise WarningException("In your `{cmd_file}`, please import `Blueprint` in your blueprint.py")
+
+            var_class_call = py_file_class.get_class_call()
+
+            if var_class_import["Blueprint"] not in var_class_call:
+                raise WarningException("In your `{cmd_file}`, please use `Blueprint` as class in your blueprint.py for you to use block and script")
+
+            sys.path.append( self.path )
+            mod = importlib.import_module(PYTHON_BLUEPRINT)
+
+            blueprint_class = getattr(mod, var_class_call[ var_class_import["Blueprint"] ])
+            if not hasattr(blueprint_class,"get_execute"):
+                raise WarningException("In your `{cmd_file}`, please use `from plutonkit import Blueprint` in your blueprint.py")
+
+            get_execute = blueprint_class.get_execute()
+            #self.local_bootscript = get_execute["script"]
+            self.local_block = get_execute["block"]
+            if py_file_class.is_run_func_available():
+                self.bootscript_run = mod
+            #for key_block, val_block in get_execute["block"].items():
+            #    if "func" in val_block:
+            #        self.local_block[key_block] = val_block["func"](ans)
 
     def _bootloader_project(self, content, args):
         files = content.get("files", [])
@@ -81,6 +122,8 @@ class FrameworkBluePrint:
         setEnvironmentVariable(env)
         terminal_answer = args
         terminal_answer["folder_name"] = self.folder_name
+
+        self._review_blueprint_script()
 
         self._files(files, terminal_answer)
         self._boot_command(bootscript, terminal_answer)
@@ -94,7 +137,7 @@ class FrameworkBluePrint:
             self.folder_name, PROJECT_COMMAND_FILE, {"script": self._script_template(script,terminal_answer), "env": env}
             )
         self.arch_req.clearRepoFolder()
-        print("Congrats!! your first project has been generated")
+        print(f"{bcolors.OKGREEN}Congrats!! your first project has been generated{bcolors.ENDC}")
 
     def _script_template(self,configs,args):
         for value in configs:
@@ -130,10 +173,10 @@ class FrameworkBluePrint:
                 if data["is_valid"]:
                     for save_file in value.get_save_files():
                         write_file_content(
-                            self.directory, self.folder_name, save_file, data["content"], args
+                            self.directory, self.folder_name, save_file, data["content"], args, self.local_block
                         )
                 else:
-                    print(f"error in downloading the file {value.value['file']}")
+                    print(f"{bcolors.FAIL}error in downloading the file {value.value['file']}{bcolors.ENDC}")
 
     def _boot_command(self, values, args):
 
@@ -161,3 +204,8 @@ class FrameworkBluePrint:
                     print(E)
             values.pop(0)
             is_exec_running = len(values)>0
+        try:
+            if self.bootscript_run is not None:
+                self.bootscript_run.run(args)
+        except Exception as E:
+            raise WarningException(E) from E

@@ -1,9 +1,9 @@
-from plutonkit.management.template.TheShortCutWord import TheShortCutWord
-from plutonkit.management.template.TheTemplate import TheTemplate
+from plutonkit.framework.template.TheShortCutWord import TheShortCutWord
+from plutonkit.framework.template.TheTemplate import TheTemplate
 
 
-def convert_template(content: str, args) -> str:
-    nwcls = TheTemplate(content, args)
+def convert_template(content: str, args,block) -> str:
+    nwcls = TheTemplate(content, args,block)
 
     return nwcls.get_content()
 

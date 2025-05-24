@@ -2,6 +2,10 @@
 
 __version__ = "1.0.32a1"
 
+from .built_in_module.blueprint import PLBlueprint as Blueprint
+from .built_in_module.command import PLCommand as Command
+
+__all__ = ["Command","Blueprint"]
 
 def setup():
     """

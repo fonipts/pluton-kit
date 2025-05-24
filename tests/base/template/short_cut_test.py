@@ -1,4 +1,4 @@
-from plutonkit.management.template.TheShortCutWord import TheShortCutWord
+from plutonkit.framework.template.TheShortCutWord import TheShortCutWord
 
 import unittest
 
@@ -30,4 +30,3 @@ class TestShortCut(unittest.TestCase):
     def test_valid_if(self):
         templt = TheShortCutWord("{{name|if(@,1)}}", {"name": "@"})
         self.assertEqual(templt.get_convert(), "1")
-

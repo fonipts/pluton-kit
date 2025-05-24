@@ -2,7 +2,10 @@
 import re
 import subprocess
 
-from plutonkit.config.search import SEARCH_CHAR_ENCLOSE
+from plutonkit.config import SEARCH_CHAR_ENCLOSE, bcolors
+from plutonkit.framework.exception.validation_exception import (
+    ValidationException,
+)
 
 from .environment import convertVarToTemplate
 from .format import get_enclose_str, replace_index_to_enclose, spilt_char
@@ -25,3 +28,9 @@ def clean_command_split(command: str):
         },SEARCH_CHAR_ENCLOSE)
 
     return " ".join(arg_split_content)
+
+def output_validation_exception_list(error:ValidationException):
+    print(f"{bcolors.FAIL}Error: {error}{bcolors.ENDC}")
+    if error.errors is not None:
+        for val in error.errors:
+            print(f"    * {bcolors.FAIL}Error: {val}{bcolors.ENDC}")

@@ -1,6 +1,7 @@
 import importlib
 import os
 import sys
+from typing import Any, List, Optional, Union
 
 from yaml import Loader, load
 
@@ -28,11 +29,11 @@ class FrameworkBluePrint:
         self.path = path
         self.folder_name = ""
         self.directory = os.getcwd()
-        self.arch_req = None
+        self.arch_req:Optional[ArchitectureRequest] = None
 
         self.local_block = {}
         self.local_bootscript = []
-        self.bootscript_run = None
+        self.bootscript_run:Union[Any, None] = None
 
     def set_folder_name(self, name):
         self.folder_name = name
@@ -61,9 +62,9 @@ class FrameworkBluePrint:
             sys.exit(0)
         try:
             generate_project_folder_cwd(self.folder_name)
-            content = load(str(self.arch_req.getValidReq), Loader=Loader)
+            content:Union[Any]= load(str(self.arch_req.getValidReq), Loader=Loader)
 
-            choices = content.get("choices", [])
+            choices:List[Any] = content.get("choices", [])
 
             inquiry_terminal = InquiryTerminal(choices)
             inquiry_terminal.execute()
@@ -106,13 +107,10 @@ class FrameworkBluePrint:
                 raise WarningException("In your `{cmd_file}`, please use `from plutonkit import Blueprint` in your blueprint.py")
 
             get_execute = blueprint_class.get_execute()
-            #self.local_bootscript = get_execute["script"]
+
             self.local_block = get_execute["block"]
             if py_file_class.is_run_func_available():
                 self.bootscript_run = mod
-            #for key_block, val_block in get_execute["block"].items():
-            #    if "func" in val_block:
-            #        self.local_block[key_block] = val_block["func"](ans)
 
     def _bootloader_project(self, content, args):
         files = content.get("files", [])
@@ -136,7 +134,8 @@ class FrameworkBluePrint:
         create_yaml_file(
             self.folder_name, PROJECT_COMMAND_FILE, {"script": self._script_template(script,terminal_answer), "env": env}
             )
-        self.arch_req.clearRepoFolder()
+        if self.arch_req is not None:
+            self.arch_req.clearRepoFolder()
         print(f"{bcolors.OKGREEN}Congrats!! your first project has been generated{bcolors.ENDC}")
 
     def _script_template(self,configs,args):
@@ -152,9 +151,9 @@ class FrameworkBluePrint:
         default_item = values.get("default", [])
 
         for value in default_item:
-
-            for file1 in self.arch_req.getBlob(value):
-                files_check.append(BlueprintFileSchema(file1, args))
+            if self.arch_req is not None:
+                for file1 in self.arch_req.getBlob(value):
+                    files_check.append(BlueprintFileSchema(file1, args))
 
         optional_item = values.get("optional", [])
         for value in optional_item:
@@ -163,20 +162,22 @@ class FrameworkBluePrint:
 
             if "dependent" in value and cond_valid.validCond():
                 for s_value in value["dependent"]:
-                    for file1 in self.arch_req.getBlob(s_value):
+                    if self.arch_req is not None:
+                        for file1 in self.arch_req.getBlob(s_value):
 
-                        files_check.append(BlueprintFileSchema(file1, args))
+                            files_check.append(BlueprintFileSchema(file1, args))
 
         for value in files_check:
             if value.isObjFile():
-                data = self.arch_req.getFiles(value.value["file"])
-                if data["is_valid"]:
-                    for save_file in value.get_save_files():
-                        write_file_content(
-                            self.directory, self.folder_name, save_file, data["content"], args, self.local_block
-                        )
-                else:
-                    print(f"{bcolors.FAIL}error in downloading the file {value.value['file']}{bcolors.ENDC}")
+                if self.arch_req is not None:
+                    data = self.arch_req.getFiles(value.value["file"])
+                    if data["is_valid"]:
+                        for save_file in value.get_save_files():
+                            write_file_content(
+                                self.directory, self.folder_name, save_file, data["content"], args, self.local_block
+                            )
+                    else:
+                        print(f"{bcolors.FAIL}error in downloading the file {value.value['file']}{bcolors.ENDC}")
 
     def _boot_command(self, values, args):
 

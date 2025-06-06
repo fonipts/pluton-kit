@@ -1,12 +1,13 @@
 import re
+from typing import Optional
 
 
 class ValidateSource:
     def __init__(self, path) -> None:
         self.path = path
 
-        self.arch_type = None
-        self.repo_name = None
+        self.arch_type:Optional[str] = None
+        self.repo_name:Optional[str] = None
         self.repo_path_dir = ""
         self.repo_details = {}
         self.__validate_for_git()

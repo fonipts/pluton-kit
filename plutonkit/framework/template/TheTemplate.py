@@ -31,9 +31,9 @@ class TheTemplate:
 
         return "",raw_bool
 
-    def __command_details(self, name, contents, sub_content):
+    def __command_details(self, name, contents, sub_content) -> bool | dict[str, bool | str] | str :
 
-        lst = []
+        lst: list[str] = []
 
         get_init_string = get_first_strings(contents)
         get_str_count = get_first_line_string_space(get_init_string["content"])
@@ -43,7 +43,7 @@ class TheTemplate:
                 lst.append("")
             else:
                 regex = re.compile("^[\\s]{0,"+str(get_str_count)+"}")
-                lst.append(regex.sub("", v))
+                lst.append(str(regex.sub("", v)))
 
         if name in VAR_TEMPLATE_EXEC:
             row_content =  VAR_TEMPLATE_EXEC[name]("\n".join(lst),sub_content)

@@ -25,7 +25,8 @@ def create_yaml_file(project_name, filename, library=None):
         "w",
         encoding="utf-8",
     ) as fw:
-        fw.write(yaml.dump(library, default_flow_style=False))
+        yaml_content = yaml.dump(library, default_flow_style=False, width=200)
+        fw.write(str(yaml_content) if yaml_content is not None else "")
         fw.close()
 
 

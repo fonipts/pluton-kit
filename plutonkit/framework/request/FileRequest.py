@@ -4,9 +4,7 @@ from typing import Optional
 
 import requests
 
-from plutonkit.config import (
-    ARCHITECTURE_REQUEST_ERROR_MESSAGE,
-)
+from plutonkit.config import ARCHITECTURE_REQUEST_ERROR_MESSAGE
 from plutonkit.helper.filesystem import create_temp_file
 
 from .ValidateSource import ValidateSource

@@ -100,7 +100,7 @@ class FrameworkBluePrint:
             get_filename = self.blueprint_file.getFilename()
             get_dir = self.blueprint_file.getDir()
             is_valid_req = self.blueprint_file.IsValidReq()
-        
+
 
         if os.path.exists(str(get_filename)) and is_valid_req:
             py_file_class = PyValidateContent(str(get_filename))

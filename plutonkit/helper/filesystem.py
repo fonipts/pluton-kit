@@ -29,6 +29,17 @@ def create_yaml_file(project_name, filename, library=None):
         fw.write(str(yaml_content) if yaml_content is not None else "")
         fw.close()
 
+def create_temp_file(filename, content):
+    try:
+        with open(
+            filename,
+            "w",
+            encoding="utf-8",
+        ) as fw:
+            fw.write(content)
+            fw.close()
+    except Exception as e:
+        print(f"Error writing to file: {e}")
 
 def write_file_content(
     directory: str, folder_name: str, file: str, content: str, args=None,block=None

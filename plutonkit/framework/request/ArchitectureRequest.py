@@ -27,6 +27,7 @@ class ArchitectureRequest:
         self.__init_architecture()
 
     def __init_architecture(self):
+        print(":__init_architecture:")
         if self.validate.arch_type == "request":
             data = self._curl(f"{self.path}/{self.details_file}")
             if data.status_code == 200:

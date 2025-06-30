@@ -15,6 +15,7 @@ from plutonkit.framework.filesystem.BlueprintFileSchema import (
 )
 from plutonkit.framework.logic.ConditionSplit import ConditionSplit
 from plutonkit.framework.request.ArchitectureRequest import ArchitectureRequest
+from plutonkit.framework.request.FileRequest import FileRequest
 from plutonkit.framework.terminal.inquiry_terminal import InquiryTerminal
 from plutonkit.helper.command import clean_command_split, pip_run_command
 from plutonkit.helper.environment import setEnvironmentVariable
@@ -30,6 +31,7 @@ class FrameworkBluePrint:
         self.folder_name = ""
         self.directory = os.getcwd()
         self.arch_req:Optional[ArchitectureRequest] = None
+        self.blueprint_file:Optional[FileRequest] = None
 
         self.local_block = {}
         self.local_bootscript = []
@@ -39,9 +41,11 @@ class FrameworkBluePrint:
         self.folder_name = name
 
     def execute_clone_project(self,ans_ref):
+        self.blueprint_file = FileRequest(self.path, self.directory, f"{PYTHON_BLUEPRINT}.py")
         self.arch_req = ArchitectureRequest(self.path, self.directory)
         if self.arch_req.isValidReq is False:
             print(self.arch_req.errorMessage)
+
             self.arch_req.clearRepoFolder()
             sys.exit(0)
         try:
@@ -55,13 +59,16 @@ class FrameworkBluePrint:
             sys.exit(0)
 
     def execute_create_project(self):
+        self.blueprint_file = FileRequest(self.path, self.directory, f"{PYTHON_BLUEPRINT}.py")
         self.arch_req = ArchitectureRequest(self.path, self.directory)
         if self.arch_req.isValidReq is False:
             print(f"{bcolors.FAIL}{self.arch_req.errorMessage}{bcolors.ENDC}")
+
             self.arch_req.clearRepoFolder()
             sys.exit(0)
         try:
             generate_project_folder_cwd(self.folder_name)
+
             content:Union[Any]= load(str(self.arch_req.getValidReq), Loader=Loader)
 
             choices:List[Any] = content.get("choices", [])
@@ -81,30 +88,40 @@ class FrameworkBluePrint:
             print(f"{bcolors.FAIL}{e}{bcolors.ENDC}")
             print(f"{bcolors.FAIL}Invalid details to proceed in creating new project{bcolors.ENDC}")
             self.arch_req.clearRepoFolder()
+
             sys.exit(0)
 
     def _review_blueprint_script(self):
         cmd_file = f"{PYTHON_BLUEPRINT}.py"
+        get_filename = ""
+        get_dir = ""
+        is_valid_req = False
+        if self.blueprint_file is not None:
+            get_filename = self.blueprint_file.getFilename()
+            get_dir = self.blueprint_file.getDir()
+            is_valid_req = self.blueprint_file.IsValidReq()
+        
 
-        path = os.path.join(self.path, cmd_file)
-        if os.path.isfile(path):
-            py_file_class = PyValidateContent(path)
+        if os.path.exists(str(get_filename)) and is_valid_req:
+            py_file_class = PyValidateContent(str(get_filename))
             var_class_import = py_file_class.get_class_import()
 
-            if "Blueprint" not in var_class_import:
-                raise WarningException("In your `{cmd_file}`, please import `Blueprint` in your blueprint.py")
+            if var_class_import.get("Blueprint",None) is None:
+                raise WarningException(f"In your `{cmd_file}`, please import `Blueprint` in your blueprint.py")
 
             var_class_call = py_file_class.get_class_call()
 
             if var_class_import["Blueprint"] not in var_class_call:
-                raise WarningException("In your `{cmd_file}`, please use `Blueprint` as class in your blueprint.py for you to use block and script")
+                raise WarningException(f"In your `{cmd_file}`, please use `Blueprint` as class in your blueprint.py for you to use block and script")
 
-            sys.path.append( self.path )
+            if get_dir is not None:
+                sys.path.append(get_dir)
             mod = importlib.import_module(PYTHON_BLUEPRINT)
 
             blueprint_class = getattr(mod, var_class_call[ var_class_import["Blueprint"] ])
+
             if not hasattr(blueprint_class,"get_execute"):
-                raise WarningException("In your `{cmd_file}`, please use `from plutonkit import Blueprint` in your blueprint.py")
+                raise WarningException(f"In your `{cmd_file}`, please use `from plutonkit import Blueprint` in your blueprint.py")
 
             get_execute = blueprint_class.get_execute()
 
@@ -136,6 +153,9 @@ class FrameworkBluePrint:
             )
         if self.arch_req is not None:
             self.arch_req.clearRepoFolder()
+        if self.blueprint_file is not None:
+            self.blueprint_file.deleteFile()
+
         print(f"{bcolors.OKGREEN}Congrats!! your first project has been generated{bcolors.ENDC}")
 
     def _script_template(self,configs,args):

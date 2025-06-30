@@ -17,7 +17,7 @@ class TestPLBlueprint(unittest.TestCase):
         @self.bp.script("my_script")
         def bar():
             return "hello"
-        
+
         script = next((s for s in self.bp.bootscript if s["name"] == "my_script"), None)
         self.assertIsNotNone(script)
         self.assertEqual(script["func"](), "hello")

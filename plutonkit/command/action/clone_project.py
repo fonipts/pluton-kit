@@ -9,7 +9,7 @@ from plutonkit.framework.exception.validation_exception import (
     ValidationException,
 )
 from plutonkit.framework.request.ArchitectureRequest import ArchitectureRequest
-from plutonkit.helper.arguments import answer_yes, get_arg_cmd_value
+from plutonkit.helper.arguments import get_arg_cmd_value
 
 
 class CloneProject:
@@ -39,7 +39,11 @@ class CloneProject:
             try:
                 content = load(str(arch_req.getValidReq), Loader=Loader)
 
-                self.project_details_execute(content.get("blueprint",""), content.get("default_choices",{}))
+                if content is not None:
+                    self.project_details_execute(content.get("blueprint", ""), content.get("default_choices", {}))
+                else:
+                    print(f"Invalid {PROJECT_DETAILS_FILE}, content is empty or not loaded properly")
+                    sys.exit(1)
             except Exception as e:
                 print(e, f"Invalid {PROJECT_DETAILS_FILE}, please use proper yaml format")
                 sys.exit(1)
@@ -49,14 +53,13 @@ class CloneProject:
     def project_details_execute(self, remote_blueprint,inquiry_val):
 
         project_name = input("Name of folder project?")
-        folder_name = f"Project name: {project_name}"
-        answer = input(f"\n{folder_name}\nDo you want to proceed installation process?(y/n) > ")
-        if answer_yes(answer):
-            inquiry_val["folder_name"] = project_name
-            framework_blueprint = FrameworkBluePrint(remote_blueprint)
-            framework_blueprint.set_folder_name(project_name)
-            framework_blueprint.execute_clone_project(inquiry_val)
+
+        if len(project_name) <3:
+            print("Please specify atleast three char")
             sys.exit(0)
-        else:
-            print("Your confirmation say `No`")
-            sys.exit(0)
+
+        inquiry_val["folder_name"] = project_name
+        framework_blueprint = FrameworkBluePrint(remote_blueprint)
+        framework_blueprint.set_folder_name(project_name)
+        framework_blueprint.execute_clone_project(inquiry_val)
+        sys.exit(0)

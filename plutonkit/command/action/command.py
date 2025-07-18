@@ -57,7 +57,7 @@ class Command:
         setEnvironmentVariable(content.get("env",{}))
         get_errors = structure_command_cls.get_error()
         if len(get_errors) > 0:
-            raise ValidationException("Invalid yaml file content",errors=[get_errors])
+            raise ValidationException("Invalid yaml file content",errors=get_errors)
 
         command_list = self.argv[self.index::]
         command_value = ":.:".join(command_list)

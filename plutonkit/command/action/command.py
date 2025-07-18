@@ -72,7 +72,7 @@ class Command:
                     pip_run_command(clean_command_split(cmd_arg["command"][0]))
                 except Exception as E:
                     print(E)
-                cmd_arg["command"].pop()
+                cmd_arg["command"].pop(0)
                 is_exec_running = len(cmd_arg["command"])>0
             sys.exit(0)
         else:

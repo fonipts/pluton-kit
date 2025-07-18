@@ -7,9 +7,8 @@ from plutonkit.framework.blueprint.generate_blueprint import FrameworkBluePrint
 from plutonkit.framework.exception.validation_exception import (
     ValidationException,
 )
-from plutonkit.framework.exception.warning_exception import WarningException
 from plutonkit.helper.arguments import (
-    answer_yes, check_if_default_name, get_arg_cmd_value, get_config,
+    check_if_default_name, get_arg_cmd_value, get_config,
 )
 from plutonkit.helper.format import git_name
 
@@ -93,13 +92,10 @@ class CreateProject:
     def project_details_execute(self, remote_blueprint):
 
         project_name = input("Name of folder project?")
-        folder_name = f"Project name: {project_name}"
-        answer = input(f"\n{folder_name}\nDo you want to proceed installation process?(y/n) > ")
-        if answer_yes(answer):
-
-            framework_blueprint = FrameworkBluePrint(remote_blueprint)
-            framework_blueprint.set_folder_name(project_name)
-            framework_blueprint.execute_create_project()
+        if len(project_name) <3:
+            print("Please specify atleast three char")
             sys.exit(0)
-        else:
-            raise WarningException("Your confirmation say `No`")
+        framework_blueprint = FrameworkBluePrint(remote_blueprint)
+        framework_blueprint.set_folder_name(project_name)
+        framework_blueprint.execute_create_project()
+        sys.exit(0)

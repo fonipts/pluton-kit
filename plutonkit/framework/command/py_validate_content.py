@@ -40,9 +40,9 @@ class PyValidateContent:
                         match_variable = re.match(r"([a-zA-Z0-9\_]+)\s{1,}(as|AS)\s{1,}([a-zA-Z0-9\_]+)", vval)
                         if match_variable:
                             if len(match_variable.groups()) >=3:
-                                glb[match_variable[1]] = match_variable[3]
+                                glb[str(match_variable[1])] = match_variable[3]
                         else:
-                            glb[vval] = vval
+                            glb[str(vval)] = vval
 
     def _get_call_class(self,data_class,glb):
 

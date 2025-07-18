@@ -26,7 +26,7 @@ class TestFilesystem(unittest.TestCase):
     def test_create_yaml_file(self, mock_yaml_dump, mock_open_func, mock_getcwd):
         filesystem.create_yaml_file("myproj", "config.yaml", {"a": 1})
         mock_open_func.assert_called_with("/tmp/testcwd/myproj/config.yaml", "w", encoding="utf-8")
-        mock_yaml_dump.assert_called_with({"a": 1}, default_flow_style=False)
+        mock_yaml_dump.assert_called_with({"a": 1}, default_flow_style=False, width=200)
         handle = mock_open_func()
         handle.write.assert_called_with("yaml: content")
         handle.close.assert_called()

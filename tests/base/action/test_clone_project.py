@@ -44,22 +44,12 @@ class TestCloneProject(unittest.TestCase):
         with self.assertRaises(ValidationException):
             self.clone_project.acces_lobby_blueprint("foo.yaml")
 
-    @patch("plutonkit.command.action.clone_project.input", side_effect=["proj", "y"])
-    @patch("plutonkit.command.action.clone_project.answer_yes", return_value=True)
-    @patch("plutonkit.command.action.clone_project.FrameworkBluePrint")
-    @patch("sys.exit")
-    def test_project_details_execute_yes(self, mock_exit, mock_fb, mock_ans, mock_input):
-        self.clone_project.project_details_execute("remote", {})
-        mock_fb.assert_called_with("remote")
-        mock_fb.return_value.set_folder_name.assert_called_with("proj")
-        mock_fb.return_value.execute_clone_project.assert_called()
-        mock_exit.assert_called_with(0)
-
-    @patch("plutonkit.command.action.clone_project.input", side_effect=["proj", "n"])
-    @patch("plutonkit.command.action.clone_project.answer_yes", return_value=False)
-    @patch("builtins.print")
-    @patch("sys.exit")
-    def test_project_details_execute_no(self, mock_exit, mock_print, mock_ans, mock_input):
-        self.clone_project.project_details_execute("remote", {})
-        mock_print.assert_called_with("Your confirmation say `No`")
+    @patch("plutonkit.command.action.clone_project.input", return_value="ab")
+    @patch("plutonkit.command.action.clone_project.print")
+    @patch("plutonkit.command.action.clone_project.sys.exit")
+    def test_project_details_execute_short_name(self, mock_exit, mock_print, mock_input):
+        clone = CloneProject(["plutonkit", "clone_project", "source=foo.yaml"])
+        inquiry_val = {}
+        clone.project_details_execute("remote_blueprint", inquiry_val)
+        mock_print.assert_any_call("Please specify atleast three char")
         mock_exit.assert_called_with(0)

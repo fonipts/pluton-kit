@@ -1,5 +1,5 @@
 import unittest
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch, MagicMock, mock_open
 from plutonkit.command.action.command import Command
 from plutonkit.framework.exception.validation_exception import ValidationException
 from plutonkit.framework.exception.warning_exception import WarningException
@@ -32,7 +32,7 @@ class TestCommand(unittest.TestCase):
     @patch("os.getcwd", return_value="/tmp")
     @patch("os.path.exists", return_value=True)
     @patch("os.path.isfile", return_value=True)
-    @patch("builtins.open", new_callable=unittest.mock.mock_open, read_data="foo: bar")
+    @patch("builtins.open", new_callable=mock_open, read_data="foo: bar")
     @patch("yaml.load", return_value={"env":{}, "foo":"bar"})
     @patch.object(Command, "command_start")
     def test_execute_valid(self, mock_start, mock_load, mock_open, mock_isfile, mock_exists, mock_getcwd):

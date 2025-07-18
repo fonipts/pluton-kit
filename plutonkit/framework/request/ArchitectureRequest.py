@@ -3,6 +3,7 @@ import shutil
 import subprocess
 from glob import glob
 from http.client import responses
+from typing import Optional
 
 import requests
 
@@ -20,8 +21,8 @@ class ArchitectureRequest:
         self.dirs = dirs
         self.validate = ValidateSource(path)
         self.isValidReq = False
-        self.getValidReq = None
-        self.errorMessage = ARCHITECTURE_REQUEST_ERROR_MESSAGE
+        self.getValidReq:Optional[str] = None
+        self.errorMessage:str = ARCHITECTURE_REQUEST_ERROR_MESSAGE
         self.details_file = details_file
         self.__init_architecture()
 

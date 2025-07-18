@@ -26,7 +26,7 @@ def signal_handler():
 
 def exit_handler():
     print("\nExiting....")
-    sys.exit(0)
+    sys.exit(130)
 
 
 def autoload(type_cmd=None):

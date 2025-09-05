@@ -92,7 +92,7 @@ class PyValidateArguments:
                 row_arg = {}
                 ord_list.append(name)
                 row_arg["name"] = name
-                row_arg["kind"] = param.kind
+                row_arg["kind"] = str(param.kind)
                 row_arg["annotation"] = param.annotation
                 is_object = False
                # print(f"Name: {name}")

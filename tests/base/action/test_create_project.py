@@ -10,7 +10,7 @@ class TestCreateProject(unittest.TestCase):
         self.proj = CreateProject(self.argv)
 
     def test_comment(self):
-        self.assertEqual(self.proj.comment(), "Start creating your project in our listed framework")
+        self.assertEqual(self.proj.comment(), "Start creating your project in our listed framework or clone if you have project.yaml in source")
 
     def test_execute_no_args(self):
         with patch.object(self.proj, "acces_lobby_blueprint") as mock_access:

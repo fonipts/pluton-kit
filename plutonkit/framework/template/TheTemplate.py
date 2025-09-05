@@ -1,13 +1,13 @@
 import re
 
 from plutonkit.config.framework import VAR_TEMPLATE_EXEC
+from plutonkit.framework.logic.tymplu.lexer import Lexer
+from plutonkit.framework.logic.tymplu.parser import Parser
 from plutonkit.helper.format import (
     get_first_line_string_space, get_first_strings, get_str_if_empty,
 )
 
-from .TemplateCommentOut import TemplateCommentOut
-from .TemplateStruct import TemplateStruct
-from .TemplateStructTags import TemplateStructTags
+from ..logic.ConditionSplit import ConditionSplit
 
 
 class TheTemplate:
@@ -20,8 +20,8 @@ class TheTemplate:
         raw_bool = False
         if param["type"] == "block":
             raw_bool = True
-            if param["name"] in self.block:
-                call_func= self.block[ param["name"] ]["func"](self.args)
+            if param["action"] in self.block:
+                call_func= self.block[ param["action"] ]["func"](self.args)
                 return call_func, True
 
 
@@ -57,30 +57,60 @@ class TheTemplate:
             return row_content
         return ""
 
+    def __get_cond_valid_data(self,append_data):
+        counter =0
+        append_count = len(append_data)
+        valid_cond = True
+        valid_data = []
+        while counter< append_count:
+            row_data = append_data[counter]
+            if row_data["type"] == "condition":
+                valid_cond = False
+
+                cond = ConditionSplit(row_data["content"],self.args)
+
+                valid_cond = cond.validCond()
+
+            elif row_data["type"] == "end":
+                valid_cond = True
+            else:
+                if valid_cond:
+                    valid_data.append(row_data)
+            counter +=1
+        return valid_data
+
     def __wragle_data(self, content: str):
 
-        template_comment_out = TemplateCommentOut(content)
-        content = template_comment_out.get_remove_comment_content()
+        lexr = Lexer(content)
+        lexr.tokenize()
+
+        parse = Parser(lexr.tokens, content)
+        parse.parse()
+
+        for val in parse.parse_comment:
+            content = content.replace(val['raw'], "")
 
         find_value = re.findall(r"(\{\$)([a-zA-Z0-9_]{1,})(\})", content)
         if len(find_value) > 0:
             for val in find_value:
                 content = content.replace("".join(val), self.args.get(val[1], ""))
 
-        template_struct_block = TemplateStructTags(content, self.args)
-        content = template_struct_block.get_content()
-        for mv in template_struct_block.template:
-            raw_content,raw_bool = self.__set_value_in_tags(mv)
+
+        parse_tag = self.__get_cond_valid_data(parse.parse_tag)
+
+        for val in parse_tag:
+            raw_content,raw_bool = self.__set_value_in_tags(val)
             if raw_bool:
-                content = content.replace(mv["template"], raw_content)
+                content = content.replace(val["raw"], raw_content)
 
-        template_struct = TemplateStruct(content, self.args)
-
-        for mv in template_struct.convert_template:
+        for val in parse.parse_block:
             sub_content = ""
-            for sv in mv["component"]:
-                sub_content += self.__command_details(sv["name"], sv["input"], sub_content)
-            content = content.replace(mv["template"], sub_content)
+            append_row = self.__get_cond_valid_data(val["append"])
+
+
+            for sv in append_row:
+                sub_content += self.__command_details(sv["type"], sv["content"].split("\n"), sub_content)
+            content = content.replace(val["raw"], sub_content)
 
         return content
 

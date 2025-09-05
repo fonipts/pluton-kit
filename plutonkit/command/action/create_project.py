@@ -1,19 +1,20 @@
-import sys
 import os
-from plutonkit.config import REMOTE_URL_RAW
+import sys
+
+from yaml import Loader, load
+
+from plutonkit.config import PROJECT_DETAILS_FILE, REMOTE_URL_RAW
 from plutonkit.config.framework import VAR_DEFAULT_BLUEPRINT
 from plutonkit.config.system import SERVICE_TYPE
 from plutonkit.framework.blueprint.generate_blueprint import FrameworkBluePrint
 from plutonkit.framework.exception.validation_exception import (
     ValidationException,
 )
+from plutonkit.framework.request.ArchitectureRequest import ArchitectureRequest
 from plutonkit.helper.arguments import (
     check_if_default_name, get_arg_cmd_value, get_config,
 )
-from plutonkit.config import PROJECT_DETAILS_FILE
-from plutonkit.framework.request.ArchitectureRequest import ArchitectureRequest
 from plutonkit.helper.format import git_name
-from yaml import Loader, load
 
 
 class CreateProject:
@@ -54,7 +55,7 @@ class CreateProject:
                 sys.exit(1)
         else:
             self.execute_create_project()
-    
+
     def execute_create_project(self):
 
         option_cmd = self.argv[2::]
@@ -69,7 +70,7 @@ class CreateProject:
             else:
                 raise ValidationException("Please use the source as default\n`plutonkit create_project source=<source directory of architecture.yaml>")
         else:
-            self.acces_lobby_blueprint_new_project()            
+            self.acces_lobby_blueprint_new_project()
 
     def acces_lobby_blueprint_new_project(self):
 

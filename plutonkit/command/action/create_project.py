@@ -1,5 +1,5 @@
 import sys
-
+import os
 from plutonkit.config import REMOTE_URL_RAW
 from plutonkit.config.framework import VAR_DEFAULT_BLUEPRINT
 from plutonkit.config.system import SERVICE_TYPE
@@ -10,7 +10,10 @@ from plutonkit.framework.exception.validation_exception import (
 from plutonkit.helper.arguments import (
     check_if_default_name, get_arg_cmd_value, get_config,
 )
+from plutonkit.config import PROJECT_DETAILS_FILE
+from plutonkit.framework.request.ArchitectureRequest import ArchitectureRequest
 from plutonkit.helper.format import git_name
+from yaml import Loader, load
 
 
 class CreateProject:
@@ -18,9 +21,41 @@ class CreateProject:
         self.argv = argv
 
     def comment(self):
-        return "Start creating your project in our listed framework"
+        return f"Start creating your project in our listed framework or clone if you have {PROJECT_DETAILS_FILE} in source"
 
     def execute(self):
+
+        option_cmd = self.argv[2::]
+        if len(option_cmd) > 0:
+            view_extra_cmd = get_arg_cmd_value(option_cmd)
+            if "source" in view_extra_cmd:
+                self.acces_lobby_blueprint(view_extra_cmd["source"])
+            else:
+                self.acces_lobby_blueprint_new_project()
+
+        else:
+            self.execute_create_project()
+
+    def acces_lobby_blueprint(self,path):
+
+        directory = os.getcwd()
+        arch_req = ArchitectureRequest(path, directory,PROJECT_DETAILS_FILE)
+        if arch_req.isValidReq:
+            try:
+                content = load(str(arch_req.getValidReq), Loader=Loader)
+
+                if content is not None:
+                    self.project_details_execute(content.get("blueprint", ""), content.get("default_choices", {}))
+                else:
+                    print(f"Invalid {PROJECT_DETAILS_FILE}, content is empty or not loaded properly")
+                    sys.exit(1)
+            except Exception as e:
+                print(e, f"Invalid {PROJECT_DETAILS_FILE}, please use proper yaml format")
+                sys.exit(1)
+        else:
+            self.execute_create_project()
+    
+    def execute_create_project(self):
 
         option_cmd = self.argv[2::]
         if len(option_cmd) > 0:
@@ -32,11 +67,11 @@ class CreateProject:
                 else:
                     self.git_lobby_bluprint(source_name)
             else:
-                raise ValidationException("Please use the source as default\n`plutonkit create_project source=<source of architecture.yaml>")
+                raise ValidationException("Please use the source as default\n`plutonkit create_project source=<source directory of architecture.yaml>")
         else:
-            self.acces_lobby_blueprint()
+            self.acces_lobby_blueprint_new_project()            
 
-    def acces_lobby_blueprint(self):
+    def acces_lobby_blueprint_new_project(self):
 
         details_command = {"details": {}, "command": []}
         self.callback_execute(
@@ -89,7 +124,7 @@ class CreateProject:
         remote_blueprint = f"{REMOTE_URL_RAW}/{framework}"
         self.project_details_execute(remote_blueprint)
 
-    def project_details_execute(self, remote_blueprint):
+    def project_details_execute(self, remote_blueprint,inquiry_val=None):
 
         project_name = input("Name of folder project?")
         if len(project_name) <3:
@@ -97,5 +132,9 @@ class CreateProject:
             sys.exit(0)
         framework_blueprint = FrameworkBluePrint(remote_blueprint)
         framework_blueprint.set_folder_name(project_name)
-        framework_blueprint.execute_create_project()
+        if inquiry_val:
+            inquiry_val["folder_name"] = project_name
+            framework_blueprint.execute_clone_project(inquiry_val)
+        else:
+            framework_blueprint.execute_create_project()
         sys.exit(0)

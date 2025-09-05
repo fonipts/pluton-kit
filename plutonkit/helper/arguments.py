@@ -26,7 +26,7 @@ def get_arg_cmd_value(args):
     return local_obj
 
 def answer_yes(ans):
-    list_yes = {"y":"","Y":"","yes":"","Yes":""}
+    list_yes = {"y","Y","yes","Yes"}
     return ans in list_yes
 
 def check_if_default_name(name):

@@ -10,7 +10,9 @@ from plutonkit.framework.blueprint.generate_blueprint import FrameworkBluePrint
 from plutonkit.framework.exception.validation_exception import (
     ValidationException,
 )
-from plutonkit.framework.request.ArchitectureRequest import ArchitectureRequest
+from plutonkit.framework.request.architecture_request import (
+    ArchitectureRequest,
+)
 from plutonkit.helper.arguments import (
     check_if_default_name, get_arg_cmd_value, get_config,
 )
@@ -22,7 +24,7 @@ class CreateProject:
         self.argv = argv
 
     def comment(self):
-        return f"Start creating your project in our listed framework or clone if you have {PROJECT_DETAILS_FILE} in source"
+        return f"Start creating your project in our listed framework or clone if you have {PROJECT_DETAILS_FILE} in source directory"
 
     def execute(self):
 

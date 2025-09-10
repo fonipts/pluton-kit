@@ -5,9 +5,8 @@ from typing import Optional
 import requests
 
 from plutonkit.config import ARCHITECTURE_REQUEST_ERROR_MESSAGE
+from plutonkit.framework.request.validate_source import ValidateSource
 from plutonkit.helper.filesystem import create_temp_file
-
-from .ValidateSource import ValidateSource
 
 
 class FileRequest:

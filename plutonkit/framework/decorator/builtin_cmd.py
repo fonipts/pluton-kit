@@ -11,7 +11,7 @@ from plutonkit.helper.command import output_validation_exception_list
 from plutonkit.helper.operating_sys import is_windows
 
 
-def callback_scipt(func):
+def callback_script(func):
     def wrapper(*args, **kwargs):
         basename = os.path.basename(sys.argv[0])
         if basename in (f"{PYTHON_CMD}.py"):

@@ -10,13 +10,20 @@ from plutonkit.config import (
 )
 from plutonkit.framework.command.py_validate_content import PyValidateContent
 from plutonkit.framework.exception.warning_exception import WarningException
-from plutonkit.framework.filesystem.BlueprintFileSchema import (
+from plutonkit.framework.filesystem.blueprint_file_schema import (
     BlueprintFileSchema,
 )
-from plutonkit.framework.logic.ConditionSplit import ConditionSplit
-from plutonkit.framework.request.ArchitectureRequest import ArchitectureRequest
-from plutonkit.framework.request.FileRequest import FileRequest
+from plutonkit.framework.request.architecture_request import (
+    ArchitectureRequest,
+)
+from plutonkit.framework.request.file_request import FileRequest
 from plutonkit.framework.terminal.inquiry_terminal import InquiryTerminal
+from plutonkit.framework.tymplu.condition.condition_delimiter import (
+    ConditionDelimiter,
+)
+from plutonkit.framework.tymplu.condition.condition_identify import (
+    ConditionIdentify,
+)
 from plutonkit.helper.command import clean_command_split, pip_run_command
 from plutonkit.helper.environment import setEnvironmentVariable
 from plutonkit.helper.filesystem import (
@@ -178,9 +185,12 @@ class FrameworkBluePrint:
         optional_item = values.get("optional", [])
         for value in optional_item:
 
-            cond_valid = ConditionSplit(value.get("condition"), args)
+            #
+            cond = ConditionDelimiter(value.get("condition"))
+            cond_valid = ConditionIdentify(cond.arg_list,cond.error_recording,args)
 
-            if "dependent" in value and cond_valid.validCond():
+
+            if "dependent" in value and cond_valid.validate():
                 for s_value in value["dependent"]:
                     if self.arch_req is not None:
                         for file1 in self.arch_req.getBlob(s_value):
@@ -214,8 +224,10 @@ class FrameworkBluePrint:
             if condition == "":
                 is_valid = True
             else:
-                cond_valid = ConditionSplit(condition, args)
-                is_valid = cond_valid.validCond()
+
+                cond = ConditionDelimiter(condition)
+                cond_valid = ConditionIdentify(cond.arg_list,cond.error_recording,args)
+                is_valid = cond_valid.validate()
 
             if is_valid:
                 os.chdir(chdir)

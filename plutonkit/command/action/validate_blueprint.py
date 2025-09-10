@@ -7,7 +7,9 @@ from plutonkit.framework.blueprint.review_blueprint import ReviewBlueprint
 from plutonkit.framework.exception.validation_exception import (
     ValidationException,
 )
-from plutonkit.framework.request.ArchitectureRequest import ArchitectureRequest
+from plutonkit.framework.request.architecture_request import (
+    ArchitectureRequest,
+)
 
 
 class ValidateBlueprint:

@@ -5,7 +5,7 @@ from plutonkit.config import PYTHON_CMD
 from plutonkit.framework.command.py_validate_arguments import (
     PyValidateArguments,
 )
-from plutonkit.framework.decorator.builtin_cmd import callback_scipt
+from plutonkit.framework.decorator.builtin_cmd import callback_script
 from plutonkit.framework.exception.validation_exception import (
     ValidationException,
 )
@@ -29,7 +29,7 @@ class PLCommand:
             return wrapper
         return cli_real_decorator
 
-    @callback_scipt
+    @callback_script
     def run(self):
 
         directory = os.getcwd()

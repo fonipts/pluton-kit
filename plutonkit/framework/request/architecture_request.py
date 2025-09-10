@@ -10,9 +10,8 @@ import requests
 from plutonkit.config import (
     ARCHITECTURE_DETAILS_FILE, ARCHITECTURE_REQUEST_ERROR_MESSAGE,
 )
+from plutonkit.framework.request.validate_source import ValidateSource
 from plutonkit.helper.filesystem import is_glob
-
-from .ValidateSource import ValidateSource
 
 
 class ArchitectureRequest:

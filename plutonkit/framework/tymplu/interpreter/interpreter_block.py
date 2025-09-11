@@ -16,9 +16,9 @@ from plutonkit.framework.tymplu.ext.strings import (
 from plutonkit.helper.format import (
     get_first_line_string_space, get_first_strings, get_str_if_empty,
 )
+from plutonkit.model.dataclass.tymplu_block import TympluBlock
 from plutonkit.model.dataclass.tymplu_block_append import TympluBlockAppend
 from plutonkit.model.dataclass.tymplu_error_parse import TympluErrorParse
-from plutonkit.model.dataclass.tymplu_block import TympluBlock
 
 
 class InterpreterBlock:

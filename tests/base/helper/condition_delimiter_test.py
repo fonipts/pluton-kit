@@ -12,3 +12,14 @@ class TestConditionDelimiter(unittest.TestCase):
         cond = ConditionDelimiter('        choices.database == "postgres"   choices.redis == "local"')
         self.assertTrue(len(cond.arg_list)<=0)
         self.assertTrue(len(cond.error_recording)>0)
+
+    def test_condition_valid_single_delimeter(self):
+        cond = ConditionDelimiter('        choices.database == "postgres"')
+
+        self.assertTrue(len(cond.arg_list)>0)
+        self.assertTrue(len(cond.error_recording)<=0)
+
+    def test_condition_invalid_single_delimeter(self):
+        cond = ConditionDelimiter('        choices.database = "postgres"')
+        self.assertTrue(len(cond.arg_list)<=0)
+        self.assertTrue(len(cond.error_recording)>0)

@@ -46,7 +46,7 @@ class TheTemplate:
         raw_content=temp_comment.content
 
 
-        raw_content = self.convert_arg(raw_content)
+
 
 
         #lexr = Lexer(raw_content)
@@ -76,5 +76,7 @@ class TheTemplate:
         raw_content=temp_block.content
 
         self.errors = temp_block.errors+temp_tags.errors
+
+        raw_content = self.convert_arg(raw_content)
 
         return raw_content

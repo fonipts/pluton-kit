@@ -1,4 +1,4 @@
-from plutonkit.framework.request.ValidateSource import ValidateSource
+from plutonkit.framework.request.validate_source import ValidateSource
 import unittest
 
 class TestValidateSource(unittest.TestCase):

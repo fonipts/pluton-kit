@@ -11,7 +11,6 @@ RAW_TEMPLATE_NONE = """
 RAW_TEMPLATE1 = """
 ({
     @content{
-
     from decouple import config
     from sqlalchemy import create_engine
      from sqlalchemy.orm import declarative_base,sessionmaker

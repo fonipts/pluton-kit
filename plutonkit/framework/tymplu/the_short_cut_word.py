@@ -1,6 +1,5 @@
 import re
 
-#from plutonkit.config.framework import VAR_SHORTCUT_TEMPLATE
 from plutonkit.helper.arguments import get_dict_value
 
 
@@ -32,15 +31,14 @@ class TheShortCutWord:
         if str(actions[0]["arg"][0]) == str(val):
             val = actions[0]["arg"][1]
         return val
-##
+
     def __get_init_action(self, val, actions):
-        #if actions[0]["name"] in VAR_SHORTCUT_TEMPLATE:
-        #    val = VAR_SHORTCUT_TEMPLATE[actions[0]["name"]](val,actions)
         action_name = actions[0]["name"]
         method_name = f"shortcut_{action_name }"
+
         if hasattr(self, method_name) is False:
             method_name = "shortcut_empty"
-            val = getattr(self, method_name)(val,actions)
+        val = getattr(self, method_name)(val,actions)
 
         actions.pop(0)
         if len(actions) > 0:

@@ -17,25 +17,26 @@ class ConditionIdentify:
         self.errors:List[TympluErrorStatement] = errors
         self.arg = arg
 
-    def action_equal(self,key,node):
+    def action_equal(self,key,value):
 
-        return self.data_format(key) == self.data_format(node.value)
-    def action_not_equal(self,key,node):
+        return self.data_format(key) == self.data_format(value)
 
-        return self.data_format(key) != self.data_format(node.value)
+    def action_not_equal(self,key,value):
 
-    def action_greater(self,key,node):
-        return self.data_format(key) > self.data_format(node.value)
+        return self.data_format(key) != self.data_format(value)
 
-    def action_greater_equal(self,key,node):
-        return self.data_format(key) >= self.data_format(node.value)
+    def action_greater(self,key,value):
+        return self.data_format(key) > self.data_format(value)
+
+    def action_greater_equal(self,key,value):
+        return self.data_format(key) >= self.data_format(value)
 
 
-    def action_less(self,key,node):
-        return self.data_format(key) < self.data_format(node.value)
+    def action_less(self,key,value):
+        return self.data_format(key) < self.data_format(value)
 
-    def action_less_equal(self,key,node):
-        return self.data_format(key) <= self.data_format(node.value)
+    def action_less_equal(self,key,value):
+        return self.data_format(key) <= self.data_format(value)
 
     def data_format(self,value):
         value = str(value)
@@ -62,7 +63,8 @@ class ConditionIdentify:
         for val in self.valids:
             method_name = f"action_{val.action.lower()}"
             if hasattr(self, method_name):
-                key_value_state = get_dict_value(val.key.split("."), self.arg) or val.key
-                if getattr(self, method_name)(key_value_state,val):
+                key_state = get_dict_value(val.key.split("."), self.arg) or val.key
+                value_state = get_dict_value(val.value.split("."), self.arg) or val.value
+                if getattr(self, method_name)(key_state,value_state):
                     valid_counter +=1
         return valid_counter ==  len(self.valids)

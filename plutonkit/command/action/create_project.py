@@ -34,7 +34,7 @@ class CreateProject:
             if "source" in view_extra_cmd:
                 self.acces_lobby_blueprint(view_extra_cmd["source"])
             else:
-                self.acces_lobby_blueprint_new_project()
+                raise ValidationException("Please use the source as default\n`plutonkit create_project source=<source directory of architecture.yaml>")
 
         else:
             self.execute_create_project()

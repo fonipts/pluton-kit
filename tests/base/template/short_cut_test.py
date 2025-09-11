@@ -1,10 +1,11 @@
-from plutonkit.framework.template.TheShortCutWord import TheShortCutWord
+from plutonkit.framework.tymplu.the_short_cut_word import TheShortCutWord
 
 import unittest
 
 class TestShortCut(unittest.TestCase):
     def test_valid_recursive_UC_replace(self):
         templt = TheShortCutWord("{{name|ucfirst|replace(@,1)}}", {"name": "TEST@"})
+        print(templt.get_convert(),"::::templt.get_convert()")
         self.assertEqual(templt.get_convert(), "Test1")
 
     def test_valid_UC(self):

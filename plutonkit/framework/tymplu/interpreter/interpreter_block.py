@@ -61,7 +61,7 @@ class InterpreterBlock:
 
     def type_content(self,node:TympluBlockAppend,_:List[TympluBlockAppend]):
 
-        return node.content
+        return node.content.rstrip()
 
     def type_condition(self,node:TympluBlockAppend,tokens:List[TympluBlockAppend]):
 

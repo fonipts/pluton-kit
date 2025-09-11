@@ -19,5 +19,5 @@ class InterpreterComment:
 
         self.raw_contents = convert_unique_value(raw_contents=self.raw_contents, replace_char=self.replace_char)
     @property
-    def content(self):
+    def content(self)->str:
         return self.raw_contents

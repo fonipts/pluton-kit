@@ -37,7 +37,7 @@ class TheTemplate:
 
         return parse
 
-    def __wragle_data(self, content: str):
+    def __wragle_data(self, content: str)->str:
 
         parse_comment = self._get_lex_parser(content)
 
@@ -45,29 +45,11 @@ class TheTemplate:
         temp_comment.convert()
         raw_content=temp_comment.content
 
-
-
-
-
-        #lexr = Lexer(raw_content)
-        #lexr.tokenize()
-        #parse = Parser(lexr.tokens, raw_content)
-        #parse.parse()
-
         parse_tag = self._get_lex_parser(raw_content)
 
-        #print(parse.parse_tag,"::parse.parse_tag")
-        #print(parse.parse_tag,":parse_tag:")
         temp_tags = InterpreterTags(parse_tag.parse_tag, raw_content,raw_content,self.args,self.block)
         temp_tags.convert()
         raw_content=temp_tags.content
-
-        #print(parse.parse_block,":errors:")
-
-        #lexr = Lexer(raw_content)
-        #lexr.tokenize()
-        #parse = Parser(lexr.tokens, raw_content)
-        #parse.parse()
 
         parse_block = self._get_lex_parser(raw_content)
 

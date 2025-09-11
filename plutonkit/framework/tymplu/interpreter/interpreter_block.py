@@ -18,12 +18,12 @@ from plutonkit.helper.format import (
 )
 from plutonkit.model.dataclass.tymplu_block_append import TympluBlockAppend
 from plutonkit.model.dataclass.tymplu_error_parse import TympluErrorParse
-from plutonkit.model.dataclass.tymplu_tag import TympluTag
+from plutonkit.model.dataclass.tymplu_block import TympluBlock
 
 
 class InterpreterBlock:
-    def __init__(self,tokens:List[TympluTag],content:str,copy_content:str,args=None,template=None):
-        self.tokens:List[TympluTag] = tokens
+    def __init__(self,tokens:List[TympluBlock],content:str,copy_content:str,args=None,template=None):
+        self.tokens:List[TympluBlock] = tokens
         self.args = args
         self.contents = copy_content
         self.errors:List[TympluErrorParse] = []
@@ -57,11 +57,11 @@ class InterpreterBlock:
 
                 if is_valid_template:
                     temp_cls = self.template(data_content,self.args)
-                    #row_content = temp_cls.content
                     return temp_cls.content
                 return self.replace_char
             except Exception as e:
-                print("Invalid source:",e)
+                self.errors.append(TympluErrorParse(type="Load template",message=str(e),content=node.content,end_index=0,start_index=0))
+
         return self.replace_char
 
     def type_content(self,node:TympluBlockAppend,_:List[TympluBlockAppend]):
@@ -92,7 +92,7 @@ class InterpreterBlock:
 
     def convert(self):
         if len(self.tokens)>0:
-            node = self.tokens[0]
+            node:TympluBlock = self.tokens[0]
             self.tokens.pop(0)
             content = self.sub_convert(node.append, "")
             self.raw_contents = self.raw_contents.replace(node.raw, content,1)
@@ -100,7 +100,7 @@ class InterpreterBlock:
 
     def sub_convert(self, tokens:List[TympluBlockAppend], sub_content:str):
         if len(tokens)>0:
-            node = tokens[0]
+            node:TympluBlockAppend = tokens[0]
             tokens.pop(0)
 
             method_name = f"type_{node.type.lower()}"
@@ -132,6 +132,6 @@ class InterpreterBlock:
         return sub_content
 
     @property
-    def content(self):
+    def content(self)->str:
         self.raw_contents = convert_unique_value(raw_contents=self.raw_contents, replace_char=self.replace_char)
         return self.raw_contents

@@ -25,11 +25,11 @@ def get_arg_cmd_value(args):
 
     return local_obj
 
-def answer_yes(ans):
+def answer_yes(ans)->bool:
     list_yes = {"y","Y","yes","Yes"}
     return ans in list_yes
 
-def check_if_default_name(name):
+def check_if_default_name(name)->bool:
     valid = False
     if re.search(r'^([\/\.])', name):
         valid = True

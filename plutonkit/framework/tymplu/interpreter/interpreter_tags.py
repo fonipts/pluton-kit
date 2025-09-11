@@ -32,11 +32,10 @@ class InterpreterTags:
 
         if node.action in self.block:
             call_func= self.block[ node.action ]["func"](self.args)
-            #return call_func
             self.raw_contents = self.raw_contents.replace(node.raw, call_func,1)
         else:
             self.raw_contents = self.raw_contents.replace(node.raw, self.replace_char,1)
-        #return self.replace_char
+
     def type_each(self,node:TympluTag):
         if node.action== "for":
             pass
@@ -110,6 +109,6 @@ class InterpreterTags:
             self.convert()
 
     @property
-    def content(self):
+    def content(self)->str:
         self.raw_contents = convert_unique_value(raw_contents=self.raw_contents, replace_char=self.replace_char)
         return self.raw_contents

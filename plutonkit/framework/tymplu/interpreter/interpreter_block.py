@@ -10,6 +10,9 @@ from plutonkit.framework.tymplu.condition.condition_delimiter import (
 from plutonkit.framework.tymplu.condition.condition_identify import (
     ConditionIdentify,
 )
+from plutonkit.framework.tymplu.ext.strings import (
+    convert_unique_value, unique_value_generator,
+)
 from plutonkit.helper.format import (
     get_first_line_string_space, get_first_strings, get_str_if_empty,
 )
@@ -26,10 +29,12 @@ class InterpreterBlock:
         self.errors:List[TympluErrorParse] = []
         self.raw_contents = content
         self.template = template
+        self.replace_char = unique_value_generator()
+
 
     def type_empty(self,_:TympluBlockAppend,__:List[TympluBlockAppend]):
 
-        return ""
+        return self.replace_char
 
     def type_load(self,node:TympluBlockAppend,_:List[TympluBlockAppend]):
 
@@ -54,10 +59,10 @@ class InterpreterBlock:
                     temp_cls = self.template(data_content,self.args)
                     #row_content = temp_cls.content
                     return temp_cls.content
-                return ""
+                return self.replace_char
             except Exception as e:
                 print("Invalid source:",e)
-        return ""
+        return self.replace_char
 
     def type_content(self,node:TympluBlockAppend,_:List[TympluBlockAppend]):
 
@@ -83,7 +88,7 @@ class InterpreterBlock:
         if cond_valid.validate():
 
             return self.sub_convert(raw_tokens, "")
-        return ""
+        return self.replace_char
 
     def convert(self):
         if len(self.tokens)>0:
@@ -128,4 +133,5 @@ class InterpreterBlock:
 
     @property
     def content(self):
+        self.raw_contents = convert_unique_value(raw_contents=self.raw_contents, replace_char=self.replace_char)
         return self.raw_contents

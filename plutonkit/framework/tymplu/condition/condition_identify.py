@@ -17,28 +17,28 @@ class ConditionIdentify:
         self.errors:List[TympluErrorStatement] = errors
         self.arg = arg
 
-    def action_equal(self,key,value):
+    def action_equal(self,key,value)-> bool:
 
         return self.data_format(key) == self.data_format(value)
 
-    def action_not_equal(self,key,value):
+    def action_not_equal(self,key,value)-> bool:
 
         return self.data_format(key) != self.data_format(value)
 
-    def action_greater(self,key,value):
+    def action_greater(self,key,value)-> bool:
         return self.data_format(key) > self.data_format(value)
 
-    def action_greater_equal(self,key,value):
+    def action_greater_equal(self,key,value)-> bool:
         return self.data_format(key) >= self.data_format(value)
 
 
-    def action_less(self,key,value):
+    def action_less(self,key,value)-> bool:
         return self.data_format(key) < self.data_format(value)
 
-    def action_less_equal(self,key,value):
+    def action_less_equal(self,key,value)-> bool:
         return self.data_format(key) <= self.data_format(value)
 
-    def data_format(self,value):
+    def data_format(self,value)-> bool:
         value = str(value)
         is_int = re.match(r"^[0-9]+$",value)
         if is_int:
@@ -55,7 +55,7 @@ class ConditionIdentify:
                 return value[1:len(value)-1]
         return value
 
-    def validate(self):
+    def validate(self) -> bool:
         if len(self.errors)>0:
             return False
 

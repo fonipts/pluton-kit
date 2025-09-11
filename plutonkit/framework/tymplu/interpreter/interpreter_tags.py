@@ -6,6 +6,9 @@ from plutonkit.framework.tymplu.condition.condition_delimiter import (
 from plutonkit.framework.tymplu.condition.condition_identify import (
     ConditionIdentify,
 )
+from plutonkit.framework.tymplu.ext.strings import (
+    convert_unique_value, unique_value_generator,
+)
 from plutonkit.model.dataclass.tymplu_error_parse import TympluErrorParse
 from plutonkit.model.dataclass.tymplu_tag import TympluTag
 
@@ -19,17 +22,21 @@ class InterpreterTags:
         self.errors:List[TympluErrorParse] = []
         self.raw_contents:str = content
         self.last_condition_statement = ""
+        self.replace_char = unique_value_generator()
 
     def type_empty(self,node:TympluTag):
-        self.raw_contents = self.raw_contents.replace(node.raw, "",1)
+        self.raw_contents = self.raw_contents.replace(node.raw, self.replace_char,1)
 
     def type_block(self,node:TympluTag):
-        #to be converted in prod
-        self.raw_contents = self.raw_contents.replace(node.raw, node.content,1)
+
+
         if node.action in self.block:
             call_func= self.block[ node.action ]["func"](self.args)
-            return call_func
-        return ""
+            #return call_func
+            self.raw_contents = self.raw_contents.replace(node.raw, call_func,1)
+        else:
+            self.raw_contents = self.raw_contents.replace(node.raw, self.replace_char,1)
+        #return self.replace_char
     def type_each(self,node:TympluTag):
         if node.action== "for":
             pass
@@ -59,12 +66,12 @@ class InterpreterTags:
         next_token = self._get_next_token(node)
 
         if valid_cond:
-            self.raw_contents = self.raw_contents.replace(node.raw, "")
+            self.raw_contents = self.raw_contents.replace(node.raw, self.replace_char)
         else:
             if next_token is None:
-                self.raw_contents = self.raw_contents.replace(node.raw+self.contents[node.end_index:], "",1)
+                self.raw_contents = self.raw_contents.replace(node.raw+self.contents[node.end_index:], self.replace_char,1)
             else:
-                self.raw_contents = self.raw_contents.replace(node.raw+self.contents[node.end_index:next_token.start_index], "",1)
+                self.raw_contents = self.raw_contents.replace(node.raw+self.contents[node.end_index:next_token.start_index], self.replace_char,1)
 
     def _get_next_token(self,node):
         get_node = None
@@ -72,14 +79,14 @@ class InterpreterTags:
             next_token = self.tokens[0]
             self.tokens.pop(0)
             if next_token.type.lower() == "end":
-                self.raw_contents = self.raw_contents.replace(next_token.raw, "",1)
+                self.raw_contents = self.raw_contents.replace(next_token.raw, self.replace_char,1)
                 if node.action == next_token.action:
                     get_node = next_token
                 else:
                     self.errors.append(TympluErrorParse(type="end",message=f"Missing @(end {node.action} {node.type}) at end of {node.type}",
                         content=node.raw,end_index=node.end_index,start_index=node.start_index))
             else:
-                self.raw_contents = self.raw_contents.replace(next_token.raw, "",1)
+                self.raw_contents = self.raw_contents.replace(next_token.raw, self.replace_char,1)
                 self.errors.append(TympluErrorParse(type="end",message=f"Missing @(end {node.action} {node.type}) at end of {node.type}",
                     content=node.raw,end_index=node.end_index,start_index=node.start_index))
         else:
@@ -104,4 +111,5 @@ class InterpreterTags:
 
     @property
     def content(self):
+        self.raw_contents = convert_unique_value(raw_contents=self.raw_contents, replace_char=self.replace_char)
         return self.raw_contents

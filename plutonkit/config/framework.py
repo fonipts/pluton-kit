@@ -1,73 +1,53 @@
-#from plutonkit.config.func.shortcut import (
-#    shortcut_if, shortcut_join_space, shortcut_lower, shortcut_replace,
-#    shortcut_ucfirst, shortcut_upper,
-#)
-#from plutonkit.config.func.template import template_content, template_load
-from plutonkit.framework.format import format_argument_input
+from plutonkit.model.dataclass.format_argument_input import FormatArgumentInput
 
 FRAMEWORK_WEB = [
-    format_argument_input("framework", "django", "Do you need docker", "django", []),
-    format_argument_input("framework", "bottle", "Do you need docker", "bottle", []),
-    format_argument_input("framework", "fastapi", "Do you need docker", "fastapi", []),
-    format_argument_input("framework", "flask", "Do you need docker", "flask", []),
+    FormatArgumentInput(
+        type="framework", name="django", question="", option_name="django", config=[]
+    ),
+    FormatArgumentInput(type="framework", name="bottle", question="", option_name="bottle", config=[]),
+    FormatArgumentInput(type="framework", name="fastapi", question="", option_name="fastapi", config=[]),
+    FormatArgumentInput(type="framework", name="flask", question="", option_name="flask", config=[]),
 ]
 
 FRAMEWORK_GRAPHQL = [
-    format_argument_input(
-        "framework", "graphene", "Do you need docker", "graphene", []
+    FormatArgumentInput(
+        type="framework", name="graphene", question="", option_name="graphene", config=[]
     ),
-    format_argument_input("framework", "ariadne", "Do you need docker", "ariadne", []),
-    format_argument_input(
-        "framework", "tartiflette", "Do you need docker", "tartiflette", []
+    FormatArgumentInput(type="framework", name="ariadne", question="", option_name="ariadne", config=[]),
+    FormatArgumentInput(
+        type="framework", name="tartiflette", question="", option_name="tartiflette", config=[]
     ),
 ]
 
 DEFAULT_GRPC = [
-    format_argument_input(
-        "framework", "default_grpc", "Do you need docker", "default", []
+    FormatArgumentInput(
+        type="framework", name="default_grpc", question="", option_name="default", config=[]
     ),
 ]
 
 DEFAULT_WEB3 = [
-    format_argument_input(
-        "framework", "default_web3", "Do you need docker", "default", []
+    FormatArgumentInput(
+        type="framework", name="default_web3", question="", option_name="default", config=[]
     ),
 ]
 
 DEFAULT_PACKAGE = [
-    format_argument_input(
-        "framework", "default_starter_python", "Start creating your new python apps", "Python starter", []
+    FormatArgumentInput(
+        type="framework", name="default_starter_python", question="Start creating your new python apps", option_name="Python starter", config=[]
     ),
-    format_argument_input(
-        "framework", "default_starter_golang", "Start creating your new go apps", "Golang starter", []
+    FormatArgumentInput(
+        type="framework", name="default_starter_golang", question="Start creating your new go apps", option_name="Golang starter", config=[]
     ),
-    format_argument_input(
-        "framework", "default_starter_ruby", "Start creating your new ruby apps", "Ruby starter", []
+    FormatArgumentInput(
+        type="framework", name="default_starter_ruby", question="Start creating your new ruby apps", option_name="Ruby starter", config=[]
     ),
 ]
 
 DEFAULT_WEB_SOCKET = [
-    format_argument_input(
-        "framework", "default_websocket", "Do you need docker", "default", []
+    FormatArgumentInput(
+        type="framework", name="default_websocket", question="", option_name="default", config=[]
     ),
 ]
-
-STANDARD_LIBRARY = ["pylint==3.0.2", "pytest==7.4.3", "python-decouple==3.8"]
-
-#VAR_SHORTCUT_TEMPLATE = {
-#    "ucfirst": shortcut_ucfirst,
-#    "lower": shortcut_lower,
-#    "upper": shortcut_upper,
-#    "join_space": shortcut_join_space,
-#    "replace": shortcut_replace,
-#    "if": shortcut_if,
-#}
-
-#VAR_TEMPLATE_EXEC = {
-#   "content": template_content,
-#    "load": template_load
-#}
-
 
 VAR_DEFAULT_BLUEPRINT = [
     "django",

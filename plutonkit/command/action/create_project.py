@@ -1,5 +1,6 @@
 import os
 import sys
+from typing import List
 
 from yaml import Loader, load
 
@@ -17,6 +18,7 @@ from plutonkit.helper.arguments import (
     check_if_default_name, get_arg_cmd_value, get_config,
 )
 from plutonkit.helper.format import git_name
+from plutonkit.model.dataclass.format_argument_input import FormatArgumentInput
 
 
 class CreateProject:
@@ -91,10 +93,10 @@ class CreateProject:
         except KeyError:
             self.project_details_execute(f"https://github.com/{clean_name}.git")
 
-    def callback_execute(self, reference_value, name, step):
+    def callback_execute(self, reference_value:any, name:str, step:List[FormatArgumentInput]):
 
         enum_action = [
-            f"{key + 1}  {val.get('option_name')}"
+            f"{key + 1}  {val.option_name}"
             for key, val in enumerate(step)
         ]
         join_enum_action = "\n".join(enum_action)
@@ -105,17 +107,16 @@ class CreateProject:
         available_step = step[int_answer - 1]
         reference_value["command"].append(
                 {
-                    "name": available_step["name"],
-                    "type": available_step["type"],
-                    "field_type": available_step["field_type"],
+                    "name": available_step.name,
+                    "type": available_step.type,
                 }
             )
 
-        if len(available_step["config"]) > 0:
+        if len(available_step.config) > 0:
             self.callback_execute(
                 reference_value,
-                available_step["question"],
-                available_step["config"],
+                available_step.question,
+                available_step.config,
             )
         else:
             self.query_execute(reference_value)

@@ -20,8 +20,10 @@ def get_arg_cmd_value(args):
 
     for val in args:
         word_split = val.split("=")
-
-        local_obj[word_split[0]] = "=".join(word_split[1::])
+        if len(word_split)>0:
+            local_obj[word_split[0]] = "=".join(word_split[1::])
+        else:
+            local_obj[word_split[0]] = "yes"
 
     return local_obj
 

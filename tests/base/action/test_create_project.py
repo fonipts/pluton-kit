@@ -3,6 +3,8 @@ from unittest.mock import patch, MagicMock
 from plutonkit.command.action.create_project import CreateProject
 from plutonkit.framework.exception.validation_exception import ValidationException
 from plutonkit.framework.exception.warning_exception import WarningException
+from plutonkit.model.dataclass.format_argument_input import FormatArgumentInput
+
 
 class TestCreateProject(unittest.TestCase):
     def setUp(self):
@@ -57,7 +59,10 @@ class TestCreateProject(unittest.TestCase):
     @patch.object(CreateProject, "query_execute")
     def test_callback_execute(self, mock_query, mock_input):
         ref_val = {"details": {}, "command": []}
-        step = [{"option_name": "foo", "name": "foo", "type": "t", "field_type": "f", "config": [], "question": "Q"}]
+
+        step = [FormatArgumentInput(option_name ="django", name="foo", type= "t", config= [], question= "Q")]
+
+        exit()
         self.proj.callback_execute(ref_val, "question", step)
         mock_query.assert_called()
 
@@ -93,7 +98,7 @@ class TestCreateProject(unittest.TestCase):
     @patch.object(CreateProject, "query_execute")
     def test_callback_execute(self, mock_query, mock_input):
         ref_val = {"details": {}, "command": []}
-        step = [{"option_name": "foo", "name": "foo", "type": "t", "field_type": "f", "config": [], "question": "Q"}]
+        step = [FormatArgumentInput(option_name ="foo", name="foo", type= "t", config= [], question= "Q")]
         self.proj.callback_execute(ref_val, "question", step)
         mock_query.assert_called()
 

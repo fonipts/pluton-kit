@@ -133,7 +133,7 @@ class CreateProject:
         project_name = input("Name of folder project?")
         if len(project_name) <3:
             print("Please specify atleast three char")
-            sys.exit(0)
+            sys.exit(1)
         framework_blueprint = FrameworkBluePrint(remote_blueprint)
         framework_blueprint.set_folder_name(project_name)
         if inquiry_val:

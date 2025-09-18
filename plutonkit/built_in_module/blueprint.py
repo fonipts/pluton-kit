@@ -12,7 +12,6 @@ class PLBlueprint:
                 return function(*args,**kwargs)
             final_name = name is None and function.__name__ or name
             self.local_block[final_name] = {
-              #  "description":description,
                 "func":function
                 }
             return wrapper

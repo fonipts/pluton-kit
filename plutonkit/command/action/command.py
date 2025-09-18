@@ -9,9 +9,12 @@ try:
 except ImportError:
     from yaml import Loader
 
-from plutonkit.config import PROJECT_COMMAND_FILE, PYTHON_CMD
+from plutonkit.config import PROJECT_COMMAND_FILE, PYTHON_CMD, bcolors
 from plutonkit.framework.command.py_validate_content import PyValidateContent
 from plutonkit.framework.command.structure_command import StructureCommand
+from plutonkit.framework.exception.cmd_validation_exception import (
+    CmdValidationException,
+)
 from plutonkit.framework.exception.validation_exception import (
     ValidationException,
 )
@@ -76,26 +79,50 @@ class Command:
                 is_exec_running = len(cmd_arg["command"])>0
             sys.exit(0)
         else:
-            cmd_file = f"{PYTHON_CMD}.py"
+            self.command_start_python(list_commands, directory)
 
-            path = os.path.join(directory, cmd_file)
 
-            if os.path.isfile(path):
-                py_file_class = PyValidateContent(path)
+    def command_start_python(self, list_commands, directory):
+        cmd_file = f"{PYTHON_CMD}.py"
 
-                if py_file_class.is_run_func_available() is False:
-                    raise WarningException("In your `{cmd_file}`, please add `run` function name in order to execute the cmd command")
+        path = os.path.join(directory, cmd_file)
 
+
+
+        if os.path.isfile(path):
+            py_file_class = PyValidateContent(path)
+            var_class_import = py_file_class.get_class_import()
+            var_class_call = py_file_class.get_class_call()
+
+            if var_class_import.get("Command",None) is None:
+                raise WarningException(f"In your `{cmd_file}`, please import `Command` in using command")
+
+            if var_class_import["Command"] not in var_class_call:
+                raise WarningException(f"In your `{cmd_file}`, Invalid in retrieving you command details")
+
+            try:
                 sys.path.append( directory )
                 mod = importlib.import_module(PYTHON_CMD)
-                mod.run()
-            else:
-                print("you are using an invalid command")
-                print("Please select the command below.")
-                for key, value in list_commands.items():
-                    print("  ",
-                        " ".join(key.split(":.:")),
-                        " .... ",
-                        convertVarToTemplate(value.get("description", "[no comment]")),
-                        )
+                if not hasattr(mod,"run"):
+                    command_class = getattr(mod, var_class_call[ var_class_import["Command"] ])
+                    command_class.run()
+                else:
+                    mod.run()
+            except CmdValidationException as e:
+                print(e)
+                self.post_list_command(list_commands)
+                print("\n")
+                print(f"{bcolors.WARNING}{e}{bcolors.ENDC}")
+        else:
+            self.post_list_command(list_commands)
         sys.exit(0)
+
+    def post_list_command(self, list_commands):
+        print("you are using an invalid command")
+        print(f"{bcolors.OKBLUE}Please select the command below.{bcolors.ENDC}")
+        for key, value in list_commands.items():
+            print("  ",
+                " ".join(key.split(":.:")),
+                 " .... ",
+                convertVarToTemplate(value.get("description", "[no comment]")),
+                )

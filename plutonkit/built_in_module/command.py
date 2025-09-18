@@ -1,14 +1,18 @@
 import os
 import sys
 
-from plutonkit.config import PYTHON_CMD
+from plutonkit.config import PYTHON_CMD, bcolors
 from plutonkit.framework.command.py_validate_arguments import (
     PyValidateArguments,
 )
 from plutonkit.framework.decorator.builtin_cmd import callback_script
+from plutonkit.framework.exception.cmd_validation_exception import (
+    CmdValidationException,
+)
 from plutonkit.framework.exception.validation_exception import (
     ValidationException,
 )
+from plutonkit.helper.environment import convertVarToTemplate
 
 
 class PLCommand:
@@ -42,28 +46,23 @@ class PLCommand:
             print("You are running a python script")
 
         if os.path.exists(path) is False:
-            raise ValidationException("This file `{PYTHON_CMD}` must use in python cmd")
+            raise CmdValidationException("This file `{PYTHON_CMD}` must use in python cmd")
         if len(sys.argv) == 1:
-            raise ValidationException("Please specify your command name")
+
+            print(f"{bcolors.OKBLUE}List of available command at `{PYTHON_CMD}.py`{bcolors.ENDC}")
+            for kk,val in validate_arg.get_name_details().items():
+                val_rep = '[no comment]' if val is None else val
+
+                print("  ",
+                " ".join(kk.split(":.:")),
+                 " .... ",
+                convertVarToTemplate(val_rep),
+                )
+            print("\n")
+            raise CmdValidationException("Please specify your command name")
         if getcmd_name not in self.local_cli:
             raise ValidationException(f"Your command name `{getcmd_name}` does not exist your `{PYTHON_CMD}.py`")
-        #
-        #signature = inspect.signature(self.local_cli[sys.argv[1]]["func"])
-        #for name, param in signature.parameters.items():
-        #    print(f"Name: {name}")
-        #    print(f"Kind: {param.kind}")
-        #    print(f"Default: {param.default}")
-        #    print("-" * 20)
-        #    print(f"  Type annotation: {param.annotation}")
-        #    if param.annotation is inspect._empty:
-        #        print("  No type hint provided")
 
-        #    arg_list, arg_dict, ord_list = validate_arg.get_argument_details()
-
-        #    print(cmd_arg_list,":cmd_arguments")
-        #    print(arg_list,":arg_list")
-        #    print(arg_dict,":arg_dict")
-        #    print(ord_list,":ord_list")
         valid_cmd,mes_cmd=validate_arg.validated_cmd_arg()
         if valid_cmd is False:
             raise ValidationException(mes_cmd)
@@ -71,4 +70,9 @@ class PLCommand:
         cmd_arg_list, cmd_arg_dict = validate_arg.getcmd_arg_validated()
         args = tuple(cmd_arg_list)
         kwargs = cmd_arg_dict
-        self.local_cli[getcmd_name]["func"](*args,**kwargs)
+        try:
+            self.local_cli[getcmd_name]["func"](*args,**kwargs)
+            sys.exit(0)
+        except Exception as e:
+            print(e)
+            sys.exit(1)

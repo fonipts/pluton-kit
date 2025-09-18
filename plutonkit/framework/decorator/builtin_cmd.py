@@ -2,6 +2,9 @@ import os
 import sys
 
 from plutonkit.config import PYTHON_CMD, bcolors
+from plutonkit.framework.exception.cmd_validation_exception import (
+    CmdValidationException,
+)
 from plutonkit.framework.exception.help_exception import HelpException
 from plutonkit.framework.exception.validation_exception import (
     ValidationException,
@@ -21,6 +24,8 @@ def callback_script(func):
                 func(*args, **kwargs)
             except WarningException as E:
                 print(f"{bcolors.WARNING}Warning: {E}{bcolors.ENDC}")
+            except CmdValidationException as E:
+                print(f"{bcolors.WARNING}{E}{bcolors.ENDC}")
             except ValidationException as E:
                 output_validation_exception_list(E)
             except HelpException:

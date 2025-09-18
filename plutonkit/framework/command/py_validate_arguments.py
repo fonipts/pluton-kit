@@ -41,6 +41,7 @@ class PyValidateArguments:
         if index+1>0:
             return self.argv[index+1::]
         return []
+
     def getcmd_arg_validated(self):
         arg_data = self.getcmd_arg()
         arg_list, _, ord_list = self.get_argument_details()
@@ -67,6 +68,13 @@ class PyValidateArguments:
             return raw_list, raw_dist
 
         return [],{}
+    def get_name_details(self):
+        cmd_list = {}
+
+        for key, value in self.list_func.items():
+            cmd_list[key] = value['description']
+        return cmd_list
+
     def validated_cmd_arg(self):
         arg_list, _ , ord_list = self.get_argument_details()
         cmd_arguments = self.getcmd_arg()
@@ -95,11 +103,7 @@ class PyValidateArguments:
                 row_arg["kind"] = str(param.kind)
                 row_arg["annotation"] = param.annotation
                 is_object = False
-               # print(f"Name: {name}")
-               # print(f"Kind: {param.kind}")
-               # print(f"Default: {param.default}")
-               # print("-" * 20)
-               # print(f"  Type annotation: {param.annotation}")
+
                 if param.default is not inspect.Signature.empty:
                     row_arg["default"] = param.default
                     is_object = True

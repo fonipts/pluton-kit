@@ -84,10 +84,7 @@ class Command:
 
     def command_start_python(self, list_commands, directory):
         cmd_file = f"{PYTHON_CMD}.py"
-
         path = os.path.join(directory, cmd_file)
-
-
 
         if os.path.isfile(path):
             py_file_class = PyValidateContent(path)

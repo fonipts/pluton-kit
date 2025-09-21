@@ -8,6 +8,7 @@ from yaml import Loader, load
 from plutonkit.config import (
     PROJECT_COMMAND_FILE, PROJECT_DETAILS_FILE, PYTHON_BLUEPRINT, bcolors,
 )
+from plutonkit.framework.command.loading.progress_bar import ProgressBar
 from plutonkit.framework.command.py_validate_content import PyValidateContent
 from plutonkit.framework.exception.warning_exception import WarningException
 from plutonkit.framework.filesystem.blueprint_file_schema import (
@@ -63,7 +64,7 @@ class FrameworkBluePrint:
         except Exception as e:
             print(e)
             print(f"{bcolors.FAIL}Invalid details to proceed in creating new project{bcolors.ENDC}")
-            sys.exit(0)
+            sys.exit(1)
 
     def execute_create_project(self):
         self.blueprint_file = FileRequest(self.path, self.directory, f"{PYTHON_BLUEPRINT}.py")
@@ -96,7 +97,7 @@ class FrameworkBluePrint:
             print(f"{bcolors.FAIL}Invalid details to proceed in creating new project{bcolors.ENDC}")
             self.arch_req.clearRepoFolder()
 
-            sys.exit(0)
+            sys.exit(1)
 
     def _review_blueprint_script(self):
         cmd_file = f"{PYTHON_BLUEPRINT}.py"
@@ -173,7 +174,7 @@ class FrameworkBluePrint:
         return configs
 
     def _files(self, values, args):
-
+        print(f"\n{bcolors.OKGREEN}We are initiating the files template{bcolors.ENDC}")
         files_check: list[BlueprintFileSchema] = []
         default_item = values.get("default", [])
 
@@ -196,8 +197,8 @@ class FrameworkBluePrint:
                         for file1 in self.arch_req.getBlob(s_value):
 
                             files_check.append(BlueprintFileSchema(file1, args))
-
-        for value in files_check:
+        progress_bar = ProgressBar(fill="*",empty="_",limit_percentage=len(files_check)-1,load_message="Files")
+        for key,value in enumerate(files_check):
             if value.isObjFile():
                 if self.arch_req is not None:
                     data = self.arch_req.getFiles(value.value["file"])
@@ -208,9 +209,10 @@ class FrameworkBluePrint:
                             )
                     else:
                         print(f"{bcolors.FAIL}error in downloading the file {value.value['file']}{bcolors.ENDC}")
+            progress_bar.update(key)
 
     def _boot_command(self, values, args):
-
+        print(f"\n\n{bcolors.OKGREEN}We are initiating the blueprint bootload{bcolors.ENDC}")
         path = os.path.join(self.directory, self.folder_name)
 
         is_exec_running = len(values)>0
